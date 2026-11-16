@@ -28,12 +28,13 @@ apps-script/portal-lama/       ← portal versi Apps Script (cadangan, tidak dip
 portal/index.html              ← halaman portal di Vercel
 assets/config.js               ← URL Web App Apps Script tiap form
 assets/gas-bridge.js           ← penghubung: google.script.run → fetch ke Apps Script
+assets/klaim-ui.css / .js      ← tampilan seragam (header, isian, tombol, bar kirim) khusus versi Vercel
 scripts/build.mjs              ← build Vercel: menyusun folder www/
 vercel.json                    ← konfigurasi Vercel (build, clean URL, header)
 ```
 
 Saat build, `scripts/build.mjs` menyalin `apps-script/<form>/Index.html` ke `www/<form>/index.html`
-dan menyisipkan `config.js` + `gas-bridge.js`. Jadi tampilan form cukup diubah di satu tempat.
+dan menyisipkan `config.js`, `gas-bridge.js` serta lapisan tampilan `klaim-ui`. Jadi tampilan form cukup diubah di satu tempat.
 
 ---
 

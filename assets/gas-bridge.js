@@ -68,13 +68,4 @@
   window.google = window.google || {};
   window.google.script = {run: runner(null, null)};
 
-  // tautan kembali ke portal
-  document.addEventListener('DOMContentLoaded', function () {
-    var a = document.createElement('a');
-    a.href = '/';
-    a.textContent = '← Portal Klaim';
-    a.style.cssText = 'display:inline-block;margin:0 0 14px;font:600 13px "Plus Jakarta Sans",system-ui,sans-serif;color:#0f5c4a;text-decoration:none';
-    var wrap = document.querySelector('.wrap');
-    if (wrap) wrap.insertBefore(a, wrap.firstChild);
-  });
 })();

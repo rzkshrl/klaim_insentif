@@ -92,6 +92,14 @@
   .preview-badge{display:inline-block;background:var(--warn-bg);color:var(--warn);font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;margin-bottom:10px}
   @media (max-width:900px){.grid{grid-template-columns:1fr 1fr}.rules{grid-template-columns:1fr 1fr}.paybox{grid-template-columns:1fr 1fr}}
   @media (max-width:560px){.grid,.rules,.paybox{grid-template-columns:1fr}}
+
+  /* status kelengkapan & tombol terkunci */
+  button.b.is-locked,button.b.is-locked:hover{background:#c8ccc8!important;border-color:#c8ccc8!important;color:#fff!important;cursor:not-allowed;filter:none;transform:none}
+  .submit-status{font:inherit;font-size:13px;font-weight:600;border:0;background:none;display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:99px;margin-left:auto;cursor:pointer}
+  .submit-status .dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+  .submit-status.is-todo{color:#a35b00;background:#fdf1de}
+  .submit-status.is-ready{color:#1f7a4d;background:#e6f4ec;cursor:default}
+  .miss-list{margin:8px 0 0;padding-left:20px;max-height:46vh;overflow:auto;font-size:14px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -433,22 +441,69 @@ function load(){
 function clearAll(){ rows = [blank()]; for (var k in head) if (k!=='code') head[k] = ''; save(); }
 
 
-/* ---------- tombol submit aktif hanya bila data wajib sudah lengkap ---------- */
+/* ---------- tombol submit terkunci (abu-abu) sampai data wajib lengkap ---------- */
 function refreshSubmit(){
   var btn = document.getElementById('submit');
   if (!btn || !S) return;
   var miss = [];
   try { miss = missing(); } catch (e) { miss = []; }
-  btn.disabled = miss.length > 0;
-  btn.title = miss.length ? 'Lengkapi: ' + miss.join('; ') : '';
-  var hint = document.getElementById('submit-hint');
-  if (!hint) {
-    hint = document.createElement('div');
-    hint.id = 'submit-hint';
-    hint.style.cssText = 'flex:1;min-width:220px;text-align:right;font-size:12.5px;font-weight:600;color:var(--warn)';
-    btn.parentNode.insertBefore(hint, btn);
+  window.__missing = miss;
+  var locked = miss.length > 0;
+  btn.classList.toggle('is-locked', locked);
+  btn.setAttribute('aria-disabled', locked ? 'true' : 'false');
+  btn.title = locked ? 'Lengkapi: ' + miss.join('; ') : '';
+  if (!btn.__gated) {
+    btn.__gated = true;
+    // tombol terkunci tidak mengirim; klik menampilkan daftar yang belum lengkap
+    btn.addEventListener('click', function (ev) {
+      if (btn.getAttribute('aria-disabled') === 'true') { ev.preventDefault(); ev.stopImmediatePropagation(); showMissing(); }
+    }, true);
   }
-  hint.textContent = miss.length ? 'Lengkapi dulu: ' + miss.slice(0, 3).join('; ') + (miss.length > 3 ? ' (+' + (miss.length - 3) + ' lainnya)' : '') : '';
+  var st = document.getElementById('submit-hint');
+  if (!st) {
+    st = document.createElement('button');
+    st.type = 'button'; st.id = 'submit-hint';
+    btn.parentNode.insertBefore(st, btn);
+    st.addEventListener('click', function () { if ((window.__missing || []).length) showMissing(); });
+  }
+  st.className = 'submit-status ' + (locked ? 'is-todo' : 'is-ready');
+  st.disabled = !locked;
+  st.innerHTML = locked
+    ? '<span class="dot" aria-hidden="true"></span>' + miss.length + ' bagian belum lengkap · <u>lihat</u>'
+    : '<span class="dot" aria-hidden="true"></span>Data lengkap, siap dikirim';
+}
+function showMissing(){
+  markMissing();
+  var miss = window.__missing || [];
+  $('modal-box').innerHTML = '<h3>Data belum lengkap</h3><p class="sub" style="margin:0 0 6px">Lengkapi dulu bagian berikut sebelum klaim bisa dikirim:</p>' +
+    '<ul class="miss-list">' + miss.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
+    '<div class="row"><button class="b primary" id="m-cancel">Lengkapi sekarang</button></div>';
+  $('modal').classList.add('show');
+  $('m-cancel').onclick = function () {
+    closeModal();
+    var f = document.querySelector('.err');
+    if (f) { f.scrollIntoView({behavior: 'smooth', block: 'center'}); try { f.focus({preventScroll: true}); } catch (e) {} }
+  };
+}
+/** tandai merah kolom wajib yang masih kosong / 0 */
+function markMissing(){
+  var zero = function (v) { var s = String(v == null ? '' : v).replace(/\./g, '').replace(',', '.').trim(); return !s || parseFloat(s) === 0; };
+  document.querySelectorAll('label.f').forEach(function (l) {
+    var c = l.querySelector('input:not([readonly]):not([disabled]), select');
+    if (l.querySelector('.req') && c && blankStr(c.value)) c.classList.add('err');
+  });
+  document.querySelectorAll('.sm-name input:not([readonly])').forEach(function (x) { if (blankStr(x.value)) x.classList.add('err'); });
+  document.querySelectorAll('table.kpi tr, table.mk tr').forEach(function (tr) {
+    var t = tr.querySelector('input[data-p="t"]');
+    if (tr.getAttribute('data-k') === 'pf' && t && !t.disabled && zero(t.value) && !(typeof scheme === 'function' && scheme() === 'A')) return;
+    tr.querySelectorAll('input.num:not([readonly]):not([disabled])').forEach(function (x) {
+      if (x.dataset.p === 's' || x.dataset.p === 'n') {
+        var sib = tr.querySelectorAll('input.num:not([readonly]):not([disabled])[data-p="s"], input.num:not([readonly]):not([disabled])[data-p="n"]');
+        var any = Array.prototype.some.call(sib, function (y) { return !zero(y.value); });
+        if (!any) x.classList.add('err');
+      } else if (zero(x.value)) x.classList.add('err');
+    });
+  });
 }
 function blankStr(x){ return !String(x == null ? '' : x).trim(); }
 
