@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<base target="_top">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Form Klaim Kompetisi AO SKU 2000</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f4f5f2;--card:#fff;--ink:#1b1f1d;--muted:#6b726e;--line:#e2e5e0;--brand:#0f5c4a;--brand-2:#e8f2ee;
+    --ok:#1f7a4d;--ok-bg:#e6f4ec;--warn:#a35b00;--warn-bg:#fdf1de;--bad:#b3261e;--bad-bg:#fbe9e7;--accent:#c2410c}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:14px;line-height:1.45}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 16px 90px}
+  h1{font-size:24px;margin:0 0 4px;letter-spacing:-.02em}
+  .sub{color:var(--muted);margin:0 0 18px}
+  .num{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+  .panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  label.f{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);font-weight:600}
+  .req{color:var(--bad)}
+  input,select,textarea{font:inherit;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:#fbfcfa;width:100%}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--brand);outline-offset:-1px;background:#fff}
+  input.err,select.err{border-color:var(--bad);background:var(--bad-bg)}
+  .rules{display:grid;grid-template-columns:1fr 1.4fr 1.2fr;gap:12px}
+  .rule-box{background:var(--brand-2);border-radius:10px;padding:12px 14px;font-size:13px}
+  .rule-box b.t{display:block;margin-bottom:6px;color:var(--brand)}
+  .rule-box ul{margin:0;padding-left:18px} .rule-box li{margin:2px 0}
+  .big-num{font-size:26px;font-weight:800;color:var(--brand)}
+  .sm{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+  .sm-head{display:flex;gap:12px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .sm-no{width:30px;height:30px;border-radius:8px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+  .sm-name{flex:1;min-width:200px} .sm-name input{font-weight:700;font-size:15px}
+  .badge{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;white-space:nowrap}
+  .badge.ok{background:var(--ok-bg);color:var(--ok)} .badge.bad{background:var(--bad-bg);color:var(--bad)} .badge.na{background:#eef0ec;color:var(--muted)}
+  .btn-x{border:none;background:none;color:var(--muted);cursor:pointer;font-size:20px;padding:2px 8px;border-radius:8px;line-height:1}
+  .btn-x:hover{background:var(--bad-bg);color:var(--bad)}
+  .prog{padding:10px 16px;display:flex;align-items:center;gap:12px;font-size:13px;border-bottom:1px solid var(--line);background:#fcfcfb;flex-wrap:wrap}
+  .bar{flex:1;min-width:160px;height:8px;background:#eceee9;border-radius:99px;overflow:hidden;position:relative}
+  .bar i{display:block;height:100%;background:var(--warn);border-radius:99px;transition:width .2s}
+  .bar.ok i{background:var(--ok)}
+  .tw{overflow-x:auto}
+  table.ol{width:100%;border-collapse:collapse;min-width:1020px}
+  table.ol th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;text-align:left;padding:9px 6px 6px;white-space:nowrap;background:#fafbf9}
+  table.ol td{padding:4px 6px;border-top:1px solid #f0f2ee;vertical-align:middle}
+  table.ol td.n{color:var(--muted);text-align:center;width:34px;font-size:12px}
+  table.ol input,table.ol select{padding:6px 8px;font-size:13px}
+  table.ol td.st{width:240px;font-size:12px}
+  table.ol tr.bad td{background:#fff8f7}
+  .st .okk{color:var(--ok);font-weight:700} .st .no{color:var(--bad);font-weight:600}
+  .st .empty{color:#b6bbb7}
+  .tools{display:flex;gap:8px;flex-wrap:wrap;padding:10px 16px;border-top:1px solid var(--line)}
+  .paybox{display:grid;grid-template-columns:1.1fr 1.3fr 1fr 1.3fr;gap:10px;padding:12px 16px;border-top:1px solid var(--line);background:#fcfcfb}
+  .sm-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;background:#fafbf9;border-top:1px solid var(--line);flex-wrap:wrap}
+  .payout{text-align:right} .payout small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+  .payout .v{font-size:20px;font-weight:700}
+  button.b{font:inherit;font-weight:700;border-radius:10px;padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:13px}
+  button.b.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  button.b.big{padding:14px 22px;font-size:15px}
+  button.b.small{padding:7px 11px;font-size:12.5px}
+  button.b:disabled{opacity:.55;cursor:not-allowed}
+  button.b:hover:not(:disabled){filter:brightness(.96)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 18px}
+  table.sum{width:100%;border-collapse:collapse;font-size:13px}
+  table.sum th{background:#f6f7f4;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.sum td{padding:7px 10px;text-align:right;border-bottom:1px solid #f0f2ee;white-space:nowrap}
+  table.sum .l{text-align:left} table.sum .c{text-align:center}
+  table.sum tfoot td{font-weight:800;border-top:2px solid var(--ink);border-bottom:none;background:#fafbf9}
+  .alert{font-size:13px;font-weight:600;padding:10px 12px;border-radius:9px;margin-top:10px}
+  .alert.warn{background:var(--warn-bg);color:var(--warn)} .alert.info{background:var(--brand-2);color:var(--brand)} .alert.bad{background:var(--bad-bg);color:var(--bad)}
+  .submit-bar{position:sticky;bottom:0;background:rgba(244,245,242,.95);backdrop-filter:blur(6px);border-top:1px solid var(--line);padding:12px 0;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .modal{position:fixed;inset:0;background:rgba(20,24,22,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+  .modal.show{display:flex}
+  .modal .box{background:#fff;border-radius:16px;max-width:640px;width:100%;padding:22px;max-height:92vh;overflow:auto}
+  .modal h3{margin:0 0 8px;font-size:18px}
+  .modal table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  .modal td{padding:6px 0;border-bottom:1px solid #f0f2ee} .modal td:last-child{text-align:right;font-weight:700}
+  .modal .row{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+  .modal textarea{height:220px;font-family:"JetBrains Mono",monospace;font-size:12px;white-space:pre}
+  code.fmt{display:block;background:#f6f7f4;border-radius:8px;padding:8px 10px;font-size:12px;margin:8px 0;overflow-x:auto;white-space:nowrap}
+  .center{text-align:center;padding:60px 20px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;font:inherit;font-weight:700;font-size:13.5px;text-align:left}
+  .tab small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+  .tab.on{border-color:var(--brand);background:var(--brand-2);color:var(--brand)}
+  .drop{border:2px dashed #c9cec7;border-radius:12px;padding:22px;text-align:center;background:#fbfcfa;cursor:pointer}
+  .drop.hover{border-color:var(--brand);background:var(--brand-2)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+  .stat{background:#f6f7f4;border-radius:10px;padding:10px 12px} .stat b{display:block;font-size:18px}
+  .stat span{font-size:12px;color:var(--muted)}
+  details.ex{margin-top:10px;font-size:13px} details.ex summary{cursor:pointer;font-weight:700;color:var(--muted)}
+  details.ex table{width:100%;border-collapse:collapse;margin-top:6px} details.ex td{padding:4px 6px;border-top:1px solid #f0f2ee}
+  table.ol td.ro{font-size:13px;padding:7px 6px}
+  .src-auto{font-size:11px;font-weight:700;color:#2848a8;background:#e7eefc;padding:2px 7px;border-radius:6px}
+  .done-id{font-size:28px;font-weight:800;color:var(--brand);margin:8px 0}
+  .loading{color:var(--muted);text-align:center;padding:80px 0}
+  .preview-badge{display:inline-block;background:var(--warn-bg);color:var(--warn);font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;margin-bottom:10px}
+  @media (max-width:900px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr 1fr}.rules{grid-template-columns:1fr}.paybox{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.grid,.paybox{grid-template-columns:1fr}}
+</style>
+<style>
+  table.rk{width:100%;border-collapse:collapse;font-size:13.5px;min-width:820px}
+  table.rk th{background:#f6f7f4;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.rk td{padding:7px 10px;text-align:right;border-bottom:1px solid #f0f2ee;white-space:nowrap}
+  table.rk .l{text-align:left} table.rk .c{text-align:center}
+  table.rk tr.win td{background:#e6f4ec;font-weight:700}
+  table.rk input{width:110px;text-align:right;padding:6px 8px}
+  .rank{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:7px;background:#eef0ec;font-weight:800;font-size:12px}
+  tr.win .rank{background:var(--ok);color:#fff}
+  .slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .slot{border:1px solid var(--line);border-radius:12px;padding:12px}
+  .slot h4{margin:0 0 8px;font-size:14px}
+  .slot .drop{padding:14px}
+  .slot.done{border-color:var(--ok);background:#f6fbf8}
+  .slot .meta{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+  .winner{display:grid;grid-template-columns:1.2fr 2fr;gap:16px;align-items:start}
+  .wcard{background:var(--ok-bg);border-radius:12px;padding:16px}
+  .wcard .nm{font-size:20px;font-weight:800;color:var(--ok)}
+  .wcard .sub2{font-size:13px;color:var(--ok)}
+  .paybox2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:760px){.winner,.paybox2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap"><div id="app"><div class="loading">Memuat form…</div></div></div>
+<div class="modal" id="modal"><div class="box" id="modal-box"></div></div>
+
+<script>
+/* ===== LOGIKA KOMPETISI AO SKU 2000 (dipakai sama persis di server & form) ===== */
+var METHODS = {own:'Rekening sendiri', titip:'Titip 1 rekening', co:'Rekening perusahaan'};
+var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+function periodeLabel(p) { var m = /^(\d{4})-(\d{2})$/.exec(p || ''); return m ? BULAN[+m[2] - 1] + ' ' + m[1] : String(p || ''); }
+function pad2(n) { return (n < 10 ? '0' : '') + n; }
+function lastDay(p) { var m = /^(\d{4})-(\d{2})$/.exec(p || ''); if (!m) return ''; var d = new Date(Date.UTC(+m[1], +m[2], 0)); return p + '-' + pad2(d.getUTCDate()); }
+function toISO(v) {
+  if (v == null || v === '') return '';
+  if (Object.prototype.toString.call(v) === '[object Date]') return isNaN(v) ? '' : v.getFullYear() + '-' + pad2(v.getMonth() + 1) + '-' + pad2(v.getDate());
+  var s = String(v).trim(), m;
+  if ((m = /^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/.exec(s))) return m[1] + '-' + pad2(+m[2]) + '-' + pad2(+m[3]);
+  if ((m = /^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})$/.exec(s))) { var y = +m[3]; if (y < 100) y += 2000; return y + '-' + pad2(+m[2]) + '-' + pad2(+m[1]); }
+  return '';
+}
+function fmtDate(iso) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ''); return m ? m[3] + '/' + m[2] + '/' + m[1] : ''; }
+function normKode(v) { return String(v || '').trim().toUpperCase().replace(/\s+/g, ''); }
+function kwList(s) { return String(s || '').split(',').map(function (w) { return w.trim().toUpperCase(); }).filter(String); }
+
+/** SKU 2000 non Money Mouse: nama/kode barang memuat salah satu kata kunci & tidak memuat kata pengecualian */
+function isSku2000(nama, kode, S) {
+  var n = String(nama || '').toUpperCase(), k = String(kode || '').toUpperCase().trim();
+  var inc = kwList(S.skuInclude || '4X10,40PCS'), exc = kwList(S.skuExclude || 'MONEY MOUSE');
+  if (exc.some(function (w) { return n.indexOf(w) >= 0 || k === w; })) return false;
+  return inc.some(function (w) { return n.indexOf(w) >= 0 || k === w; });
+}
+
+
+/* ===== KONVERSI SATUAN → DUS/KARTON ===== */
+/** jenis satuan: 'dus' | 'pcs' | 'rcg' | '' (tidak dikenal). Kosong dianggap dus. */
+function unitKind(u) {
+  var s = String(u == null ? '' : u).trim().toUpperCase().replace(/[^A-Z]/g, '');
+  if (!s) return 'dus';
+  if (/^(DUS|DOS|DS|KRT|KARTON|CARTON|CTN|CT|KTN|BOX|BX)$/.test(s)) return 'dus';
+  if (/^(PCS|PC|PCE|PIECE|BKS|BUNGKUS|SACHET|SCH|BIJI|BJ|EA)$/.test(s)) return 'pcs';
+  if (/^(RCG|RENCENG|RENTENG|RC|RTG|RNC|STRIP|STR|PAK|PACK|PK)$/.test(s)) return 'rcg';
+  return '';
+}
+/** isi per dus dari pengaturan khusus ("KATA=pcs:renceng; ...") atau dari nama barang (mis. 4X10 = 4 renceng × 10 pcs) */
+function packOf(namaBarang, kodeBarang, S) {
+  var n = String(namaBarang || '').toUpperCase(), k = String(kodeBarang || '').toUpperCase().trim();
+  var rules = String((S && S.packRules) || '').split(';');
+  for (var i = 0; i < rules.length; i++) {
+    var m = /^\s*([^=]+?)\s*=\s*(\d+)\s*(?::\s*(\d+))?\s*$/.exec(rules[i]);
+    if (m && (n.indexOf(m[1].toUpperCase()) >= 0 || k === m[1].toUpperCase())) return {pcs: +m[2], rcg: m[3] ? +m[3] : 0};
+  }
+  var x = /(\d+)\s*[X×]\s*(\d+)/.exec(n);
+  if (x) return {pcs: +x[1] * +x[2], rcg: +x[1]};
+  var p = /(\d+)\s*PCS/.exec(n);
+  if (p) return {pcs: +p[1], rcg: 0};
+  return {pcs: 0, rcg: 0};
+}
+/** qty dalam dus; null bila satuan / isi per dus tidak diketahui */
+function toDus(qty, unit, namaBarang, kodeBarang, S) {
+  var q = Number(qty) || 0, kind = unitKind(unit);
+  if (kind === 'dus') return q;
+  if (!kind) return null;
+  var pk = packOf(namaBarang, kodeBarang, S), f = kind === 'pcs' ? pk.pcs : pk.rcg;
+  return f > 0 ? q / f : null;
+}
+function fmtDus(x) { x = Math.round(Number(x || 0) * 100) / 100; return String(x).replace('.', ','); }
+
+/**
+ * Hitung AO SKU 2000 per salesman dari transaksi.
+ * members: [{dist, tx:[{d:'YYYY-MM-DD', k:kodeOutlet, s:salesman, q:qty, v:nilai}]}]  (tx sudah difilter SKU 2000 non MM)
+ * AO = jumlah outlet berbeda dengan pembelian bersih ≥ minimal karton (S.minDus) di periode, per salesman per distributor.
+ * tx.q harus sudah dalam satuan dus.
+ */
+function computeAo(members, periode, S) {
+  var out = [], minD = Number(S && S.minDus) || 1;
+  members.forEach(function (m) {
+    var by = {};
+    (m.tx || []).forEach(function (t) {
+      if (!t.d || t.d.slice(0, 7) !== periode) return;
+      var s = String(t.s || '').trim() || '(tanpa salesman)', k = normKode(t.k);
+      if (!k) return;
+      var x = by[s] = by[s] || {outlets: {}, value: 0};
+      x.outlets[k] = (x.outlets[k] || 0) + (Number(t.q) || 0);
+      x.value += Number(t.v) || 0;
+    });
+    Object.keys(by).sort().forEach(function (s) {
+      var x = by[s], ao = Object.keys(x.outlets).filter(function (k) { return x.outlets[k] >= minD - 1e-9; }).length;
+      out.push({dist: m.dist, name: s, ao: ao, value: Math.round(x.value)});
+    });
+  });
+  return out;
+}
+
+/**
+ * Tentukan pemenang.
+ * input.rows: [{dist, name, ao, value, target, pay}]
+ * Syarat: target > 0 dan AO >= target. Pemenang = AO tertinggi; seri → nilai (Rp) SKU 2000 tertinggi.
+ */
+function computeKomp(input, S) {
+  var prize = Number(S.prize) || 0;
+  var rows = input.rows.map(function (r, i) {
+    var t = Number(r.target) || 0, ao = Number(r.ao) || 0;
+    return {i: i, dist: r.dist, name: r.name, ao: ao, value: Number(r.value) || 0, target: t, ach: t > 0 ? ao / t : 0,
+      eligible: t > 0 && ao >= t, why: t <= 0 ? 'Target belum diisi' : ao < t ? 'AO di bawah target' : '', pay: r.pay || {m: 'own'}, winner: false, rank: 0, incentive: 0};
+  });
+  var order = rows.slice().sort(function (a, b) { return b.ao - a.ao || b.value - a.value || (a.name < b.name ? -1 : 1); });
+  order.forEach(function (r, j) { r.rank = j + 1; });
+  var elig = order.filter(function (r) { return r.eligible; });
+  var win = elig[0] || null, tie = false;
+  if (win) {
+    win.winner = true; win.incentive = prize;
+    tie = elig.length > 1 && elig[1].ao === win.ao && elig[1].value === win.value;
+    if (elig.length > 1 && elig[1].ao === win.ao) win.tieNote = elig[1].value === win.value ? 'Seri penuh dengan ' + elig[1].name + ' — perlu keputusan admin' : 'AO sama dengan ' + elig[1].name + ', unggul nilai SKU 2000';
+  }
+  var list = win ? [{i: win.i, name: win.name, dist: win.dist, m: METHODS[win.pay.m] ? win.pay.m : 'own', bank: win.pay.bank || '', cab: win.pay.cab || '', an: win.pay.an || '', nom: prize}] : [];
+  var titipSum = list.filter(function (x) { return x.m === 'titip'; }).reduce(function (a, x) { return a + x.nom; }, 0);
+  var titipOn = titipSum > 0 && titipSum >= Number(S.titipThr);
+  var agg = {nom: 0, tax: 0, net: 0};
+  list.forEach(function (x) {
+    x.rate = x.m === 'co' ? Number(S.coRate) : x.m === 'titip' ? (titipOn ? Number(S.titipRate) : 0) : 0;
+    x.tax = Math.round(x.nom * x.rate / 100); x.net = x.nom - x.tax; x.flag = x.m === 'own' && x.nom >= Number(S.ownThr);
+    agg.nom += x.nom; agg.tax += x.tax; agg.net += x.net;
+  });
+  return {rows: rows, order: order, winner: win, tie: tie, eligibleCount: elig.length,
+    pay: {list: list, titipSum: titipSum, titipOn: titipOn, nom: agg.nom, tax: agg.tax, net: agg.net}, total: agg.nom, totalNet: agg.net};
+}
+/* ===== akhir logika kompetisi ===== */
+
+
+var GS = (typeof google !== 'undefined' && google.script && google.script.run) ? google.script.run : null;
+var PREVIEW = !GS;
+var STORE = 'klaim-komp-ao2000-v1';
+var S = null;
+var head = {entry:'', distLain:'', periode:'', pengaju:'', kontak:'', code:''};
+var FILES = {};          // dist -> parsed file
+var extra = {};          // 'dist|salesman' -> {target, pay}
+var C = null, AO = [];
+
+var fmt = function(n){ return new Intl.NumberFormat('id-ID').format(Math.round(n||0)); };
+var rp = function(n){ return 'Rp ' + fmt(n); };
+var pct = function(x){ return (x*100).toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1}) + '%'; };
+var rate = function(x){ return String(x).replace('.', ','); };
+var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+var $ = function(id){ return document.getElementById(id); };
+var keyOf = function(dist, name){ return String(dist).toUpperCase().replace(/[^A-Z0-9]/g,'') + '|' + name; };
+var parseNum = function(s){ var v = String(s==null?'':s).replace(/\./g,'').replace(',', '.').replace(/[^\d.]/g,''); var n = parseFloat(v); return isNaN(n)?0:n; };
+
+/* ---------- start ---------- */
+function start(){
+  if (PREVIEW) boot({prize:200000, skuInclude:'4X10,40PCS', skuExclude:'MONEY MOUSE', minDus:1, packRules:'40PCS=40:4', ownThr:500000, titipThr:5000000, titipRate:2.5, coRate:15, entity:'CV Nana Abadi (NANA)', allowOther:true, needCode:false, open:true,
+    entries:[{key:'G:Aldi Jaya Tuban & Lamongan',label:'Aldi Jaya Tuban & Lamongan',members:['Aldi Jaya Tuban','Aldi Jaya Lamongan'],group:true},
+             {key:'G:Pilar, Sejahtera & AJP',label:'Pilar, Sejahtera & AJP',members:['Pilar','Sejahtera','AJP'],group:true},
+             {key:'G:SAJ Bangkalan & Pamekasan',label:'SAJ Bangkalan & Pamekasan',members:['SAJ Bangkalan','SAJ Pamekasan'],group:true}]});
+  else GS.withSuccessHandler(boot).withFailureHandler(function(e){ clearTimeout(window.__bootTimer); loadFail('Gagal memuat pengaturan: ' + (e && e.message || e)); }).getPublicSettings();
+  window.__bootTimer = setTimeout(function(){ if (!S) loadFail('Server tidak merespons. Periksa koneksi lalu muat ulang.'); }, 25000);
+}
+function loadFail(msg){
+  $('app').innerHTML = '<div class="panel center"><h1>Form belum bisa dimuat</h1><p class="sub">'+esc(msg)+'</p><p class="sub" style="font-size:13px">Muat ulang halaman. Bila tetap muncul, kirim pesan ini ke admin.</p></div>';
+}
+function boot(settings){
+  clearTimeout(window.__bootTimer);
+  if (!settings || typeof settings !== 'object') { loadFail('Pengaturan dari server tidak terbaca (cek sheet Pengaturan).'); return; }
+  S = settings;
+  if (!S.open) { $('app').innerHTML = '<div class="panel center"><h1>Form klaim sedang ditutup</h1><p class="sub">Silakan hubungi admin Harum Group.</p></div>'; return; }
+  load(); renderShell();
+}
+function entry(){
+  if (head.entry === '__lain__') return head.distLain.trim() ? {key:'__lain__', label:head.distLain.trim(), members:[head.distLain.trim()], group:false} : null;
+  return S.entries.filter(function(e){ return e.key === head.entry; })[0] || null;
+}
+
+function renderShell(){
+  setTimeout(refreshSubmit, 0);
+  $('app').innerHTML =
+    (PREVIEW ? '<span class="preview-badge">Mode pratinjau — submit tidak dikirim</span>' : '') +
+    '<h1>Form Klaim Kompetisi AO SKU 2000</h1>' +
+    '<p class="sub">Upload data transaksi, sistem menghitung AO SKU 2000 (non Money Mouse) tiap salesman dan menentukan pemenangnya. Insentif ditanggung ' + esc(S.entity) + '.</p>' +
+    '<section class="panel"><h2>Data Klaim</h2><div class="grid">' +
+      '<label class="f"><span>Distributor / Group <span class="req">*</span></span><select data-h="entry"><option value="">— pilih —</option>' +
+        S.entries.map(function(e){ return '<option value="'+esc(e.key)+'">'+esc(e.label)+(e.group?' (group)':'')+'</option>'; }).join('') +
+        (S.allowOther ? '<option value="__lain__">Distributor lain (ketik nama)…</option>' : '') + '</select></label>' +
+      '<label class="f" id="lain-wrap" style="display:none"><span>Nama distributor <span class="req">*</span></span><input data-h="distLain" placeholder="mis. Ananta Tegal"></label>' +
+      '<label class="f"><span>Periode Kompetisi <span class="req">*</span></span><input type="month" data-h="periode"></label>' +
+      field('pengaju','Diajukan oleh',true,'Nama lengkap') + field('kontak','No. HP / WA',false,'08xx') +
+      (S.needCode ? field('code','Kode Akses',true,'dari admin') : '') +
+    '</div></section>' +
+    '<section class="panel"><h2>Mekanisme</h2><div class="rules">' +
+      '<div class="rule-box"><b class="t">Hadiah</b><div class="big-num">'+rp(S.prize)+'</div>untuk <b>1 salesman</b> per distributor (atau per group).</div>' +
+      '<div class="rule-box"><b class="t">Cara menang</b><ul><li>AO SKU 2000 <b>non Money Mouse</b> tertinggi di distributor / group.</li><li>Syarat: AO ≥ <b>target AO SKU 2000</b> salesman tersebut.</li><li>AO sama → nilai penjualan SKU 2000 tertinggi.</li>' +
+        '<li>Group dihitung gabungan: SAJ Bangkalan &amp; Pamekasan · Aldi Jaya Tuban &amp; Lamongan · Pilar, Sejahtera &amp; AJP.</li></ul></div>' +
+      '<div class="rule-box"><b class="t">AO SKU 2000</b><ul><li>Jumlah outlet berbeda yang membeli SKU 2000 minimal <b>'+fmtDus(S.minDus||1)+' karton</b> (total bersih) dalam periode.</li><li>Qty PCS / renceng otomatis dikonversi ke dus.</li><li>SKU dikenali dari nama barang: '+esc(S.skuInclude)+' (kecuali '+esc(S.skuExclude)+').</li></ul></div>' +
+    '</div></section>' +
+    '<section class="panel"><h2>Upload Data Transaksi</h2><div id="slots"></div></section>' +
+    '<section class="panel" id="rank-panel"><h2>Peringkat AO SKU 2000 &amp; Target</h2><div id="rank"></div></section>' +
+    '<section class="panel" id="win-panel"><h2>Pemenang &amp; Rekening</h2><div id="win"></div></section>' +
+    '<div class="actions"><button class="b" id="reset">Kosongkan Form</button></div>' +
+    '<div class="submit-bar"><div id="bar-tot" style="font-weight:700"></div><button class="b primary big" id="submit">Submit Klaim</button></div>';
+  document.querySelectorAll('[data-h]').forEach(function(inp){
+    inp.value = head[inp.dataset.h] || '';
+    var ev = inp.tagName === 'SELECT' ? 'change' : 'input';
+    inp.addEventListener(ev, function(){
+      head[inp.dataset.h] = inp.value; inp.classList.remove('err');
+      if (inp.dataset.h === 'entry' || inp.dataset.h === 'distLain') { if (inp.dataset.h === 'entry') FILES = {}; renderSlots(); recompute(); }
+      else if (inp.dataset.h === 'periode') { renderSlots(); recompute(); }
+      save();
+    });
+  });
+  $('reset').onclick = function(){
+    var b = $('reset');
+    if (b.dataset.confirm) { FILES = {}; extra = {}; for (var k in head) if (k !== 'code') head[k] = ''; save(); renderShell(); }
+    else { b.dataset.confirm = 1; b.textContent = 'Klik lagi untuk konfirmasi'; setTimeout(function(){ delete b.dataset.confirm; b.textContent = 'Kosongkan Form'; }, 3000); }
+  };
+  $('submit').onclick = confirmSubmit;
+  renderSlots(); recompute();
+}
+function field(key, label, req, ph){ return '<label class="f"><span>'+label+(req?' <span class="req">*</span>':'')+'</span><input data-h="'+key+'" placeholder="'+ph+'"></label>'; }
+
+/* ---------- upload per distributor ---------- */
+function renderSlots(){
+  $('lain-wrap').style.display = head.entry === '__lain__' ? '' : 'none';
+  var e = entry(), el = $('slots');
+  if (!e) { el.innerHTML = '<p class="sub" style="margin:0">Pilih distributor / group terlebih dahulu.</p>'; return; }
+  el.innerHTML = (e.members.length > 1 ? '<p class="sub" style="margin:0 0 10px">Group <b>'+esc(e.label)+'</b> dihitung gabungan — upload data transaksi <b>setiap</b> distributor anggota.</p>' : '') +
+    '<div class="slots">' + e.members.map(function(d, i){
+      var f = FILES[d], warn = '';
+      if (f && head.periode) {
+        if (f.dataMin > head.periode + '-07') warn = 'File mulai '+fmtDate(f.dataMin)+' — belum mencakup awal '+periodeLabel(head.periode)+'.';
+        else if (f.dataMax < head.periode + '-24') warn = 'File sampai '+fmtDate(f.dataMax)+' — belum mencakup akhir '+periodeLabel(head.periode)+'.';
+      }
+      return '<div class="slot'+(f?' done':'')+'" data-slot="'+i+'"><h4>'+(f?'✓ ':'')+esc(d)+'</h4>' +
+        '<div class="drop" data-drop="'+i+'"><b>'+(f?'Ganti file':'Klik / tarik file ke sini')+'</b><div class="sub" style="margin:2px 0 0;font-size:12px">.xlsx / .xls / .csv export faktur</div></div>' +
+        '<input type="file" accept=".xlsx,.xls,.csv" data-file="'+i+'" style="display:none">' +
+        '<div class="meta" data-meta="'+i+'">'+(f ? esc(f.fileName)+'<br>'+fmt(f.rowsRead)+' baris · '+fmtDate(f.dataMin)+' – '+fmtDate(f.dataMax)+'<br>'+fmt(f.tx.length)+' baris SKU 2000 non MM'+(unitSummary(f)?'<br>'+unitSummary(f):'') : 'Kolom: Tanggal, Kode Pelanggan, Nama Salesman, Nama Barang, Qty (Netto opsional).')+'</div>' +
+        (warn ? '<div class="alert bad" style="margin-top:8px">'+esc(warn)+'</div>' : '') + (f ? unitAlerts(f) : '') + '</div>';
+    }).join('') + '</div>';
+  e.members.forEach(function(d, i){
+    var drop = el.querySelector('[data-drop="'+i+'"]'), inp = el.querySelector('[data-file="'+i+'"]');
+    drop.onclick = function(){ inp.click(); };
+    drop.ondragover = function(ev){ ev.preventDefault(); drop.classList.add('hover'); };
+    drop.ondragleave = function(){ drop.classList.remove('hover'); };
+    drop.ondrop = function(ev){ ev.preventDefault(); drop.classList.remove('hover'); if (ev.dataTransfer.files[0]) readFile(d, i, ev.dataTransfer.files[0]); };
+    inp.onchange = function(){ if (inp.files[0]) readFile(d, i, inp.files[0]); };
+  });
+}
+function loadXLSX(cb, fail){
+  if (window.XLSX) return cb();
+  var sc = document.createElement('script');
+  sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  sc.onload = cb; sc.onerror = fail;
+  document.head.appendChild(sc);
+}
+function readFile(dist, i, f){
+  var meta = document.querySelector('[data-meta="'+i+'"]');
+  if (f.size > 10 * 1024 * 1024) { meta.innerHTML = '<span style="color:var(--bad)">File terlalu besar (maks. 10 MB). Export cukup periode kompetisi.</span>'; return; }
+  meta.textContent = 'Membaca ' + f.name + '…';
+  loadXLSX(function(){
+    var fr = new FileReader();
+    fr.onload = function(){
+      setTimeout(function(){
+        try {
+          var buf = new Uint8Array(fr.result);
+          var p = parseWorkbook(XLSX.read(buf, {type:'array', cellDates:false, dense:true}));
+          var bin = ''; for (var j = 0; j < buf.length; j += 0x8000) bin += String.fromCharCode.apply(null, buf.subarray(j, j + 0x8000));
+          p.fileName = f.name; p.b64 = btoa(bin);
+          FILES[dist] = p;
+          var all = entry().members.map(function(d){ return FILES[d]; });
+          if (all.every(Boolean)) {
+            var lastM = all.map(function(x){ return x.dataMax.slice(0,7); }).sort()[0];
+            if (!head.periode || head.periode > lastM) head.periode = lastM;
+            document.querySelector('[data-h="periode"]').value = head.periode;
+          }
+          renderSlots(); recompute(); save();
+        } catch (e) { meta.innerHTML = '<span style="color:var(--bad)">'+esc(e.message || e)+'</span>'; }
+      }, 30);
+    };
+    fr.readAsArrayBuffer(f);
+  }, function(){ meta.innerHTML = '<span style="color:var(--bad)">Gagal memuat pembaca Excel. Periksa koneksi lalu coba lagi.</span>'; });
+}
+function unitAlerts(f){
+  var h = '';
+  if (f.noUnit) h += '<div class="alert info">Kolom satuan tidak ditemukan — semua qty dianggap DUS.</div>';
+  var unk = Object.keys(f.unknown || {});
+  if (unk.length) h += '<div class="alert warn">'+unk.map(function(u){ return fmt(f.unknown[u])+' baris satuan "'+esc(u)+'"'; }).join(', ')+' tidak bisa dikonversi ke dus dan tidak dihitung. Hubungi admin untuk menambah aturan konversi.</div>';
+  return h;
+}
+function unitSummary(f){ var u = Object.keys(f.units || {}); return u.length ? 'Satuan: ' + u.map(function(x){ return esc(x) + ' ' + fmt(f.units[x]); }).join(' · ') : ''; }
+var COLS = {
+  d: ['tanggal','tgl','tanggal faktur','tgl faktur','tanggal nota','tgl nota','date','tanggal transaksi'],
+  k: ['kode pelanggan','kode outlet','kode customer','kode toko','kd pelanggan','kode cust','customer code','id pelanggan'],
+  s: ['nama salesman','salesman','nama sales','sales','kode salesman'],
+  b: ['nama barang','nama produk','produk','nama item','item','deskripsi barang','barang'],
+  kb: ['kode','kode barang','kode produk','kode item','sku'],
+  q: ['qty','kuantitas','quantity','jumlah qty','jml qty'],
+  u: ['sat','satuan','unit','uom','satuan jual','sat jual','satuan qty'],
+  v: ['netto','total netto','d p p','dpp','jumlah rp','nilai','subtotal','total']
+};
+function normH(h){ return String(h==null?'':h).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); }
+function mapHeader(row){
+  var H = row.map(normH), m = {};
+  Object.keys(COLS).forEach(function(key){ var al = COLS[key].map(normH), idx = -1; for (var a = 0; a < al.length && idx < 0; a++) idx = H.indexOf(al[a]); m[key] = idx; });
+  return m;
+}
+function cellDate(v){
+  if (typeof v === 'number' && v > 20000 && v < 80000) { var d = new Date(Math.round((v - 25569) * 864e5)); return d.getUTCFullYear()+'-'+pad2(d.getUTCMonth()+1)+'-'+pad2(d.getUTCDate()); }
+  return toISO(v);
+}
+function parseWorkbook(wb){
+  var tx = [], dataMin = '', dataMax = '', rowsRead = 0, found = false, noSales = false, units = {}, unknown = {}, noUnit = false;
+  wb.SheetNames.forEach(function(name){
+    var aoa = XLSX.utils.sheet_to_json(wb.Sheets[name], {header:1, raw:true, defval:''});
+    for (var h = 0; h < Math.min(aoa.length, 15); h++) {
+      var m = mapHeader(aoa[h]);
+      if (m.d < 0 || m.k < 0 || m.b < 0 || m.q < 0) continue;
+      found = true; if (m.s < 0) noSales = true; if (m.u < 0) noUnit = true;
+      for (var i = h + 1; i < aoa.length; i++) {
+        var r = aoa[i], d = cellDate(r[m.d]), k = normKode(r[m.k]), q = Number(String(r[m.q]).replace(',', '.'));
+        if (!d || !k || isNaN(q)) continue;
+        rowsRead++;
+        if (!dataMin || d < dataMin) dataMin = d;
+        if (!dataMax || d > dataMax) dataMax = d;
+        var b = String(r[m.b]).trim(), kb = m.kb >= 0 ? String(r[m.kb]).trim() : '';
+        if (isSku2000(b, kb, S)) {
+          var u = m.u >= 0 ? String(r[m.u]).trim().toUpperCase() : '', dq = toDus(q, u, b, kb, S);
+          units[u || 'DUS'] = (units[u || 'DUS'] || 0) + 1;
+          if (dq === null) { unknown[u] = (unknown[u] || 0) + 1; continue; }
+          tx.push({d:d, k:k, s:String(m.s >= 0 ? r[m.s] : '').trim(), q:dq, qr:q, u:u, v:m.v >= 0 ? (Number(r[m.v]) || 0) : 0, b:b, kb:kb});
+        }
+      }
+      break;
+    }
+  });
+  if (!found) throw new Error('Kolom wajib tidak ditemukan. Baris judul harus berisi: Tanggal, Kode Pelanggan, Nama Barang, Qty, Nama Salesman.');
+  if (noSales) throw new Error('Kolom Nama Salesman tidak ditemukan.');
+  if (!rowsRead) throw new Error('Tidak ada baris transaksi yang terbaca.');
+  return {tx:tx, dataMin:dataMin, dataMax:dataMax, rowsRead:rowsRead, units:units, unknown:unknown, noUnit:noUnit};
+}
+
+/* ---------- peringkat & pemenang ---------- */
+function recompute(){
+  var e = entry(), ready = e && head.periode && e.members.every(function(d){ return FILES[d]; });
+  if (!ready) {
+    C = null; AO = [];
+    $('rank').innerHTML = '<p class="sub" style="margin:0">Peringkat muncul setelah semua data transaksi di-upload dan periode dipilih.</p>';
+    $('win').innerHTML = '<p class="sub" style="margin:0">—</p>';
+    $('bar-tot').textContent = '';
+    return;
+  }
+  AO = computeAo(e.members.map(function(d){ return {dist:d, tx:FILES[d].tx}; }), head.periode, S);
+  renderRank();
+}
+function rowsInput(){
+  return AO.map(function(a){ var x = extra[keyOf(a.dist, a.name)] || {}; return {dist:a.dist, name:a.name, ao:a.ao, value:a.value, target:x.target || 0, pay:x.pay || {m:'own', bank:'', cab:'', an:''}}; });
+}
+function renderRank(){
+  C = computeKomp({rows: rowsInput()}, S);
+  var multi = entry().members.length > 1;
+  if (!C.rows.length) { $('rank').innerHTML = '<div class="alert warn">Tidak ada transaksi SKU 2000 non Money Mouse di periode '+periodeLabel(head.periode)+'.</div>'; $('win').innerHTML=''; $('bar-tot').textContent=''; return; }
+  $('rank').innerHTML = '<p class="sub" style="margin:0 0 10px">Isi <b>target AO SKU 2000</b> tiap salesman sesuai target yang ditetapkan. Target kosong = tidak ikut kompetisi. Target akan dicek admin.</p>' +
+    '<div class="tw"><table class="rk"><thead><tr><th class="c">Rank</th><th class="l">Salesman</th>'+(multi?'<th class="l">Distributor</th>':'')+'<th>AO SKU 2000</th><th>Nilai SKU 2000</th><th>Target AO</th><th>Pencapaian</th><th class="l">Status</th></tr></thead><tbody>' +
+    C.order.map(function(r){
+      var x = extra[keyOf(r.dist, r.name)] || {};
+      return '<tr class="'+(r.winner?'win':'')+'" data-key="'+esc(keyOf(r.dist, r.name))+'"><td class="c"><span class="rank">'+r.rank+'</span></td><td class="l">'+esc(r.name)+'</td>'+(multi?'<td class="l">'+esc(r.dist)+'</td>':'') +
+        '<td class="num">'+fmt(r.ao)+'</td><td class="num">'+fmt(r.value)+'</td><td><input class="num" data-target value="'+(x.target?fmt(x.target):'')+'" inputmode="numeric" placeholder="target"></td>' +
+        '<td class="num" data-ach>'+(r.target?pct(r.ach):'-')+'</td><td class="l" data-st>'+status(r)+'</td></tr>';
+    }).join('') + '</tbody></table></div>';
+  $('rank').querySelectorAll('[data-target]').forEach(function(inp){
+    inp.addEventListener('input', function(){ var k = inp.closest('tr').dataset.key; extra[k] = extra[k] || {}; extra[k].target = parseNum(inp.value); refresh(); save(); });
+    inp.addEventListener('blur', function(){ var n = parseNum(inp.value); inp.value = n ? fmt(n) : ''; });
+  });
+  renderWin();
+}
+function status(r){
+  if (r.winner) return '<span class="badge ok">🏆 Pemenang</span>' + (r.tieNote ? ' <span style="font-size:12px;color:var(--warn)">'+esc(r.tieNote)+'</span>' : '');
+  if (r.eligible) return '<span class="badge na">Memenuhi target</span>';
+  return '<span style="color:var(--muted);font-size:12.5px">'+esc(r.why)+'</span>';
+}
+function refresh(){
+  C = computeKomp({rows: rowsInput()}, S);
+  document.querySelectorAll('#rank tr[data-key]').forEach(function(tr){
+    var r = C.rows.filter(function(x){ return keyOf(x.dist, x.name) === tr.dataset.key; })[0];
+    tr.classList.toggle('win', r.winner);
+    tr.querySelector('[data-ach]').textContent = r.target ? pct(r.ach) : '-';
+    tr.querySelector('[data-st]').innerHTML = status(r);
+  });
+  renderWin();
+}
+function renderWin(){
+  var w = C.winner, el = $('win');
+  if (!w) {
+    el.innerHTML = '<div class="alert warn">Belum ada salesman yang mencapai target AO SKU 2000. Klaim tetap bisa dikirim sebagai laporan, tanpa insentif.</div>';
+    $('bar-tot').innerHTML = C.rows.length + ' salesman · belum ada pemenang';
+    return;
+  }
+  var k = keyOf(w.dist, w.name), x = extra[k] = extra[k] || {}, pay = x.pay = x.pay || {m:'own', bank:'', cab:'', an:''}, p = C.pay.list[0];
+  el.innerHTML = '<div class="winner"><div class="wcard"><div class="sub2">Pemenang '+(entry().members.length>1?'group':'distributor')+'</div><div class="nm">🏆 '+esc(w.name)+'</div>' +
+      '<div class="sub2">'+esc(w.dist)+' · AO '+fmt(w.ao)+' dari target '+fmt(w.target)+' ('+pct(w.ach)+')</div>' +
+      '<div style="margin-top:10px;font-size:13px">Insentif <b class="num">'+rp(p.nom)+'</b>'+(p.tax?' · pajak <span class="num">'+fmt(p.tax)+'</span>':'')+' · diterima <b class="num">'+rp(p.net)+'</b></div></div>' +
+    '<div class="paybox2">' +
+      '<label class="f">Metode pembayaran<select data-pay="m">' + Object.keys(METHODS).map(function(m){ return '<option value="'+m+'"'+(pay.m===m?' selected':'')+'>'+METHODS[m]+'</option>'; }).join('') + '</select></label>' +
+      '<label class="f">Bank / No. Rekening<input data-pay="bank" value="'+esc(pay.bank)+'" placeholder="mis. BCA 1234567890"></label>' +
+      '<label class="f">Cabang<input data-pay="cab" value="'+esc(pay.cab)+'" placeholder="Cabang bank"></label>' +
+      '<label class="f">Atas nama<input data-pay="an" value="'+esc(pay.an)+'" placeholder="Nama pemilik rekening"></label>' +
+    '</div></div>';
+  el.querySelectorAll('[data-pay]').forEach(function(inp){
+    inp.addEventListener(inp.tagName === 'SELECT' ? 'change' : 'input', function(){ pay[inp.dataset.pay] = inp.value; if (inp.tagName === 'SELECT') { C = computeKomp({rows: rowsInput()}, S); renderWin(); } save(); });
+  });
+  $('bar-tot').innerHTML = '🏆 ' + esc(w.name) + ' · AO ' + fmt(w.ao) + ' · diterima <span class="num">' + rp(p.net) + '</span>';
+}
+
+/* ---------- submit ---------- */
+function confirmSubmit(){
+  var bad = [];
+  ['entry','periode','pengaju'].concat(S.needCode?['code']:[]).concat(head.entry==='__lain__'?['distLain']:[]).forEach(function(k){
+    if (!String(head[k]||'').trim()) { bad.push(k); var el = document.querySelector('[data-h="'+k+'"]'); if (el) el.classList.add('err'); }
+  });
+  if (bad.length) return msgModal('Data belum lengkap', 'Lengkapi kolom bertanda merah.');
+  var e = entry();
+  var miss = e.members.filter(function(d){ return !FILES[d]; });
+  if (miss.length) return msgModal('Data transaksi belum lengkap', 'Upload data transaksi: ' + miss.join(', ') + '.');
+  var cov = e.members.filter(function(d){ var f = FILES[d]; return f.dataMin > head.periode + '-07' || f.dataMax < head.periode + '-24'; });
+  if (cov.length) return msgModal('Data belum mencakup periode', 'File ' + cov.join(', ') + ' belum mencakup seluruh ' + periodeLabel(head.periode) + '.');
+  if (!C || !C.rows.length) return msgModal('Tidak ada data', 'Tidak ada transaksi SKU 2000 di periode ini.');
+  if (!C.rows.some(function(r){ return r.target > 0; })) return msgModal('Target belum diisi', 'Isi target AO SKU 2000 minimal untuk salesman yang ikut kompetisi.');
+  var w = C.winner;
+  $('modal-box').innerHTML = '<h3>Kirim klaim Kompetisi AO 2000?</h3><p class="sub" style="margin:0">'+esc(e.label)+' · '+periodeLabel(head.periode)+'</p>' +
+    '<table><tr><td>Salesman dihitung</td><td class="num">'+C.rows.length+'</td></tr><tr><td>Memenuhi target</td><td class="num">'+C.eligibleCount+'</td></tr>' +
+    '<tr><td>Pemenang</td><td>'+(w ? esc(w.name)+' (AO '+fmt(w.ao)+')' : '—')+'</td></tr><tr><td>Insentif diterima</td><td class="num">'+rp(C.totalNet)+'</td></tr></table>' +
+    '<p class="sub" style="font-size:13px">File transaksi ikut dikirim sebagai bukti. Perhitungan final dicek ulang oleh sistem dan admin.</p>' +
+    '<div id="m-err"></div><div class="row"><button class="b" id="m-cancel">Periksa lagi</button><button class="b primary" id="m-ok">Ya, kirim klaim</button></div>';
+  $('modal').classList.add('show');
+  $('m-cancel').onclick = closeModal; $('m-ok').onclick = doSubmit;
+}
+function call(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ GS.withSuccessHandler(res).withFailureHandler(rej)[fn].apply(null, args); }); }
+function doSubmit(){
+  var btn = $('m-ok'), cancel = $('m-cancel'), e = entry();
+  btn.disabled = true; cancel.disabled = true;
+  var fail = function(err){ btn.disabled = false; cancel.disabled = false; btn.textContent = 'Coba kirim lagi'; $('m-err').innerHTML = '<div class="alert bad">'+esc(err && err.message || err)+'</div>'; };
+  var members = e.members.map(function(d){ var f = FILES[d]; return {dist:d, fileName:f.fileName, dataMin:f.dataMin, dataMax:f.dataMax, rowsRead:f.rowsRead,
+    tx:f.tx.filter(function(t){ return t.d.slice(0,7) === head.periode; })}; });
+  var rows = rowsInput().map(function(r){ return {dist:r.dist, name:r.name, target:r.target, pay:r.pay}; });
+  var payload = {entry:head.entry, distLain:head.distLain, periode:head.periode, pengaju:head.pengaju, kontak:head.kontak, code:head.code, members:members, rows:rows};
+  if (PREVIEW) { btn.textContent = 'Mengirim…'; setTimeout(function(){ closeModal(); showDone({id:'AO-PRATINJAU', winner:C.winner, eligible:C.eligibleCount, totalNet:C.totalNet}); }, 600); return; }
+  var i = 0;
+  (function next(){
+    if (i < members.length) {
+      btn.textContent = 'Upload file ' + (i + 1) + '/' + members.length + '…';
+      return call('uploadSource', FILES[members[i].dist].fileName, FILES[members[i].dist].b64)
+        .then(function(id){ members[i].fileId = id; i++; next(); })
+        .catch(function(){ members[i].fileId = ''; i++; next(); });   // file bukti gagal tersimpan tidak membatalkan klaim
+    }
+    btn.textContent = 'Mengirim klaim…';
+    call('submitKlaim', payload).then(function(res){ closeModal(); showDone(res); }).catch(fail);
+  })();
+}
+function showDone(res){
+  var lbl = entry().label, per = periodeLabel(head.periode);
+  FILES = {}; extra = {}; for (var k in head) if (k !== 'code') head[k] = ''; save();
+  $('app').innerHTML = '<div class="panel center"><div style="font-size:44px">✓</div><h1>Klaim berhasil dikirim</h1>' +
+    '<p class="sub">Simpan nomor klaim berikut untuk konfirmasi ke admin.</p><div class="done-id">'+esc(res.id)+'</div><p>'+esc(lbl)+' · '+esc(per)+'</p>' +
+    '<table class="sum" style="max-width:440px;margin:16px auto"><tr><td class="l">Pemenang</td><td>'+(res.winner ? esc(res.winner.name)+' · AO '+fmt(res.winner.ao) : '—')+'</td></tr>' +
+    '<tr><td class="l"><b>Estimasi diterima</b></td><td class="num"><b>'+rp(res.totalNet)+'</b></td></tr></table>' +
+    '<p class="sub" style="font-size:13px">Nilai final mengikuti hasil verifikasi admin.</p><button class="b primary" id="again">Ajukan klaim lain</button></div>';
+  $('again').onclick = function(){ renderShell(); };
+  window.scrollTo(0,0);
+}
+function msgModal(t, m){ $('modal-box').innerHTML = '<h3>'+esc(t)+'</h3><p>'+esc(m)+'</p><div class="row"><button class="b primary" id="m-cancel">OK</button></div>'; $('modal').classList.add('show'); $('m-cancel').onclick = closeModal; }
+function closeModal(){ $('modal').classList.remove('show'); }
+
+/* ---------- draft lokal (tanpa file) ---------- */
+function save(){ setTimeout(refreshSubmit, 0); try { localStorage.setItem(STORE, JSON.stringify({head:head, extra:extra})); } catch(e){} }
+function load(){ try { var s = JSON.parse(localStorage.getItem(STORE)||'null'); if (s) { if (s.head) for (var k in head) head[k] = s.head[k] || ''; if (s.extra) extra = s.extra; } } catch(e){} }
+
+
+/* ---------- tombol submit aktif hanya bila data wajib sudah lengkap ---------- */
+function refreshSubmit(){
+  var btn = document.getElementById('submit');
+  if (!btn || !S) return;
+  var miss = [];
+  try { miss = missing(); } catch (e) { miss = []; }
+  btn.disabled = miss.length > 0;
+  btn.title = miss.length ? 'Lengkapi: ' + miss.join('; ') : '';
+  var hint = document.getElementById('submit-hint');
+  if (!hint) {
+    hint = document.createElement('div');
+    hint.id = 'submit-hint';
+    hint.style.cssText = 'flex:1;min-width:220px;text-align:right;font-size:12.5px;font-weight:600;color:var(--warn)';
+    btn.parentNode.insertBefore(hint, btn);
+  }
+  hint.textContent = miss.length ? 'Lengkapi dulu: ' + miss.slice(0, 3).join('; ') + (miss.length > 3 ? ' (+' + (miss.length - 3) + ' lainnya)' : '') : '';
+}
+function blankStr(x){ return !String(x == null ? '' : x).trim(); }
+
+function missing(){
+  var m = [], e = entry();
+  if (!head.entry) m.push('distributor / group');
+  else if (head.entry === '__lain__' && blankStr(head.distLain)) m.push('nama distributor');
+  if (blankStr(head.periode)) m.push('periode');
+  if (blankStr(head.pengaju)) m.push('nama pengaju');
+  if (S.needCode && blankStr(head.code)) m.push('kode akses');
+  if (e) {
+    var miss = e.members.filter(function(d){ return !FILES[d]; });
+    if (miss.length) m.push('file transaksi ' + miss.join(', '));
+    else if (head.periode) {
+      var cov = e.members.filter(function(d){ var f = FILES[d]; return f.dataMin > head.periode + '-07' || f.dataMax < head.periode + '-24'; });
+      if (cov.length) m.push('data periode lengkap (' + cov.join(', ') + ')');
+      if (!C || !C.rows.length) m.push('transaksi SKU 2000 di periode');
+      else if (!C.rows.some(function(r){ return r.target > 0; })) m.push('target AO SKU 2000 salesman');
+    }
+  }
+  return m;
+}
+
+start();
+</script>
+</body>
+</html>

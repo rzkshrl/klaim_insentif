@@ -1,0 +1,12 @@
+{
+  "name": "klaim-insentif-portal",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Portal & form klaim insentif distributor Harum Group (frontend Vercel, backend Google Apps Script)",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs && npx --yes serve www"
+  },
+  "engines": { "node": ">=18" }
+}

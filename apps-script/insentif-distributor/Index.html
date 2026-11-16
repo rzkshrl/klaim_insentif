@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<base target="_top">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Form Klaim Insentif Distributor</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f4f5f2;--card:#fff;--ink:#1b1f1d;--muted:#6b726e;--line:#e2e5e0;--brand:#0f5c4a;--brand-2:#e8f2ee;
+    --ok:#1f7a4d;--ok-bg:#e6f4ec;--warn:#a35b00;--warn-bg:#fdf1de;--bad:#b3261e;--bad-bg:#fbe9e7;--accent:#c2410c}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:14px;line-height:1.45}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 16px 90px}
+  h1{font-size:24px;margin:0 0 4px;letter-spacing:-.02em}
+  .sub{color:var(--muted);margin:0 0 18px}
+  .num{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+  .panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  label.f{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);font-weight:600}
+  .req{color:var(--bad)}
+  input,select,textarea{font:inherit;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:#fbfcfa;width:100%}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--brand);outline-offset:-1px;background:#fff}
+  input.err,select.err{border-color:var(--bad);background:var(--bad-bg)}
+  .rules{display:grid;grid-template-columns:1fr 1.4fr 1.2fr;gap:12px}
+  .rule-box{background:var(--brand-2);border-radius:10px;padding:12px 14px;font-size:13px}
+  .rule-box b.t{display:block;margin-bottom:6px;color:var(--brand)}
+  .rule-box ul{margin:0;padding-left:18px} .rule-box li{margin:2px 0}
+  .big-num{font-size:26px;font-weight:800;color:var(--brand)}
+  .sm{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+  .sm-head{display:flex;gap:12px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .sm-no{width:30px;height:30px;border-radius:8px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+  .sm-name{flex:1;min-width:200px} .sm-name input{font-weight:700;font-size:15px}
+  .badge{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;white-space:nowrap}
+  .badge.ok{background:var(--ok-bg);color:var(--ok)} .badge.bad{background:var(--bad-bg);color:var(--bad)} .badge.na{background:#eef0ec;color:var(--muted)}
+  .btn-x{border:none;background:none;color:var(--muted);cursor:pointer;font-size:20px;padding:2px 8px;border-radius:8px;line-height:1}
+  .btn-x:hover{background:var(--bad-bg);color:var(--bad)}
+  .prog{padding:10px 16px;display:flex;align-items:center;gap:12px;font-size:13px;border-bottom:1px solid var(--line);background:#fcfcfb;flex-wrap:wrap}
+  .bar{flex:1;min-width:160px;height:8px;background:#eceee9;border-radius:99px;overflow:hidden;position:relative}
+  .bar i{display:block;height:100%;background:var(--warn);border-radius:99px;transition:width .2s}
+  .bar.ok i{background:var(--ok)}
+  .tw{overflow-x:auto}
+  table.ol{width:100%;border-collapse:collapse;min-width:1020px}
+  table.ol th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;text-align:left;padding:9px 6px 6px;white-space:nowrap;background:#fafbf9}
+  table.ol td{padding:4px 6px;border-top:1px solid #f0f2ee;vertical-align:middle}
+  table.ol td.n{color:var(--muted);text-align:center;width:34px;font-size:12px}
+  table.ol input,table.ol select{padding:6px 8px;font-size:13px}
+  table.ol td.st{width:240px;font-size:12px}
+  table.ol tr.bad td{background:#fff8f7}
+  .st .okk{color:var(--ok);font-weight:700} .st .no{color:var(--bad);font-weight:600}
+  .st .empty{color:#b6bbb7}
+  .tools{display:flex;gap:8px;flex-wrap:wrap;padding:10px 16px;border-top:1px solid var(--line)}
+  .paybox{display:grid;grid-template-columns:1.1fr 1.3fr 1fr 1.3fr;gap:10px;padding:12px 16px;border-top:1px solid var(--line);background:#fcfcfb}
+  .sm-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;background:#fafbf9;border-top:1px solid var(--line);flex-wrap:wrap}
+  .payout{text-align:right} .payout small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+  .payout .v{font-size:20px;font-weight:700}
+  button.b{font:inherit;font-weight:700;border-radius:10px;padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:13px}
+  button.b.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  button.b.big{padding:14px 22px;font-size:15px}
+  button.b.small{padding:7px 11px;font-size:12.5px}
+  button.b:disabled{opacity:.55;cursor:not-allowed}
+  button.b:hover:not(:disabled){filter:brightness(.96)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 18px}
+  table.sum{width:100%;border-collapse:collapse;font-size:13px}
+  table.sum th{background:#f6f7f4;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.sum td{padding:7px 10px;text-align:right;border-bottom:1px solid #f0f2ee;white-space:nowrap}
+  table.sum .l{text-align:left} table.sum .c{text-align:center}
+  table.sum tfoot td{font-weight:800;border-top:2px solid var(--ink);border-bottom:none;background:#fafbf9}
+  .alert{font-size:13px;font-weight:600;padding:10px 12px;border-radius:9px;margin-top:10px}
+  .alert.warn{background:var(--warn-bg);color:var(--warn)} .alert.info{background:var(--brand-2);color:var(--brand)} .alert.bad{background:var(--bad-bg);color:var(--bad)}
+  .submit-bar{position:sticky;bottom:0;background:rgba(244,245,242,.95);backdrop-filter:blur(6px);border-top:1px solid var(--line);padding:12px 0;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .modal{position:fixed;inset:0;background:rgba(20,24,22,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+  .modal.show{display:flex}
+  .modal .box{background:#fff;border-radius:16px;max-width:640px;width:100%;padding:22px;max-height:92vh;overflow:auto}
+  .modal h3{margin:0 0 8px;font-size:18px}
+  .modal table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  .modal td{padding:6px 0;border-bottom:1px solid #f0f2ee} .modal td:last-child{text-align:right;font-weight:700}
+  .modal .row{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+  .modal textarea{height:220px;font-family:"JetBrains Mono",monospace;font-size:12px;white-space:pre}
+  code.fmt{display:block;background:#f6f7f4;border-radius:8px;padding:8px 10px;font-size:12px;margin:8px 0;overflow-x:auto;white-space:nowrap}
+  .center{text-align:center;padding:60px 20px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;font:inherit;font-weight:700;font-size:13.5px;text-align:left}
+  .tab small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+  .tab.on{border-color:var(--brand);background:var(--brand-2);color:var(--brand)}
+  .drop{border:2px dashed #c9cec7;border-radius:12px;padding:22px;text-align:center;background:#fbfcfa;cursor:pointer}
+  .drop.hover{border-color:var(--brand);background:var(--brand-2)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+  .stat{background:#f6f7f4;border-radius:10px;padding:10px 12px} .stat b{display:block;font-size:18px}
+  .stat span{font-size:12px;color:var(--muted)}
+  details.ex{margin-top:10px;font-size:13px} details.ex summary{cursor:pointer;font-weight:700;color:var(--muted)}
+  details.ex table{width:100%;border-collapse:collapse;margin-top:6px} details.ex td{padding:4px 6px;border-top:1px solid #f0f2ee}
+  table.ol td.ro{font-size:13px;padding:7px 6px}
+  .src-auto{font-size:11px;font-weight:700;color:#2848a8;background:#e7eefc;padding:2px 7px;border-radius:6px}
+  .done-id{font-size:28px;font-weight:800;color:var(--brand);margin:8px 0}
+  .loading{color:var(--muted);text-align:center;padding:80px 0}
+  .preview-badge{display:inline-block;background:var(--warn-bg);color:var(--warn);font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;margin-bottom:10px}
+  @media (max-width:900px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr 1fr}.rules{grid-template-columns:1fr}.paybox{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.grid,.paybox{grid-template-columns:1fr}}
+</style>
+<style>.tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;letter-spacing:.04em}.tag.shu{background:#e9effb;color:#1d4ea3}.tag.nana{background:#f5eaf6;color:#8a3d91}</style>
+<style>
+  table.mk{width:100%;border-collapse:collapse;min-width:760px}
+  table.mk th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;text-align:right;padding:10px 10px 6px;white-space:nowrap}
+  table.mk th:first-child{text-align:left} table.mk th.shu{color:#1d4ea3} table.mk th.nana{color:#8a3d91}
+  table.mk td{padding:6px 10px;border-top:1px solid #f0f2ee;text-align:right;vertical-align:middle}
+  table.mk td:first-child{text-align:left;font-weight:600;min-width:150px}
+  table.mk td.in{width:160px}
+  table.mk input{text-align:right}
+  .unit{display:block;font-size:11px;color:var(--muted);font-weight:500}
+  .pill{display:inline-block;min-width:62px;text-align:center;padding:3px 8px;border-radius:7px;font-weight:700;font-size:12.5px}
+  .pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.warn{background:var(--warn-bg);color:var(--warn)} .pill.bad{background:var(--bad-bg);color:var(--bad)} .pill.na{background:#f0f1ef;color:#9aa09c}
+  .res{display:grid;grid-template-columns:1.1fr 1fr;gap:16px}
+  table.kp{width:100%;border-collapse:collapse;font-size:13.5px}
+  table.kp th{background:#f6f7f4;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:8px 10px;text-align:right;border-bottom:1px solid var(--line)}
+  table.kp td{padding:8px 10px;text-align:right;border-bottom:1px solid #f0f2ee}
+  table.kp .l{text-align:left}
+  table.kp tfoot td{font-weight:800;border-top:2px solid var(--ink);border-bottom:none}
+  .calc{background:#fafbf9;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px}
+  .calc .ln{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dashed #e4e7e2}
+  .calc .ln:last-child{border-bottom:none}
+  .calc .tot{font-size:18px;font-weight:800;color:var(--brand);padding-top:10px}
+  .calc small{color:var(--muted)}
+  .rc{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .rcard{border:1px solid var(--line);border-radius:12px;padding:14px}
+  .rcard h4{margin:0 0 10px;font-size:14px;display:flex;justify-content:space-between}
+  .rcard .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .rcard .amt{margin-top:10px;font-size:13px;color:var(--muted)}
+  .gate{font-weight:700;padding:10px 12px;border-radius:9px;margin-bottom:12px;font-size:13.5px}
+  .gate.ok{background:var(--ok-bg);color:var(--ok)} .gate.bad{background:var(--bad-bg);color:var(--bad)}
+  @media (max-width:860px){.res,.rc,.rcard .g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap"><div id="app"><div class="loading">Memuat form…</div></div></div>
+<div class="modal" id="modal"><div class="box" id="modal-box"></div></div>
+
+<script>
+/* ===== LOGIKA INSENTIF DISTRIBUTOR PER KUARTAL (dipakai sama persis di server & form) ===== */
+var METHODS = {own:'Rekening sendiri', titip:'Titip 1 rekening', co:'Rekening perusahaan'};
+var FACTORIES = ['SHU', 'NANA'];
+var QMONTHS = {1:'Jan–Mar', 2:'Apr–Jun', 3:'Jul–Sep', 4:'Okt–Des'};
+var MKPI = [
+  {key:'so',   label:'Sell Out',   unit:'Rp'},
+  {key:'si',   label:'Sell In',    unit:'Rp'},
+  {key:'ao2k', label:'AO SKU 2000', unit:'Outlet'},
+  {key:'aogc', label:'AO GC',      unit:'Outlet'}
+];
+function quarterLabel(q) { var m = /^(\d{4})-Q([1-4])$/.exec(q || ''); return m ? 'Q' + m[2] + ' ' + m[1] + ' (' + QMONTHS[+m[2]] + ')' : String(q || ''); }
+
+/**
+ * input: {members:[{dist, so:{t,s,n}, si:{t,s,n}, ao2k:{t,a}, aogc:{t,a}}], recipients:[{role, name, pay}]}
+ *   so.s / so.n = actual sell out SHU / NANA; si.s / si.n = actual sell in SHU / NANA
+ * Pembebanan: KPI Sell Out & bonus dibagi sesuai kontribusi actual sell out SHU/NANA; KPI AO 2000 → NANA; KPI AO GC → SHU.
+ * Pencapaian dihitung dari TOTAL seluruh anggota (group dihitung gabungan, dibayar satu nominal).
+ */
+function computeDist(input, S) {
+  var P = function (k, d) { var v = Number(S[k]); return isFinite(v) && v !== 0 ? v : d; };
+  var wSO = P('wSO', 80) / 100, wA2 = P('wAO2000', 10) / 100, wGC = P('wAOGC', 10) / 100;
+  var minSI = P('minSI', 100) / 100, minSO = P('minSO', 100) / 100, bonusThr = P('bonusThr', 110) / 100;
+  var basePct = P('basePct', 1), bonusPct = P('bonusPct', 0.5), ownerShare = P('ownerShare', 70);
+  var t = {so: {t: 0, s: 0, n: 0}, si: {t: 0, s: 0, n: 0}, ao2k: {t: 0, a: 0}, aogc: {t: 0, a: 0}};
+  var members = (input.members || []).map(function (m) {
+    var g = function (o, k) { return Number((o || {})[k]) || 0; };
+    var x = {dist: m.dist, so: {t: g(m.so, 't'), s: g(m.so, 's'), n: g(m.so, 'n')}, si: {t: g(m.si, 't'), s: g(m.si, 's'), n: g(m.si, 'n')},
+      ao2k: {t: g(m.ao2k, 't'), a: g(m.ao2k, 'a')}, aogc: {t: g(m.aogc, 't'), a: g(m.aogc, 'a')}};
+    x.so.a = x.so.s + x.so.n; x.si.a = x.si.s + x.si.n;
+    ['so', 'si'].forEach(function (k) { t[k].t += x[k].t; t[k].s += x[k].s; t[k].n += x[k].n; });
+    ['ao2k', 'aogc'].forEach(function (k) { t[k].t += x[k].t; t[k].a += x[k].a; });
+    MKPI.forEach(function (k) { x[k.key].ach = x[k.key].t > 0 ? x[k.key].a / x[k.key].t : 0; });
+    return x;
+  });
+  t.so.a = t.so.s + t.so.n; t.si.a = t.si.s + t.si.n;
+  MKPI.forEach(function (k) { t[k.key].ach = t[k.key].t > 0 ? t[k.key].a / t[k.key].t : 0; });
+
+  var gate = t.si.t > 0 && t.si.ach >= minSI - 1e-9;
+  var soOk = t.so.t > 0 && t.so.ach >= minSO - 1e-9;
+  var kpi = [
+    {key: 'so',   label: 'Sell Out',    w: wSO, ach: t.so.ach,   counted: soOk ? 1 : 0, rule: 'dihitung bila ≥ ' + Math.round(minSO * 100) + '%'},
+    {key: 'ao2k', label: 'AO SKU 2000', w: wA2, ach: t.ao2k.ach, counted: t.ao2k.t > 0 ? Math.min(t.ao2k.ach, 1) : 0, rule: 'prorate, maks 100%'},
+    {key: 'aogc', label: 'AO GC',       w: wGC, ach: t.aogc.ach, counted: t.aogc.t > 0 ? Math.min(t.aogc.ach, 1) : 0, rule: 'prorate, maks 100%'}
+  ];
+  kpi.forEach(function (k) { k.pts = gate ? k.w * k.counted : 0; });
+  var score = kpi.reduce(function (a, k) { return a + k.pts; }, 0);
+  var base = Math.round(t.so.a * basePct / 100);
+  var comp = {so: Math.round(base * kpi[0].pts), ao2k: Math.round(base * kpi[1].pts), aogc: Math.round(base * kpi[2].pts)};
+  var kpiInc = comp.so + comp.ao2k + comp.aogc;
+  var bonusOn = gate && t.so.t > 0 && t.so.ach > bonusThr + 1e-9;
+  var bonus = bonusOn ? Math.round(t.so.a * bonusPct / 100) : 0;
+  var total = kpiInc + bonus;
+  var cShu = t.so.a > 0 ? t.so.s / t.so.a : 0.5;
+  // pembebanan per factory
+  var alloc = {SHU: {so: Math.round(comp.so * cShu), ao2k: 0, aogc: comp.aogc, bonus: Math.round(bonus * cShu)}};
+  alloc.NANA = {so: comp.so - alloc.SHU.so, ao2k: comp.ao2k, aogc: 0, bonus: bonus - alloc.SHU.bonus};
+  var fac = {};
+  FACTORIES.forEach(function (f) { var a = alloc[f]; fac[f] = a.so + a.ao2k + a.aogc + a.bonus; });
+
+  var recips = (input.recipients || []).map(function (r) { return {role: r.role, name: r.name || '', pay: r.pay || {m: 'own'}}; });
+  var pay = {};
+  FACTORIES.forEach(function (f) {
+    var F = fac[f], list = [];
+    recips.forEach(function (r, i) {
+      var share = r.role === 'Owner' ? ownerShare : 100 - ownerShare;
+      var nom = r.role === 'Owner' ? Math.round(F * share / 100) : F - Math.round(F * ownerShare / 100);
+      var p = r.pay || {};
+      if (nom > 0) list.push({i: i, role: r.role, name: r.name, share: share, m: METHODS[p.m] ? p.m : 'own', bank: p.bank || '', cab: p.cab || '', an: p.an || '', nom: nom});
+    });
+    var titipSum = list.filter(function (x) { return x.m === 'titip'; }).reduce(function (a, x) { return a + x.nom; }, 0);
+    var titipOn = titipSum > 0 && titipSum >= Number(S.titipThr);
+    var agg = {nom: 0, tax: 0, net: 0};
+    list.forEach(function (x) {
+      x.rate = x.m === 'co' ? Number(S.coRate) : x.m === 'titip' ? (titipOn ? Number(S.titipRate) : 0) : 0;
+      x.tax = Math.round(x.nom * x.rate / 100); x.net = x.nom - x.tax; x.flag = x.m === 'own' && x.nom >= Number(S.ownThr);
+      agg.nom += x.nom; agg.tax += x.tax; agg.net += x.net;
+    });
+    pay[f] = {list: list, titipSum: titipSum, titipOn: titipOn, nom: agg.nom, tax: agg.tax, net: agg.net, contrib: f === 'SHU' ? cShu : 1 - cShu, share: total > 0 ? fac[f] / total : 0};
+  });
+  return {members: members, tot: t, gate: gate, soOk: soOk, kpi: kpi, score: score, base: base, comp: comp, alloc: alloc, cShu: cShu, kpiInc: kpiInc, bonusOn: bonusOn, bonus: bonus,
+    total: total, fac: fac, pay: pay, totalNet: pay.SHU.net + pay.NANA.net, ownerShare: ownerShare,
+    pct: {base: basePct, bonus: bonusPct, bonusThr: bonusThr, minSI: minSI, minSO: minSO}};
+}
+/* ===== akhir logika insentif distributor ===== */
+
+
+var GS = (typeof google !== 'undefined' && google.script && google.script.run) ? google.script.run : null;
+var PREVIEW = !GS;
+var STORE = 'klaim-insentif-dist-v1';
+var S = null;
+var head = {entry:'', distLain:'', periode:'', pengaju:'', kontak:'', code:''};
+var MEM = {};   // dist -> {so:{t,s,n}, si:{t,a}, ao2k:{t,a}, aogc:{t,a}}
+var RC = {Owner:{name:'', pay:{m:'own', bank:'', cab:'', an:''}}, PIC:{name:'', pay:{m:'own', bank:'', cab:'', an:''}}};
+
+var fmt = function(n){ return new Intl.NumberFormat('id-ID').format(Math.round(n||0)); };
+var rp = function(n){ return 'Rp ' + fmt(n); };
+var pct = function(x){ return (x*100).toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1}) + '%'; };
+var rate = function(x){ return String(x).replace('.', ','); };
+var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+var $ = function(id){ return document.getElementById(id); };
+var parseNum = function(s){ var v = String(s==null?'':s).replace(/\./g,'').replace(',', '.').replace(/[^\d.]/g,''); var n = parseFloat(v); return isNaN(n)?0:n; };
+var v = function(n){ return n ? fmt(n) : ''; };
+function blankMem(){ return {so:{t:0,s:0,n:0}, si:{t:0,s:0,n:0}, ao2k:{t:0,a:0}, aogc:{t:0,a:0}}; }
+
+/* ---------- start ---------- */
+function start(){
+  if (PREVIEW) boot({basePct:1, bonusPct:0.5, bonusThr:110, minSI:100, minSO:100, wSO:80, wAO2000:10, wAOGC:10, ownerShare:70, ownThr:500000, titipThr:5000000, titipRate:2.5, coRate:15,
+    quarters:['2026-Q4'], entShu:'CV Sumber Harum Utama', entNana:'CV Nana Abadi', allowOther:true, needCode:false, open:true,
+    entries:[{key:'G:Aldi Jaya Tuban & Lamongan',label:'Aldi Jaya Tuban & Lamongan',members:['Aldi Jaya Tuban','Aldi Jaya Lamongan'],group:true},
+             {key:'G:Ananta Tegal & Pekalongan',label:'Ananta Tegal & Pekalongan',members:['Ananta Tegal','Ananta Pekalongan'],group:true},
+             {key:'G:SAJ Group',label:'SAJ Group',members:['SAJ Gresik','SAJ Bangkalan','SAJ Mojokerto','SAJ Pamekasan'],group:true}]});
+  else {
+    GS.withSuccessHandler(boot).withFailureHandler(function(e){ clearTimeout(window.__bootTimer); loadFail('Gagal memuat pengaturan: ' + (e && e.message || e)); }).getPublicSettings();
+    window.__bootTimer = setTimeout(function(){ if (!S) loadFail('Server tidak merespons. Periksa koneksi lalu muat ulang.'); }, 25000);
+  }
+}
+function loadFail(msg){ $('app').innerHTML = '<div class="panel center"><h1>Form belum bisa dimuat</h1><p class="sub">'+esc(msg)+'</p><p class="sub" style="font-size:13px">Muat ulang halaman. Bila tetap muncul, kirim pesan ini ke admin.</p></div>'; }
+function boot(settings){
+  clearTimeout(window.__bootTimer);
+  if (!settings || typeof settings !== 'object') { loadFail('Pengaturan dari server tidak terbaca (cek sheet Pengaturan).'); return; }
+  S = settings;
+  if (!S.open) { $('app').innerHTML = '<div class="panel center"><h1>Form klaim sedang ditutup</h1><p class="sub">Silakan hubungi admin Harum Group.</p></div>'; return; }
+  if (!S.quarters || !S.quarters.length) { loadFail('Belum ada kuartal yang dibuka untuk klaim.'); return; }
+  load();
+  if (S.quarters.indexOf(head.periode) < 0) head.periode = S.quarters[S.quarters.length - 1];
+  renderShell();
+}
+function entry(){
+  if (head.entry === '__lain__') return head.distLain.trim() ? {key:'__lain__', label:head.distLain.trim(), members:[head.distLain.trim()], group:false} : null;
+  return S.entries.filter(function(e){ return e.key === head.entry; })[0] || null;
+}
+function field(key, label, req, ph){ return '<label class="f"><span>'+label+(req?' <span class="req">*</span>':'')+'</span><input data-h="'+key+'" placeholder="'+ph+'"></label>'; }
+
+function renderShell(){
+  setTimeout(refreshSubmit, 0);
+  $('app').innerHTML =
+    (PREVIEW ? '<span class="preview-badge">Mode pratinjau — submit tidak dikirim</span>' : '') +
+    '<h1>Form Klaim Insentif Distributor</h1>' +
+    '<p class="sub">Klaim per kuartal. Isi target &amp; actual distributor (atau seluruh anggota group), lalu data owner &amp; PIC penerima insentif.</p>' +
+    '<section class="panel"><h2>Data Klaim</h2><div class="grid">' +
+      '<label class="f"><span>Distributor / Group <span class="req">*</span></span><select data-h="entry"><option value="">— pilih —</option>' +
+        S.entries.map(function(e){ return '<option value="'+esc(e.key)+'">'+esc(e.label)+(e.group?' (group)':'')+'</option>'; }).join('') +
+        (S.allowOther ? '<option value="__lain__">Distributor lain (ketik nama)…</option>' : '') + '</select></label>' +
+      '<label class="f" id="lain-wrap" style="display:none"><span>Nama distributor <span class="req">*</span></span><input data-h="distLain" placeholder="Nama distributor"></label>' +
+      '<label class="f"><span>Periode <span class="req">*</span></span><select data-h="periode">' + S.quarters.map(function(q){ return '<option value="'+esc(q)+'">'+esc(quarterLabel(q))+'</option>'; }).join('') + '</select></label>' +
+      field('pengaju','Diajukan oleh',true,'Nama lengkap') + field('kontak','No. HP / WA',false,'08xx') +
+      (S.needCode ? field('code','Kode Akses',true,'dari admin') : '') +
+    '</div></section>' +
+    '<section class="panel"><h2>Mekanisme</h2><div class="rules">' +
+      '<div class="rule-box"><b class="t">KPI</b><table><tr><td>Sell Out</td><td>'+S.wSO+'%</td></tr><tr><td>AO SKU 2000</td><td>'+S.wAO2000+'%</td></tr><tr><td>AO GC</td><td>'+S.wAOGC+'%</td></tr></table></div>' +
+      '<div class="rule-box"><b class="t">Aturan</b><ul><li>Insentif dihitung bila <b>sell in ≥ '+S.minSI+'%</b>.</li><li>Sell out dihitung bila ≥ '+S.minSO+'%; bila kurang, hanya KPI AO yang dihitung.</li><li>AO 2000 &amp; AO GC prorate, maks 100%.</li></ul></div>' +
+      '<div class="rule-box"><b class="t">Nominal</b><ul><li>Maks <b>'+rate(S.basePct)+'%</b> dari actual sell out × skor KPI.</li><li>Sell out &gt; '+S.bonusThr+'% → bonus <b>'+rate(S.bonusPct)+'%</b> dari actual sell out.</li><li>Owner '+S.ownerShare+'% · PIC '+(100-S.ownerShare)+'%.</li></ul></div>' +
+      '<div class="rule-box"><b class="t">Group &amp; pembayaran</b><ul><li>Group dihitung dari <b>total seluruh anggota</b>, dibayar satu nominal.</li><li>Beban: KPI SO &amp; bonus sesuai porsi actual SO SHU/NANA; AO 2000 → NANA; AO GC → SHU.</li><li>Pajak: rek. perusahaan '+rate(S.coRate)+'%; titip kumulatif ≥ '+rp(S.titipThr)+' → '+rate(S.titipRate)+'%.</li></ul></div>' +
+    '</div></section>' +
+    '<div id="members"></div>' +
+    '<section class="panel" id="res-panel"><h2>Hasil Perhitungan</h2><div id="res"></div></section>' +
+    '<section class="panel"><h2>Penerima Insentif</h2><div class="rc" id="rc"></div></section>' +
+    '<div class="actions"><button class="b" id="reset">Kosongkan Form</button></div>' +
+    '<div class="submit-bar"><div id="bar-tot" style="font-weight:700"></div><button class="b primary big" id="submit">Submit Klaim</button></div>';
+  document.querySelectorAll('[data-h]').forEach(function(inp){
+    inp.value = head[inp.dataset.h] || '';
+    inp.addEventListener(inp.tagName === 'SELECT' ? 'change' : 'input', function(){
+      head[inp.dataset.h] = inp.value; inp.classList.remove('err');
+      if (inp.dataset.h === 'entry' || inp.dataset.h === 'distLain') renderMembers(); else if (inp.dataset.h === 'periode') update();
+      save();
+    });
+  });
+  $('reset').onclick = function(){
+    var b = $('reset');
+    if (b.dataset.confirm) { MEM = {}; RC = {Owner:{name:'', pay:{m:'own', bank:'', cab:'', an:''}}, PIC:{name:'', pay:{m:'own', bank:'', cab:'', an:''}}}; for (var k in head) if (k !== 'code' && k !== 'periode') head[k] = ''; save(); renderShell(); }
+    else { b.dataset.confirm = 1; b.textContent = 'Klik lagi untuk konfirmasi'; setTimeout(function(){ delete b.dataset.confirm; b.textContent = 'Kosongkan Form'; }, 3000); }
+  };
+  $('submit').onclick = confirmSubmit;
+  renderRecipients();
+  renderMembers();
+}
+
+/* ---------- anggota ---------- */
+function renderMembers(){
+  $('lain-wrap').style.display = head.entry === '__lain__' ? '' : 'none';
+  var e = entry(), el = $('members');
+  if (!e) { el.innerHTML = '<section class="panel"><p class="sub" style="margin:0">Pilih distributor / group terlebih dahulu.</p></section>'; update(); return; }
+  el.innerHTML = (e.members.length > 1 ? '<p class="sub" style="margin:0 0 10px">Group <b>'+esc(e.label)+'</b>: isi data <b>setiap</b> anggota — pencapaian dihitung dari total group.</p>' : '') +
+    e.members.map(function(d, i){
+      var m = MEM[d] = MEM[d] || blankMem();
+      var inp = function(k, p, ph){ return '<input class="num" data-d="'+i+'" data-k="'+k+'" data-p="'+p+'" value="'+v(m[k][p])+'" inputmode="numeric" placeholder="'+(ph||'0')+'">'; };
+      return '<div class="sm" data-mi="'+i+'"><div class="sm-head"><div class="sm-no">'+(i+1)+'</div><div class="sm-name" style="font-weight:800;font-size:15px">'+esc(d)+'</div><span class="badge na" data-mbadge="'+i+'"></span></div>' +
+        '<div class="tw"><table class="mk"><thead><tr><th>KPI '+esc(quarterLabel(head.periode))+'</th><th>Target</th><th class="shu">Actual SHU</th><th class="nana">Actual NANA</th><th>Actual Total</th><th>Pencapaian</th></tr></thead><tbody>' +
+        '<tr><td>Sell Out<span class="unit">Value (Rp)</span></td><td class="in">'+inp('so','t','wajib')+'</td><td class="in">'+inp('so','s')+'</td><td class="in">'+inp('so','n')+'</td><td class="num" data-sotot="'+i+'"></td><td data-ach="'+i+'-so"></td></tr>' +
+        '<tr><td>Sell In<span class="unit">Value (Rp) · pembelian dari Harum</span></td><td class="in">'+inp('si','t','wajib')+'</td><td class="in">'+inp('si','s')+'</td><td class="in">'+inp('si','n')+'</td><td class="num" data-sitot="'+i+'"></td><td data-ach="'+i+'-si"></td></tr>' +
+        '<tr><td>AO SKU 2000<span class="unit">Outlet · beban NANA</span></td><td class="in">'+inp('ao2k','t','wajib')+'</td><td class="in"><input class="num" readonly tabindex="-1" placeholder="—"></td><td class="in">'+inp('ao2k','a')+'</td><td></td><td data-ach="'+i+'-ao2k"></td></tr>' +
+        '<tr><td>AO GC<span class="unit">Outlet · beban SHU</span></td><td class="in">'+inp('aogc','t','wajib')+'</td><td class="in">'+inp('aogc','a')+'</td><td class="in"><input class="num" readonly tabindex="-1" placeholder="—"></td><td></td><td data-ach="'+i+'-aogc"></td></tr>' +
+        '</tbody></table></div></div>';
+    }).join('');
+  el.querySelectorAll('input[data-k]').forEach(function(x){
+    x.addEventListener('input', function(){ var d = entry().members[+x.dataset.d]; MEM[d][x.dataset.k][x.dataset.p] = parseNum(x.value); x.classList.remove('err'); update(); save(); });
+    x.addEventListener('blur', function(){ var n = parseNum(x.value); x.value = n ? fmt(n) : ''; });
+  });
+  update();
+}
+function pill(ach, t, thr){
+  if (!t) return '<span class="pill na">n/a</span>';
+  var cls = ach >= 1 ? 'ok' : ach >= (thr || 0.9) ? 'warn' : 'bad';
+  return '<span class="pill '+cls+'">'+pct(ach)+'</span>';
+}
+
+/* ---------- penerima ---------- */
+function renderRecipients(){
+  $('rc').innerHTML = ['Owner','PIC'].map(function(role){
+    var r = RC[role], p = r.pay;
+    return '<div class="rcard" data-role="'+role+'"><h4><span>'+role+' <span style="color:var(--muted);font-weight:600">· '+(role==='Owner'?S.ownerShare:100-S.ownerShare)+'%</span></span></h4>' +
+      '<div class="g2"><label class="f"><span>Nama '+role+' <span class="req">*</span></span><input data-r="name" value="'+esc(r.name)+'" placeholder="Nama lengkap"></label>' +
+      '<label class="f">Metode pembayaran<select data-r="m">' + Object.keys(METHODS).map(function(m){ return '<option value="'+m+'"'+(p.m===m?' selected':'')+'>'+METHODS[m]+'</option>'; }).join('') + '</select></label>' +
+      '<label class="f">Bank / No. Rekening<input data-r="bank" value="'+esc(p.bank)+'" placeholder="mis. BCA 1234567890"></label>' +
+      '<label class="f">Cabang / Atas nama<input data-r="an" value="'+esc(p.an)+'" placeholder="Atas nama rekening"></label></div>' +
+      '<div class="amt" data-amt="'+role+'"></div></div>';
+  }).join('');
+  $('rc').querySelectorAll('[data-r]').forEach(function(x){
+    var role = x.closest('[data-role]').dataset.role;
+    x.addEventListener(x.tagName === 'SELECT' ? 'change' : 'input', function(){
+      if (x.dataset.r === 'name') RC[role].name = x.value; else RC[role].pay[x.dataset.r] = x.value;
+      x.classList.remove('err'); update(); save();
+    });
+  });
+}
+
+/* ---------- hitung ---------- */
+function inputObj(){
+  var e = entry();
+  return {members: e ? e.members.map(function(d){ var m = MEM[d] || blankMem(); return {dist:d, so:m.so, si:m.si, ao2k:m.ao2k, aogc:m.aogc}; }) : [],
+    recipients: ['Owner','PIC'].map(function(role){ return {role:role, name:RC[role].name, pay:RC[role].pay}; })};
+}
+function update(){
+  var e = entry();
+  if (!e) { $('res').innerHTML = '<p class="sub" style="margin:0">—</p>'; $('bar-tot').textContent = ''; return null; }
+  var C = computeDist(inputObj(), S), t = C.tot;
+  C.members.forEach(function(m, i){
+    var tot = document.querySelector('[data-sotot="'+i+'"]'); if (tot) tot.textContent = v(m.so.a);
+    var st = document.querySelector('[data-sitot="'+i+'"]'); if (st) st.textContent = v(m.si.a);
+    ['so','si','ao2k','aogc'].forEach(function(k){ var c = document.querySelector('[data-ach="'+i+'-'+k+'"]'); if (c) c.innerHTML = pill(m[k].ach, m[k].t, k==='so'||k==='si' ? 1 : 0.9); });
+    var b = document.querySelector('[data-mbadge="'+i+'"]');
+    if (b) { b.textContent = m.so.t ? 'SO ' + pct(m.so.ach) + ' · SI ' + pct(m.si.ach) : 'Belum diisi'; }
+  });
+  var multi = e.members.length > 1;
+  var gateTxt = !t.si.t ? '<div class="gate bad">Isi target &amp; actual sell in.</div>' : C.gate ? '<div class="gate ok">✓ Sell in '+pct(t.si.ach)+' — syarat insentif terpenuhi'+(multi?' (total group)':'')+'.</div>' : '<div class="gate bad">✕ Sell in '+pct(t.si.ach)+' &lt; '+S.minSI+'% — insentif tidak diberikan'+(multi?' (total group)':'')+'.</div>';
+  $('res').innerHTML = gateTxt + '<div class="res"><div class="tw"><table class="kp"><thead><tr><th class="l">KPI'+(multi?' (total group)':'')+'</th><th>Target</th><th>Actual</th><th>Pencapaian</th><th>Bobot</th><th>Skor</th></tr></thead><tbody>' +
+      C.kpi.map(function(k){ var x = t[k.key]; return '<tr><td class="l">'+k.label+'<div style="font-size:11px;color:var(--muted)">'+k.rule+'</div></td><td class="num">'+fmt(x.t)+'</td><td class="num">'+fmt(x.a)+'</td><td>'+pill(x.ach, x.t, k.key==='so'?1:0.9)+'</td><td class="num">'+Math.round(k.w*100)+'%</td><td class="num">'+pct(k.pts)+'</td></tr>'; }).join('') +
+      '</tbody><tfoot><tr><td class="l" colspan="5">Skor KPI</td><td class="num">'+pct(C.score)+'</td></tr></tfoot></table></div>' +
+    '<div class="calc">' +
+      '<div class="ln"><span>Actual sell out × '+rate(S.basePct)+'%<br><small>'+rp(t.so.a)+'</small></span><b class="num">'+rp(C.base)+'</b></div>' +
+      '<div class="ln"><span>KPI Sell Out <small>(SHU '+pct(C.cShu)+' / NANA '+pct(1-C.cShu)+')</small></span><b class="num">'+rp(C.comp.so)+'</b></div>' +
+      '<div class="ln"><span>KPI AO 2000 <small>→ NANA</small></span><b class="num">'+rp(C.comp.ao2k)+'</b></div>' +
+      '<div class="ln"><span>KPI AO GC <small>→ SHU</small></span><b class="num">'+rp(C.comp.aogc)+'</b></div>' +
+      '<div class="ln"><span>Bonus SO &gt; '+S.bonusThr+'% <small>('+(C.bonusOn?'tercapai':'belum')+')</small></span><b class="num">'+rp(C.bonus)+'</b></div>' +
+      '<div class="ln tot"><span>Total insentif</span><span class="num">'+rp(C.total)+'</span></div>' +
+      '<div class="ln"><span><span class="tag shu">SHU</span></span><span class="num">'+rp(C.fac.SHU)+'</span></div>' +
+      '<div class="ln"><span><span class="tag nana">NANA</span></span><span class="num">'+rp(C.fac.NANA)+'</span></div>' +
+    '</div></div>';
+  ['Owner','PIC'].forEach(function(role){
+    var a = C.pay.SHU.list.filter(function(x){ return x.role===role; })[0] || {nom:0,tax:0,net:0}, b = C.pay.NANA.list.filter(function(x){ return x.role===role; })[0] || {nom:0,tax:0,net:0};
+    var el = document.querySelector('[data-amt="'+role+'"]');
+    if (el) el.innerHTML = 'SHU '+rp(a.nom)+(a.tax?' (pajak '+fmt(a.tax)+')':'')+' · NANA '+rp(b.nom)+(b.tax?' (pajak '+fmt(b.tax)+')':'')+' · <b style="color:var(--ink)">diterima '+rp(a.net+b.net)+'</b>' +
+      ((a.flag||b.flag) ? '<div style="color:var(--warn);font-size:12px;margin-top:4px">Nominal ke rekening sendiri ≥ '+rp(S.ownThr)+' — pajak dicek admin.</div>' : '');
+  });
+  $('bar-tot').innerHTML = 'Skor '+pct(C.score)+' · total insentif <span class="num">'+rp(C.total)+'</span> · diterima <span class="num">'+rp(C.totalNet)+'</span>';
+  return C;
+}
+
+/* ---------- submit ---------- */
+function confirmSubmit(){
+  var bad = false;
+  ['entry','periode','pengaju'].concat(S.needCode?['code']:[]).concat(head.entry==='__lain__'?['distLain']:[]).forEach(function(k){
+    if (!String(head[k]||'').trim()) { bad = true; var el = document.querySelector('[data-h="'+k+'"]'); if (el) el.classList.add('err'); }
+  });
+  var e = entry();
+  if (e) e.members.forEach(function(d, i){ ['so','si','ao2k','aogc'].forEach(function(k){ if (!(MEM[d] && MEM[d][k].t > 0)) { bad = true; var x = document.querySelector('input[data-d="'+i+'"][data-k="'+k+'"][data-p="t"]'); if (x) x.classList.add('err'); } }); });
+  ['Owner','PIC'].forEach(function(role){ if (!RC[role].name.trim()) { bad = true; document.querySelector('[data-role="'+role+'"] [data-r="name"]').classList.add('err'); } });
+  if (bad) { var first = document.querySelector('.err'); if (first) first.scrollIntoView({behavior:'smooth', block:'center'}); return msgModal('Data belum lengkap', 'Lengkapi kolom bertanda merah: distributor, periode, pengaju, semua target, dan nama Owner & PIC.'); }
+  var C = update();
+  $('modal-box').innerHTML = '<h3>Kirim klaim insentif distributor?</h3><p class="sub" style="margin:0">'+esc(e.label)+' · '+esc(quarterLabel(head.periode))+'</p>' +
+    '<table><tr><td>Sell in / sell out</td><td class="num">'+pct(C.tot.si.ach)+' / '+pct(C.tot.so.ach)+'</td></tr><tr><td>Skor KPI</td><td class="num">'+pct(C.score)+'</td></tr>' +
+    '<tr><td>Total insentif (incl. bonus)</td><td class="num">'+rp(C.total)+'</td></tr><tr><td>Diterima (setelah pajak)</td><td class="num">'+rp(C.totalNet)+'</td></tr></table>' +
+    '<p class="sub" style="font-size:13px">Setelah dikirim, klaim tidak bisa diubah dari form ini. Admin akan mencocokkan dengan data actual.</p>' +
+    '<div id="m-err"></div><div class="row"><button class="b" id="m-cancel">Periksa lagi</button><button class="b primary" id="m-ok">Ya, kirim klaim</button></div>';
+  $('modal').classList.add('show');
+  $('m-cancel').onclick = closeModal; $('m-ok').onclick = doSubmit;
+}
+function doSubmit(){
+  var btn = $('m-ok'); btn.disabled = true; btn.textContent = 'Mengirim…'; $('m-cancel').disabled = true;
+  var io = inputObj();
+  var payload = {entry:head.entry, distLain:head.distLain, periode:head.periode, pengaju:head.pengaju, kontak:head.kontak, code:head.code, members:io.members, recipients:io.recipients};
+  var ok = function(res){ closeModal(); showDone(res); };
+  var fail = function(err){ btn.disabled = false; btn.textContent = 'Coba kirim lagi'; $('m-cancel').disabled = false; $('m-err').innerHTML = '<div class="alert bad">'+esc(err && err.message || err)+'</div>'; };
+  if (PREVIEW) { setTimeout(function(){ var C = computeDist(io, S); ok({id:'DST-PRATINJAU', total:C.total, totalNet:C.totalNet, score:C.score, gate:C.gate, bonus:C.bonus}); }, 600); return; }
+  GS.withSuccessHandler(ok).withFailureHandler(fail).submitKlaim(payload);
+}
+function showDone(res){
+  var lbl = entry().label, per = quarterLabel(head.periode);
+  MEM = {}; for (var k in head) if (k !== 'code' && k !== 'periode') head[k] = ''; save();
+  $('app').innerHTML = '<div class="panel center"><div style="font-size:44px">✓</div><h1>Klaim berhasil dikirim</h1>' +
+    '<p class="sub">Simpan nomor klaim berikut untuk konfirmasi ke admin.</p><div class="done-id">'+esc(res.id)+'</div><p>'+esc(lbl)+' · '+esc(per)+'</p>' +
+    '<table class="sum" style="max-width:420px;margin:16px auto"><tr><td class="l">Skor KPI</td><td class="num">'+pct(res.score)+'</td></tr><tr><td class="l">Bonus</td><td class="num">'+rp(res.bonus)+'</td></tr>' +
+    '<tr><td class="l"><b>Estimasi diterima</b></td><td class="num"><b>'+rp(res.totalNet)+'</b></td></tr></table>' +
+    '<p class="sub" style="font-size:13px">Nilai final mengikuti hasil verifikasi admin.</p><button class="b primary" id="again">Ajukan klaim lain</button></div>';
+  $('again').onclick = function(){ renderShell(); };
+  window.scrollTo(0,0);
+}
+function msgModal(t, m){ $('modal-box').innerHTML = '<h3>'+esc(t)+'</h3><p>'+esc(m)+'</p><div class="row"><button class="b primary" id="m-cancel">OK</button></div>'; $('modal').classList.add('show'); $('m-cancel').onclick = closeModal; }
+function closeModal(){ $('modal').classList.remove('show'); }
+
+/* ---------- draft lokal ---------- */
+function save(){ setTimeout(refreshSubmit, 0); try { localStorage.setItem(STORE, JSON.stringify({head:head, mem:MEM, rc:RC})); } catch(e){} }
+function load(){ try { var s = JSON.parse(localStorage.getItem(STORE)||'null'); if (s) { if (s.head) for (var k in head) head[k] = s.head[k] || ''; if (s.mem) MEM = s.mem; if (s.rc && s.rc.Owner && s.rc.PIC) RC = s.rc; } } catch(e){} }
+
+
+/* ---------- tombol submit aktif hanya bila data wajib sudah lengkap ---------- */
+function refreshSubmit(){
+  var btn = document.getElementById('submit');
+  if (!btn || !S) return;
+  var miss = [];
+  try { miss = missing(); } catch (e) { miss = []; }
+  btn.disabled = miss.length > 0;
+  btn.title = miss.length ? 'Lengkapi: ' + miss.join('; ') : '';
+  var hint = document.getElementById('submit-hint');
+  if (!hint) {
+    hint = document.createElement('div');
+    hint.id = 'submit-hint';
+    hint.style.cssText = 'flex:1;min-width:220px;text-align:right;font-size:12.5px;font-weight:600;color:var(--warn)';
+    btn.parentNode.insertBefore(hint, btn);
+  }
+  hint.textContent = miss.length ? 'Lengkapi dulu: ' + miss.slice(0, 3).join('; ') + (miss.length > 3 ? ' (+' + (miss.length - 3) + ' lainnya)' : '') : '';
+}
+function blankStr(x){ return !String(x == null ? '' : x).trim(); }
+
+function missing(){
+  var m = [], e = entry();
+  if (!head.entry) m.push('distributor / group');
+  else if (head.entry === '__lain__' && blankStr(head.distLain)) m.push('nama distributor');
+  if (blankStr(head.periode)) m.push('periode');
+  if (blankStr(head.pengaju)) m.push('nama pengaju');
+  if (S.needCode && blankStr(head.code)) m.push('kode akses');
+  if (e) e.members.forEach(function(d){
+    var x = MEM[d] || blankMem(), g = function(o, k){ return Number((o || {})[k]) || 0; }, bad = [];
+    if (!(g(x.so, 't') > 0)) bad.push('target SO');
+    if (!(g(x.so, 's') + g(x.so, 'n') > 0)) bad.push('actual SO');
+    if (!(g(x.si, 't') > 0)) bad.push('target sell in');
+    if (!(g(x.si, 's') + g(x.si, 'n') > 0)) bad.push('actual sell in');
+    if (!(g(x.ao2k, 't') > 0)) bad.push('target AO 2000');
+    if (!(g(x.ao2k, 'a') > 0)) bad.push('actual AO 2000');
+    if (!(g(x.aogc, 't') > 0)) bad.push('target AO GC');
+    if (!(g(x.aogc, 'a') > 0)) bad.push('actual AO GC');
+    if (bad.length) m.push(d + ' (' + bad.join(', ') + ')');
+  });
+  ['Owner', 'PIC'].forEach(function(role){ if (blankStr(RC[role].name)) m.push('nama ' + role); });
+  return m;
+}
+
+start();
+</script>
+</body>
+</html>

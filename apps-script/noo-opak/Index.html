@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<base target="_top">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Form Klaim Insentif NOO Opak</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f4f5f2;--card:#fff;--ink:#1b1f1d;--muted:#6b726e;--line:#e2e5e0;--brand:#0f5c4a;--brand-2:#e8f2ee;
+    --ok:#1f7a4d;--ok-bg:#e6f4ec;--warn:#a35b00;--warn-bg:#fdf1de;--bad:#b3261e;--bad-bg:#fbe9e7;--accent:#c2410c}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:14px;line-height:1.45}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 16px 90px}
+  h1{font-size:24px;margin:0 0 4px;letter-spacing:-.02em}
+  .sub{color:var(--muted);margin:0 0 18px}
+  .num{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+  .panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  label.f{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);font-weight:600}
+  .req{color:var(--bad)}
+  input,select,textarea{font:inherit;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:#fbfcfa;width:100%}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--brand);outline-offset:-1px;background:#fff}
+  input.err,select.err{border-color:var(--bad);background:var(--bad-bg)}
+  .rules{display:grid;grid-template-columns:1fr 1.4fr 1.2fr;gap:12px}
+  .rule-box{background:var(--brand-2);border-radius:10px;padding:12px 14px;font-size:13px}
+  .rule-box b.t{display:block;margin-bottom:6px;color:var(--brand)}
+  .rule-box ul{margin:0;padding-left:18px} .rule-box li{margin:2px 0}
+  .big-num{font-size:26px;font-weight:800;color:var(--brand)}
+  .sm{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+  .sm-head{display:flex;gap:12px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .sm-no{width:30px;height:30px;border-radius:8px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+  .sm-name{flex:1;min-width:200px} .sm-name input{font-weight:700;font-size:15px}
+  .badge{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;white-space:nowrap}
+  .badge.ok{background:var(--ok-bg);color:var(--ok)} .badge.bad{background:var(--bad-bg);color:var(--bad)} .badge.na{background:#eef0ec;color:var(--muted)}
+  .btn-x{border:none;background:none;color:var(--muted);cursor:pointer;font-size:20px;padding:2px 8px;border-radius:8px;line-height:1}
+  .btn-x:hover{background:var(--bad-bg);color:var(--bad)}
+  .prog{padding:10px 16px;display:flex;align-items:center;gap:12px;font-size:13px;border-bottom:1px solid var(--line);background:#fcfcfb;flex-wrap:wrap}
+  .bar{flex:1;min-width:160px;height:8px;background:#eceee9;border-radius:99px;overflow:hidden;position:relative}
+  .bar i{display:block;height:100%;background:var(--warn);border-radius:99px;transition:width .2s}
+  .bar.ok i{background:var(--ok)}
+  .tw{overflow-x:auto}
+  table.ol{width:100%;border-collapse:collapse;min-width:1020px}
+  table.ol th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;text-align:left;padding:9px 6px 6px;white-space:nowrap;background:#fafbf9}
+  table.ol td{padding:4px 6px;border-top:1px solid #f0f2ee;vertical-align:middle}
+  table.ol td.n{color:var(--muted);text-align:center;width:34px;font-size:12px}
+  table.ol input,table.ol select{padding:6px 8px;font-size:13px}
+  table.ol td.st{width:240px;font-size:12px}
+  table.ol tr.bad td{background:#fff8f7}
+  .st .okk{color:var(--ok);font-weight:700} .st .no{color:var(--bad);font-weight:600}
+  .st .empty{color:#b6bbb7}
+  .tools{display:flex;gap:8px;flex-wrap:wrap;padding:10px 16px;border-top:1px solid var(--line)}
+  .paybox{display:grid;grid-template-columns:1.1fr 1.3fr 1fr 1.3fr;gap:10px;padding:12px 16px;border-top:1px solid var(--line);background:#fcfcfb}
+  .sm-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;background:#fafbf9;border-top:1px solid var(--line);flex-wrap:wrap}
+  .payout{text-align:right} .payout small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+  .payout .v{font-size:20px;font-weight:700}
+  button.b{font:inherit;font-weight:700;border-radius:10px;padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:13px}
+  button.b.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  button.b.big{padding:14px 22px;font-size:15px}
+  button.b.small{padding:7px 11px;font-size:12.5px}
+  button.b:disabled{opacity:.55;cursor:not-allowed}
+  button.b:hover:not(:disabled){filter:brightness(.96)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 18px}
+  table.sum{width:100%;border-collapse:collapse;font-size:13px}
+  table.sum th{background:#f6f7f4;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.sum td{padding:7px 10px;text-align:right;border-bottom:1px solid #f0f2ee;white-space:nowrap}
+  table.sum .l{text-align:left} table.sum .c{text-align:center}
+  table.sum tfoot td{font-weight:800;border-top:2px solid var(--ink);border-bottom:none;background:#fafbf9}
+  .alert{font-size:13px;font-weight:600;padding:10px 12px;border-radius:9px;margin-top:10px}
+  .alert.warn{background:var(--warn-bg);color:var(--warn)} .alert.info{background:var(--brand-2);color:var(--brand)} .alert.bad{background:var(--bad-bg);color:var(--bad)}
+  .submit-bar{position:sticky;bottom:0;background:rgba(244,245,242,.95);backdrop-filter:blur(6px);border-top:1px solid var(--line);padding:12px 0;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .modal{position:fixed;inset:0;background:rgba(20,24,22,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+  .modal.show{display:flex}
+  .modal .box{background:#fff;border-radius:16px;max-width:640px;width:100%;padding:22px;max-height:92vh;overflow:auto}
+  .modal h3{margin:0 0 8px;font-size:18px}
+  .modal table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  .modal td{padding:6px 0;border-bottom:1px solid #f0f2ee} .modal td:last-child{text-align:right;font-weight:700}
+  .modal .row{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+  .modal textarea{height:220px;font-family:"JetBrains Mono",monospace;font-size:12px;white-space:pre}
+  code.fmt{display:block;background:#f6f7f4;border-radius:8px;padding:8px 10px;font-size:12px;margin:8px 0;overflow-x:auto;white-space:nowrap}
+  .center{text-align:center;padding:60px 20px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;font:inherit;font-weight:700;font-size:13.5px;text-align:left}
+  .tab small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+  .tab.on{border-color:var(--brand);background:var(--brand-2);color:var(--brand)}
+  .drop{border:2px dashed #c9cec7;border-radius:12px;padding:22px;text-align:center;background:#fbfcfa;cursor:pointer}
+  .drop.hover{border-color:var(--brand);background:var(--brand-2)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+  .stat{background:#f6f7f4;border-radius:10px;padding:10px 12px} .stat b{display:block;font-size:18px}
+  .stat span{font-size:12px;color:var(--muted)}
+  details.ex{margin-top:10px;font-size:13px} details.ex summary{cursor:pointer;font-weight:700;color:var(--muted)}
+  details.ex table{width:100%;border-collapse:collapse;margin-top:6px} details.ex td{padding:4px 6px;border-top:1px solid #f0f2ee}
+  table.ol td.ro{font-size:13px;padding:7px 6px}
+  .src-auto{font-size:11px;font-weight:700;color:#2848a8;background:#e7eefc;padding:2px 7px;border-radius:6px}
+  .done-id{font-size:28px;font-weight:800;color:var(--brand);margin:8px 0}
+  .loading{color:var(--muted);text-align:center;padding:80px 0}
+  .preview-badge{display:inline-block;background:var(--warn-bg);color:var(--warn);font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;margin-bottom:10px}
+  @media (max-width:900px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr 1fr}.rules{grid-template-columns:1fr}.paybox{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.grid,.paybox{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap"><div id="app"><div class="loading">Memuat form…</div></div></div>
+<div class="modal" id="modal"><div class="box" id="modal-box"></div></div>
+
+<script>
+/* ===== LOGIKA NOO OPAK (dipakai sama persis di server & form) ===== */
+var METHODS = {own:'Rekening sendiri', titip:'Titip 1 rekening', co:'Rekening perusahaan'};
+var JENIS = {M:'NOO Murni', R:'Outlet Existing'};
+var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+function periodeLabel(p) { var m = /^(\d{4})-(\d{2})$/.exec(p || ''); return m ? BULAN[+m[2] - 1] + ' ' + m[1] : String(p || ''); }
+function pad2(n) { return (n < 10 ? '0' : '') + n; }
+/** tanggal batas: pembelian terakhir harus SEBELUM tanggal ini (awal periode dikurangi N bulan) */
+/** periode tanpa syarat N bulan (mis. bulan pertama program): pembelian sebelumnya tidak membatalkan NOO */
+function isWaived(periode, S) { return String((S && S.noLookback) || '').split(',').map(function (x) { return x.trim(); }).indexOf(periode) >= 0; }
+/** batas lookback efektif: '' bila periode dibebaskan */
+function lookbackCut(periode, S) { return isWaived(periode, S) ? '' : cutoffDate(periode, Number(S.lookback) || 3); }
+/** tanggal awal data yang dibutuhkan untuk periode ini */
+function dataStartNeeded(periode, S) { return lookbackCut(periode, S) || periode + '-07'; }
+function cutoffDate(periode, months) {
+  var m = /^(\d{4})-(\d{2})$/.exec(periode || ''); if (!m) return '';
+  var y = +m[1], mo = +m[2] - Number(months || 3);
+  while (mo < 1) { mo += 12; y--; }
+  return y + '-' + pad2(mo) + '-01';
+}
+/** normalisasi tanggal ke YYYY-MM-DD; terima 13/11/2026, 13-11-2026, 2026-11-13, Date */
+function toISO(v) {
+  if (v == null || v === '') return '';
+  if (Object.prototype.toString.call(v) === '[object Date]') return isNaN(v) ? '' : v.getFullYear() + '-' + pad2(v.getMonth() + 1) + '-' + pad2(v.getDate());
+  var s = String(v).trim(), m;
+  if ((m = /^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/.exec(s))) return m[1] + '-' + pad2(+m[2]) + '-' + pad2(+m[3]);
+  if ((m = /^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})$/.exec(s))) { var y = +m[3]; if (y < 100) y += 2000; return y + '-' + pad2(+m[2]) + '-' + pad2(+m[1]); }
+  return '';
+}
+function fmtDate(iso) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ''); return m ? m[3] + '/' + m[2] + '/' + m[1] : ''; }
+function normJenis(v) { var s = String(v || '').trim().toUpperCase(); if (!s) return ''; if (s[0] === 'R' || s.indexOf('EXIST') >= 0 || s.indexOf('REAK') >= 0) return 'R'; if (s[0] === 'M' || s.indexOf('NOO') >= 0 || s.indexOf('BARU') >= 0) return 'M'; return ''; }
+function normKode(v) { return String(v || '').trim().toUpperCase().replace(/\s+/g, ''); }
+
+/**
+ * Evaluasi seluruh outlet & hitung insentif.
+ * input: {periode:'YYYY-MM', rows:[{name, pay:{m,bank,cab,an}, outlets:[{kode,nama,alamat,tgl,jenis,last,admin,prior}]}]}
+ *   outlet.admin : 'YA' | 'TIDAK' | ''  (keputusan admin, mengalahkan cek sistem)
+ *   outlet.prior : teks bila outlet sudah diklaim di klaim sebelumnya (diisi server)
+ * S: {perOutlet, minOutlet, lookback, ownThr, titipThr, titipRate, coRate}
+ */
+function computeNoo(input, S) {
+  var per = Number(S.perOutlet) || 0, min = Number(S.minOutlet) || 0, lb = Number(S.lookback) || 3;
+  var cut = lookbackCut(input.periode, S), waived = !cut, seen = {};
+  var rows = input.rows.map(function (r) {
+    var o = {name: r.name, pay: r.pay || {m: 'own'}, outlets: [], submitted: 0, valid: 0, murni: 0, reakt: 0};
+    (r.outlets || []).forEach(function (x) {
+      var kode = normKode(x.kode), tgl = toISO(x.tgl), last = toISO(x.last), jenis = normJenis(x.jenis), why = [];
+      if (!kode) why.push('Kode outlet kosong');
+      if (!String(x.nama || '').trim()) why.push('Nama outlet kosong');
+      if (!tgl) why.push('Tgl transaksi NOO kosong/tidak valid');
+      else if (tgl.slice(0, 7) !== input.periode) why.push('Tgl transaksi di luar periode klaim');
+      if (!jenis) why.push('Jenis NOO tidak valid');
+      if (jenis === 'R' && !last && x.src !== 'auto' && !waived) why.push('Outlet existing wajib isi tgl pembelian BMX Opak terakhir');
+      if (last && cut && last >= cut) why.push('Pembelian BMX Opak terakhir ' + fmtDate(last) + ' masih dalam ' + lb + ' bulan terakhir');
+      if (last && tgl && last >= tgl) why.push('Tgl pembelian terakhir tidak boleh setelah tgl NOO');
+      if (kode && seen[kode]) why.push('Duplikat dengan ' + seen[kode]);
+      if (x.prior) why.push(x.prior);
+      if (kode && !seen[kode]) seen[kode] = 'salesman ' + r.name;
+      var sys = why.length === 0, adm = String(x.admin || '').toUpperCase();
+      var ok = adm === 'YA' ? true : adm === 'TIDAK' ? false : sys;
+      var e = {kode: kode, nama: String(x.nama || '').trim(), alamat: String(x.alamat || '').trim(), tgl: tgl, jenis: jenis, last: last,
+        admin: adm === 'YA' || adm === 'TIDAK' ? adm : '', note: x.note || '', prior: x.prior || '', src: x.src === 'auto' ? 'auto' : 'manual', sys: sys, reason: why.join('; '), ok: ok};
+      o.outlets.push(e);
+      o.submitted++;
+      if (ok) { o.valid++; if (jenis === 'R') o.reakt++; else o.murni++; }
+    });
+    o.eligible = o.valid >= min;
+    o.incentive = o.eligible ? o.valid * per : 0;
+    return o;
+  });
+  var list = rows.map(function (r, i) {
+    var p = r.pay || {};
+    return {i: i, name: r.name, m: METHODS[p.m] ? p.m : 'own', bank: p.bank || '', cab: p.cab || '', an: p.an || '', nom: r.incentive};
+  }).filter(function (x) { return x.nom > 0; });
+  var titipSum = list.filter(function (x) { return x.m === 'titip'; }).reduce(function (a, x) { return a + x.nom; }, 0);
+  var titipOn = titipSum > 0 && titipSum >= Number(S.titipThr);
+  var agg = {nom: 0, tax: 0, net: 0};
+  list.forEach(function (x) {
+    x.rate = x.m === 'co' ? Number(S.coRate) : x.m === 'titip' ? (titipOn ? Number(S.titipRate) : 0) : 0;
+    x.tax = Math.round(x.nom * x.rate / 100);
+    x.net = x.nom - x.tax;
+    x.flag = x.m === 'own' && x.nom >= Number(S.ownThr);
+    agg.nom += x.nom; agg.tax += x.tax; agg.net += x.net;
+  });
+  var t = rows.reduce(function (a, r) { a.sub += r.submitted; a.val += r.valid; a.elig += r.eligible ? 1 : 0; return a; }, {sub: 0, val: 0, elig: 0});
+  return {rows: rows, cutoff: cut, pay: {list: list, titipSum: titipSum, titipOn: titipOn, nom: agg.nom, tax: agg.tax, net: agg.net},
+    submitted: t.sub, valid: t.val, eligible: t.elig, total: agg.nom, totalNet: agg.net};
+}
+
+
+/* ===== KONVERSI SATUAN → DUS/KARTON ===== */
+/** jenis satuan: 'dus' | 'pcs' | 'rcg' | '' (tidak dikenal). Kosong dianggap dus. */
+function unitKind(u) {
+  var s = String(u == null ? '' : u).trim().toUpperCase().replace(/[^A-Z]/g, '');
+  if (!s) return 'dus';
+  if (/^(DUS|DOS|DS|KRT|KARTON|CARTON|CTN|CT|KTN|BOX|BX)$/.test(s)) return 'dus';
+  if (/^(PCS|PC|PCE|PIECE|BKS|BUNGKUS|SACHET|SCH|BIJI|BJ|EA)$/.test(s)) return 'pcs';
+  if (/^(RCG|RENCENG|RENTENG|RC|RTG|RNC|STRIP|STR|PAK|PACK|PK)$/.test(s)) return 'rcg';
+  return '';
+}
+/** isi per dus dari pengaturan khusus ("KATA=pcs:renceng; ...") atau dari nama barang (mis. 4X10 = 4 renceng × 10 pcs) */
+function packOf(namaBarang, kodeBarang, S) {
+  var n = String(namaBarang || '').toUpperCase(), k = String(kodeBarang || '').toUpperCase().trim();
+  var rules = String((S && S.packRules) || '').split(';');
+  for (var i = 0; i < rules.length; i++) {
+    var m = /^\s*([^=]+?)\s*=\s*(\d+)\s*(?::\s*(\d+))?\s*$/.exec(rules[i]);
+    if (m && (n.indexOf(m[1].toUpperCase()) >= 0 || k === m[1].toUpperCase())) return {pcs: +m[2], rcg: m[3] ? +m[3] : 0};
+  }
+  var x = /(\d+)\s*[X×]\s*(\d+)/.exec(n);
+  if (x) return {pcs: +x[1] * +x[2], rcg: +x[1]};
+  var p = /(\d+)\s*PCS/.exec(n);
+  if (p) return {pcs: +p[1], rcg: 0};
+  return {pcs: 0, rcg: 0};
+}
+/** qty dalam dus; null bila satuan / isi per dus tidak diketahui */
+function toDus(qty, unit, namaBarang, kodeBarang, S) {
+  var q = Number(qty) || 0, kind = unitKind(unit);
+  if (kind === 'dus') return q;
+  if (!kind) return null;
+  var pk = packOf(namaBarang, kodeBarang, S), f = kind === 'pcs' ? pk.pcs : pk.rcg;
+  return f > 0 ? q / f : null;
+}
+function fmtDus(x) { x = Math.round(Number(x || 0) * 100) / 100; return String(x).replace('.', ','); }
+
+/* ===== DETEKSI NOO OTOMATIS DARI DATA TRANSAKSI ===== */
+function isOpak(namaBarang, kodeBarang, keywords) {
+  var n = String(namaBarang || '').toUpperCase(), k = String(kodeBarang || '').toUpperCase().trim();
+  return String(keywords || 'OPAK').split(',').map(function (w) { return w.trim().toUpperCase(); }).filter(String)
+    .some(function (w) { return n.indexOf(w) >= 0 || k === w; });
+}
+/**
+ * data: {tx:[{d:'YYYY-MM-DD', k:kodeOutlet, n:namaOutlet, s:salesman, q:qty, no:nota}] (hanya transaksi BMX Opak),
+ *        first:{kodeOutlet: tgl transaksi pertama produk apa pun}}
+ * NOO = outlet yang membeli BMX Opak (qty bersih > 0) di periode dan TIDAK membeli BMX Opak dalam N bulan sebelumnya.
+ *   NOO Murni      : transaksi pertama outlet (produk apa pun) terjadi di periode klaim
+ *   Outlet Existing: sudah pernah bertransaksi sebelumnya
+ * Salesman = salesman pada transaksi BMX Opak pertama di periode.
+ */
+function detectNoo(data, periode, S) {
+  var lb = Number(S.lookback) || 3, cut = lookbackCut(periode, S), start = periode + '-01', by = {}, excluded = [];
+  (data.tx || []).forEach(function (t) {
+    var k = normKode(t.k); if (!k || !t.d) return;
+    (by[k] = by[k] || {k: k, list: []}).list.push(t);
+  });
+  var sales = {};
+  Object.keys(by).forEach(function (k) {
+    var L = by[k].list, inP = L.filter(function (t) { return t.d.slice(0, 7) === periode; });
+    if (!inP.length) return;
+    var net = inP.reduce(function (a, t) { return a + (Number(t.q) || 0); }, 0), minD = Number(S.minDus) || 1;
+    var pos = inP.filter(function (t) { return Number(t.q) > 0; }).sort(function (a, b) { return a.d < b.d ? -1 : a.d > b.d ? 1 : 0; });
+    var nama = (pos[0] || inP[0]).n || '', sm = String((pos[0] || inP[0]).s || '').trim() || '(tanpa salesman)';
+    if (net <= 0 || !pos.length) { excluded.push({kode: k, nama: nama, salesman: sm, reason: 'Qty bersih di periode ≤ 0 (retur)'}); return; }
+    if (net < minD - 1e-9) { excluded.push({kode: k, nama: nama, salesman: sm, reason: 'Pembelian ' + fmtDus(net) + ' dus (< ' + fmtDus(minD) + ' karton)'}); return; }
+    var prior = L.filter(function (t) { return t.d < start && Number(t.q) > 0; }).map(function (t) { return t.d; }).sort();
+    var last = prior.length ? prior[prior.length - 1] : '';
+    if (last && cut && last >= cut) { excluded.push({kode: k, nama: nama, salesman: sm, reason: 'Beli BMX Opak ' + fmtDate(last) + ' (dalam ' + lb + ' bulan terakhir)'}); return; }
+    var f = (data.first || {})[k] || pos[0].d;
+    (sales[sm] = sales[sm] || []).push({kode: k, nama: nama, alamat: 'Nota ' + String(pos[0].no || '-').trim() + ' · ' + fmtDus(net) + ' dus',
+      tgl: pos[0].d, jenis: f >= start ? 'M' : 'R', last: last, src: 'auto'});
+  });
+  var rows = Object.keys(sales).sort().map(function (name) {
+    return {name: name, outlets: sales[name].sort(function (a, b) { return a.tgl < b.tgl ? -1 : a.tgl > b.tgl ? 1 : 0; })};
+  });
+  return {rows: rows, excluded: excluded, cutoff: cut};
+}
+/* ===== akhir logika NOO ===== */
+
+
+var GS = (typeof google !== 'undefined' && google.script && google.script.run) ? google.script.run : null;
+var PREVIEW = !GS;
+var STORE = 'klaim-noo-opak-v1';
+var S = null;
+var rows = [], head = {distributor:'', area:'', periode:'', pengaju:'', kontak:'', code:''};
+var mode = 'auto', AUTO = null, DET = null, savedPays = {};
+
+var fmt = function(n){ return new Intl.NumberFormat('id-ID').format(Math.round(n||0)); };
+var rp = function(n){ return 'Rp ' + fmt(n); };
+var rate = function(x){ return String(x).replace('.', ','); };
+var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+var $ = function(id){ return document.getElementById(id); };
+function blankOutlet(){ return {kode:'', nama:'', alamat:'', tgl:'', jenis:'M', last:''}; }
+function blank(){ var r = {name:'', pay:{m:'own', bank:'', cab:'', an:''}, outlets:[]}; for (var i=0;i<5;i++) r.outlets.push(blankOutlet()); return r; }
+function filled(o){ return String(o.kode||'').trim() || String(o.nama||'').trim(); }
+function defaultPeriode(){ var d = new Date(); d.setDate(1); d.setMonth(d.getMonth()-1); return d.getFullYear()+'-'+pad2(d.getMonth()+1); }
+
+/* ---------- start ---------- */
+function start(){
+  if (PREVIEW) boot({perOutlet:2000, minOutlet:25, lookback:3, noLookback:'2026-10', minDus:1, packRules:'40PCS=40:4', ownThr:500000, titipThr:5000000, titipRate:2.5, coRate:15, entity:'CV Sumber Harum Utama (SHU)', needCode:false, open:true});
+  else GS.withSuccessHandler(boot).withFailureHandler(function(e){ clearTimeout(window.__bootTimer); loadFail('Gagal memuat pengaturan: ' + (e && e.message || e)); }).getPublicSettings();
+  window.__bootTimer = setTimeout(function(){ if (!S) loadFail('Server tidak merespons. Periksa koneksi lalu muat ulang.'); }, 25000);
+}
+function loadFail(msg){
+  $('app').innerHTML = '<div class="panel center"><h1>Form belum bisa dimuat</h1><p class="sub">'+esc(msg)+'</p><p class="sub" style="font-size:13px">Muat ulang halaman. Bila tetap muncul, kirim pesan ini ke admin.</p></div>';
+}
+function boot(settings){
+  clearTimeout(window.__bootTimer);
+  if (!settings || typeof settings !== 'object') { loadFail('Pengaturan dari server tidak terbaca (cek sheet Pengaturan).'); return; }
+  S = settings;
+  if (!S.open) { $('app').innerHTML = '<div class="panel center"><h1>Form klaim sedang ditutup</h1><p class="sub">Silakan hubungi admin Harum Group.</p></div>'; return; }
+  load(); renderShell();
+}
+
+function renderShell(){
+  setTimeout(refreshSubmit, 0);
+  if (!head.periode) head.periode = defaultPeriode();
+  $('app').innerHTML =
+    (PREVIEW ? '<span class="preview-badge">Mode pratinjau — submit tidak dikirim</span>' : '') +
+    '<h1>Form Klaim Insentif NOO BMX Opak</h1>' +
+    '<p class="sub">Daftarkan outlet NOO BMX Opak per salesman, lalu klik <b>Submit Klaim</b>. Insentif ditanggung ' + esc(S.entity) + '.</p>' +
+    '<section class="panel"><h2>Data Klaim</h2><div class="grid">' +
+      field('distributor','Nama Distributor',true,'mis. PT ...') +
+      field('area','Area / Region',false,'mis. East') +
+      '<label class="f"><span>Periode Klaim <span class="req">*</span></span><input type="month" data-h="periode"></label>' +
+      field('pengaju','Diajukan oleh',true,'Nama lengkap') +
+      field('kontak','No. HP / WA',false,'08xx') +
+      (S.needCode ? field('code','Kode Akses',true,'dari admin') : '') +
+    '</div></section>' +
+    '<section class="panel"><h2>Mekanisme</h2><div class="rules">' +
+      '<div class="rule-box"><b class="t">Insentif</b><div class="big-num">'+rp(S.perOutlet)+'</div>per outlet NOO valid, untuk salesman dengan minimal <b>'+S.minOutlet+' outlet</b> NOO valid dalam periode. Outlet dihitung bila pembeliannya minimal <b>'+fmtDus(S.minDus||1)+' karton</b>.</div>' +
+      '<div class="rule-box"><b class="t">Outlet yang dihitung NOO</b><ul><li><b>NOO Murni</b> — outlet baru: transaksi pertamanya dengan distributor terjadi di periode klaim.</li>' +
+        '<li><b>Outlet Existing</b> — outlet lama yang <b>tidak membeli BMX Opak dalam '+S.lookback+' bulan terakhir</b> (sejak <b id="cut"></b>).</li>' +
+        '<li>Satu outlet hanya dihitung satu kali, dan tidak boleh sudah diklaim di periode sebelumnya.</li></ul></div>' +
+      '<div class="rule-box"><b class="t">Potongan pajak</b><ul><li>Rekening sendiri &lt; '+rp(S.ownThr)+' → 0%.</li><li>Titip 1 rekening, kumulatif ≥ '+rp(S.titipThr)+' → '+rate(S.titipRate)+'% per orang.</li><li>Rekening a.n. perusahaan → '+rate(S.coRate)+'%.</li></ul></div>' +
+    '</div></section>' +
+    '<section class="panel"><h2>Daftar Outlet NOO</h2><div class="tabs">' +
+      '<button class="tab'+(mode==='auto'?' on':'')+'" data-mode="auto">⚡ Upload data transaksi<small>NOO terdeteksi otomatis dari export faktur (disarankan)</small></button>' +
+      '<button class="tab'+(mode==='manual'?' on':'')+'" data-mode="manual">✎ Isi manual<small>Ketik / tempel daftar outlet per salesman</small></button>' +
+    '</div><div id="auto-panel"></div></section>' +
+    '<div id="list"></div>' +
+    '<div class="actions"><button class="b primary" id="add">+ Tambah Salesman</button><button class="b" id="reset">Kosongkan Form</button></div>' +
+    '<section class="panel"><h2>Ringkasan Klaim</h2><div class="tw"><table class="sum"><thead><tr>' +
+      '<th class="l">No</th><th class="l">Salesman</th><th>Outlet Diajukan</th><th>Outlet Valid</th><th>Murni</th><th>Existing</th><th class="c">Min. '+S.minOutlet+'</th><th>Insentif</th><th>Pajak</th><th>Diterima</th>' +
+      '</tr></thead><tbody id="sum-body"></tbody><tfoot id="sum-foot"></tfoot></table></div><div id="alerts"></div></section>' +
+    '<div class="submit-bar"><div id="bar-tot" style="font-weight:700"></div><button class="b primary big" id="submit">Submit Klaim</button></div>';
+
+  document.querySelectorAll('[data-h]').forEach(function(inp){
+    inp.value = head[inp.dataset.h] || '';
+    inp.addEventListener('input', function(){ head[inp.dataset.h] = inp.value; inp.classList.remove('err');
+      if (inp.dataset.h !== 'periode') { save(); return; }
+      if (mode === 'auto') { rememberPays(); runDetect(); renderAutoPanel(); renderCards(); } else update(); });
+  });
+  $('add').onclick = function(){ rows.push(blank()); renderCards(); var ins = document.querySelectorAll('.sm-name input'); ins[ins.length-1].focus(); };
+  $('reset').onclick = function(){
+    var b = $('reset');
+    if (b.dataset.confirm) { clearAll(); renderShell(); }
+    else { b.dataset.confirm = 1; b.textContent = 'Klik lagi untuk konfirmasi'; setTimeout(function(){ delete b.dataset.confirm; b.textContent = 'Kosongkan Form'; }, 3000); }
+  };
+  $('submit').onclick = confirmSubmit;
+  document.querySelectorAll('[data-mode]').forEach(function(b){ b.onclick = function(){ setMode(b.dataset.mode); }; });
+  bindList();
+  renderAutoPanel();
+  renderCards();
+}
+
+/* ---------- mode upload data transaksi ---------- */
+function setMode(m){
+  if (m === mode) return;
+  rememberPays();
+  mode = m;
+  if (mode === 'manual') { rows = [blank()]; }
+  else { rows = []; if (AUTO) runDetect(); }
+  renderShell();
+}
+function rememberPays(){ rows.forEach(function(r){ if (r.name) savedPays[r.name] = r.pay; }); }
+function renderAutoPanel(){
+  var el = $('auto-panel');
+  $('add').style.display = mode === 'auto' ? 'none' : '';
+  if (mode !== 'auto') { el.innerHTML = '<p class="sub" style="margin:0">Isi outlet per salesman di bawah, atau gunakan tombol <b>Tempel dari Excel</b>.</p>'; return; }
+  var h = '<div class="drop" id="drop"><b>Klik atau tarik file ke sini</b><div class="sub" style="margin:4px 0 0">Export faktur penjualan (.xlsx / .xls / .csv) yang mencakup <b>periode klaim + '+S.lookback+' bulan sebelumnya</b>.<br>Kolom yang dibaca: Tanggal, Kode Pelanggan, Nama Pelanggan, Nama Salesman, Nama Barang, Qty (Nomor Nota opsional).</div></div>' +
+    '<input type="file" id="file" accept=".xlsx,.xls,.csv" style="display:none"><div id="auto-msg"></div>';
+  if (AUTO) {
+    h += '<div class="stats">' +
+      '<div class="stat"><b>'+esc(AUTO.fileName)+'</b><span>'+fmt(AUTO.rowsRead)+' baris transaksi dibaca</span></div>' +
+      '<div class="stat"><b>'+fmtDate(AUTO.dataMin)+' – '+fmtDate(AUTO.dataMax)+'</b><span>rentang data</span></div>' +
+      '<div class="stat"><b>'+fmt(AUTO.tx.length)+'</b><span>transaksi BMX Opak'+(unitSummary(AUTO)?' · '+unitSummary(AUTO):'')+'</span></div>' +
+      '<div class="stat"><b>'+(DET ? DET.rows.reduce(function(a,r){return a+r.outlets.length;},0) : 0)+'</b><span>outlet NOO terdeteksi '+periodeLabel(head.periode)+'</span></div></div>';
+    var cut = dataStartNeeded(head.periode, S);
+    if (isWaived(head.periode, S)) h += '<div class="alert info">'+periodeLabel(head.periode)+' adalah bulan awal program: semua outlet yang membeli BMX Opak di bulan ini dihitung NOO, tanpa syarat '+S.lookback+' bulan tidak membeli sebelumnya.</div>';
+    if (AUTO.dataMin > cut) h += '<div class="alert bad">Data belum cukup: untuk periode '+periodeLabel(head.periode)+' dibutuhkan data mulai '+fmtDate(cut)+'. File ini mulai '+fmtDate(AUTO.dataMin)+'.</div>';
+    if (AUTO.dataMax < head.periode + '-01') h += '<div class="alert bad">File belum berisi transaksi bulan '+periodeLabel(head.periode)+'. Pilih periode lain atau upload data terbaru.</div>';
+    h += unitAlerts(AUTO);
+    if (!AUTO.tx.length) h += '<div class="alert warn">Tidak ditemukan produk BMX Opak (kata kunci: '+esc(S.keywords||'OPAK')+'). Pastikan file berisi kolom Nama Barang.</div>';
+    if (DET && DET.excluded.length) h += '<details class="ex"><summary>'+DET.excluded.length+' outlet membeli BMX Opak di periode ini tapi tidak dihitung NOO</summary><table>' +
+      DET.excluded.map(function(x){ return '<tr><td>'+esc(x.kode)+'</td><td>'+esc(x.nama)+'</td><td>'+esc(x.salesman)+'</td><td style="color:var(--bad)">'+esc(x.reason)+'</td></tr>'; }).join('') + '</table></details>';
+    if (DET && !DET.rows.length && AUTO.tx.length) h += '<div class="alert warn">Tidak ada outlet NOO di periode '+periodeLabel(head.periode)+'.</div>';
+  }
+  el.innerHTML = h;
+  var drop = $('drop'), file = $('file');
+  drop.onclick = function(){ file.click(); };
+  drop.ondragover = function(e){ e.preventDefault(); drop.classList.add('hover'); };
+  drop.ondragleave = function(){ drop.classList.remove('hover'); };
+  drop.ondrop = function(e){ e.preventDefault(); drop.classList.remove('hover'); if (e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]); };
+  file.onchange = function(){ if (file.files[0]) readFile(file.files[0]); };
+}
+function autoMsg(html){ var m = $('auto-msg'); if (m) m.innerHTML = html; }
+function loadXLSX(cb){
+  if (window.XLSX) return cb();
+  var sc = document.createElement('script');
+  sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  sc.onload = cb; sc.onerror = function(){ autoMsg('<div class="alert bad">Gagal memuat pembaca Excel. Periksa koneksi internet lalu coba lagi.</div>'); };
+  document.head.appendChild(sc);
+}
+function readFile(f){
+  if (f.size > 10 * 1024 * 1024) { autoMsg('<div class="alert bad">File terlalu besar (maks. 10 MB). Hapus kolom/bulan yang tidak perlu lalu coba lagi.</div>'); return; }
+  autoMsg('<div class="alert info">Membaca '+esc(f.name)+'…</div>');
+  loadXLSX(function(){
+    var fr = new FileReader();
+    fr.onload = function(){
+      setTimeout(function(){
+        try {
+          var buf = new Uint8Array(fr.result);
+          var parsed = parseWorkbook(XLSX.read(buf, {type:'array', cellDates:false, dense:true}));
+          var bin = ''; for (var i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
+          parsed.fileName = f.name; parsed.b64 = btoa(bin);
+          AUTO = parsed;
+          var lastM = AUTO.dataMax.slice(0, 7);
+          if (!head.periode || head.periode > lastM || AUTO.months.indexOf(head.periode) < 0) head.periode = lastM;
+          rememberPays(); runDetect(); renderShell();
+        } catch (e) { autoMsg('<div class="alert bad">'+esc(e.message || e)+'</div>'); }
+      }, 30);
+    };
+    fr.readAsArrayBuffer(f);
+  });
+}
+function unitAlerts(f){
+  var h = '';
+  if (f.noUnit) h += '<div class="alert info">Kolom satuan tidak ditemukan — semua qty dianggap DUS.</div>';
+  var unk = Object.keys(f.unknown || {});
+  if (unk.length) h += '<div class="alert warn">'+unk.map(function(u){ return fmt(f.unknown[u])+' baris satuan "'+esc(u)+'"'; }).join(', ')+' tidak bisa dikonversi ke dus dan tidak dihitung. Hubungi admin untuk menambah aturan konversi.</div>';
+  return h;
+}
+function unitSummary(f){ var u = Object.keys(f.units || {}); return u.length ? 'Satuan: ' + u.map(function(x){ return esc(x) + ' ' + fmt(f.units[x]); }).join(' · ') : ''; }
+var COLS = {
+  d: ['tanggal','tgl','tanggal faktur','tgl faktur','tanggal nota','tgl nota','date','tanggal transaksi'],
+  k: ['kode pelanggan','kode outlet','kode customer','kode toko','kd pelanggan','kode cust','customer code','id pelanggan'],
+  n: ['namapelanggan','nama pelanggan','nama outlet','nama toko','nama customer','customer','pelanggan'],
+  s: ['nama salesman','salesman','nama sales','sales','kode salesman'],
+  b: ['nama barang','nama produk','produk','nama item','item','deskripsi barang','barang'],
+  kb: ['kode','kode barang','kode produk','kode item','sku'],
+  q: ['qty','kuantitas','quantity','jumlah qty','jml qty'],
+  u: ['sat','satuan','unit','uom','satuan jual','sat jual','satuan qty'],
+  no: ['nomor nota','no nota','nomor faktur','no faktur','no. faktur','invoice','no invoice','nota']
+};
+function normH(h){ return String(h==null?'':h).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); }
+function mapHeader(row){
+  var H = row.map(normH), m = {};
+  Object.keys(COLS).forEach(function(key){
+    var al = COLS[key].map(normH), idx = -1;
+    for (var a = 0; a < al.length && idx < 0; a++) idx = H.indexOf(al[a]);
+    m[key] = idx;
+  });
+  return m;
+}
+function cellDate(v){
+  if (typeof v === 'number' && v > 20000 && v < 80000) { var d = new Date(Math.round((v - 25569) * 864e5)); return d.getUTCFullYear()+'-'+pad2(d.getUTCMonth()+1)+'-'+pad2(d.getUTCDate()); }
+  return toISO(v);
+}
+function parseWorkbook(wb){
+  var tx = [], first = {}, dataMin = '', dataMax = '', rowsRead = 0, months = {}, found = false, kw = S.keywords || 'OPAK', units = {}, unknown = {}, noUnit = false;
+  wb.SheetNames.forEach(function(name){
+    var aoa = XLSX.utils.sheet_to_json(wb.Sheets[name], {header:1, raw:true, defval:''});
+    for (var h = 0; h < Math.min(aoa.length, 15); h++) {
+      var m = mapHeader(aoa[h]);
+      if (m.d < 0 || m.k < 0 || m.b < 0 || m.q < 0) continue;
+      found = true; if (m.u < 0) noUnit = true;
+      for (var i = h + 1; i < aoa.length; i++) {
+        var r = aoa[i], d = cellDate(r[m.d]), k = normKode(r[m.k]), q = Number(String(r[m.q]).replace(',', '.'));
+        if (!d || !k || isNaN(q)) continue;
+        rowsRead++;
+        if (!dataMin || d < dataMin) dataMin = d;
+        if (!dataMax || d > dataMax) dataMax = d;
+        months[d.slice(0,7)] = 1;
+        if (q > 0 && (!first[k] || d < first[k])) first[k] = d;
+        var b = String(r[m.b]).trim(), kb = m.kb >= 0 ? String(r[m.kb]).trim() : '';
+        if (isOpak(b, kb, kw)) {
+          var u = m.u >= 0 ? String(r[m.u]).trim().toUpperCase() : '', dq = toDus(q, u, b, kb, S);
+          units[u || 'DUS'] = (units[u || 'DUS'] || 0) + 1;
+          if (dq === null) { unknown[u] = (unknown[u] || 0) + 1; continue; }
+          tx.push({d:d, k:k, n:String(m.n >= 0 ? r[m.n] : '').trim(), s:String(m.s >= 0 ? r[m.s] : '').trim(), q:dq, qr:q, u:u, b:b, kb:kb, no:String(m.no >= 0 ? r[m.no] : '').trim()});
+        }
+      }
+      break;
+    }
+  });
+  if (!found) throw new Error('Kolom wajib tidak ditemukan. Pastikan baris judul berisi: Tanggal, Kode Pelanggan, Nama Barang, Qty (dan Nama Salesman).');
+  if (!rowsRead) throw new Error('Tidak ada baris transaksi yang terbaca.');
+  var opakKeys = {}; tx.forEach(function(t){ opakKeys[t.k] = 1; });
+  var firstOpak = {}; Object.keys(opakKeys).forEach(function(k){ firstOpak[k] = first[k]; });
+  return {tx:tx, first:firstOpak, dataMin:dataMin, dataMax:dataMax, rowsRead:rowsRead, months:Object.keys(months).sort(), units:units, unknown:unknown, noUnit:noUnit};
+}
+function runDetect(){
+  if (!AUTO || !head.periode) { DET = null; return; }
+  DET = detectNoo(AUTO, head.periode, S);
+  rows = DET.rows.map(function(r){ return {name:r.name, auto:true, pay:savedPays[r.name] || {m:'own', bank:'', cab:'', an:''}, outlets:r.outlets}; });
+}
+function field(key, label, req, ph){ return '<label class="f"><span>'+label+(req?' <span class="req">*</span>':'')+'</span><input data-h="'+key+'" placeholder="'+ph+'"></label>'; }
+
+/* ---------- salesman cards ---------- */
+function outletRow(o, j){
+  return '<tr data-j="'+j+'"><td class="n">'+(j+1)+'</td>' +
+    '<td><input data-o="kode" value="'+esc(o.kode)+'" placeholder="Kode" style="width:110px"></td>' +
+    '<td><input data-o="nama" value="'+esc(o.nama)+'" placeholder="Nama outlet" style="min-width:170px"></td>' +
+    '<td><input data-o="alamat" value="'+esc(o.alamat)+'" placeholder="Alamat / kecamatan" style="min-width:150px"></td>' +
+    '<td><input type="date" data-o="tgl" value="'+esc(o.tgl)+'" style="width:140px"></td>' +
+    '<td><select data-o="jenis" style="width:118px"><option value="M"'+(o.jenis!=='R'?' selected':'')+'>NOO Murni</option><option value="R"'+(o.jenis==='R'?' selected':'')+'>Outlet Existing</option></select></td>' +
+    '<td><input type="date" data-o="last" value="'+esc(o.last)+'" style="width:140px" title="Tanggal pembelian BMX Opak terakhir sebelum NOO (wajib untuk Reaktivasi)"></td>' +
+    '<td class="st" data-st></td><td><button class="btn-x" data-delo title="Hapus outlet">×</button></td></tr>';
+}
+function outletRowRO(o, j){
+  return '<tr data-j="'+j+'"><td class="n">'+(j+1)+'</td><td class="ro">'+esc(o.kode)+'</td><td class="ro">'+esc(o.nama)+'</td><td class="ro" style="color:var(--muted)">'+esc(o.alamat)+'</td>' +
+    '<td class="ro">'+fmtDate(o.tgl)+'</td><td class="ro">'+JENIS[o.jenis]+'</td><td class="ro">'+(fmtDate(o.last)||'<span style="color:#b6bbb7">belum pernah</span>')+'</td><td class="st" data-st></td><td></td></tr>';
+}
+function renderCards(){
+  if (mode === 'auto' && !rows.length) { $('list').innerHTML = ''; update(); return; }
+  $('list').innerHTML = rows.map(function(r,i){
+    return '<div class="sm" data-i="'+i+'">' +
+      '<div class="sm-head"><div class="sm-no">'+(i+1)+'</div><div class="sm-name"><input data-f="name" value="'+esc(r.name)+'" placeholder="Nama salesman *"'+(r.auto?' readonly':'')+'></div>' +
+      (r.auto ? '<span class="src-auto">dari data transaksi</span>' : '') +
+      '<span class="badge na" data-badge></span>'+(r.auto ? '' : '<button class="btn-x" data-del title="Hapus salesman">×</button>')+'</div>' +
+      '<div class="prog"><span data-count></span><div class="bar" data-bar><i></i></div><span data-need></span></div>' +
+      '<div class="tw"><table class="ol"><thead><tr><th>#</th><th>Kode Outlet</th><th>Nama Outlet</th><th>Alamat</th><th>Tgl Transaksi NOO</th><th>Jenis</th><th>Beli BMX Opak Sebelumnya</th><th>Status</th><th></th></tr></thead>' +
+      '<tbody>' + r.outlets.map(r.auto ? outletRowRO : outletRow).join('') + '</tbody></table></div>' +
+      (r.auto ? '' : '<div class="tools"><button class="b small" data-addo="1">+ 1 outlet</button><button class="b small" data-addo="10">+ 10 baris</button>' +
+        '<button class="b small" data-paste>Tempel dari Excel</button><button class="b small" data-clean>Hapus baris kosong</button></div>') +
+      '<div class="paybox">' +
+        '<label class="f">Metode pembayaran<select data-pay="m">' + Object.keys(METHODS).map(function(m){ return '<option value="'+m+'"'+(r.pay.m===m?' selected':'')+'>'+METHODS[m]+'</option>'; }).join('') + '</select></label>' +
+        '<label class="f">Bank / No. Rekening<input data-pay="bank" value="'+esc(r.pay.bank)+'" placeholder="mis. BCA 1234567890"></label>' +
+        '<label class="f">Cabang<input data-pay="cab" value="'+esc(r.pay.cab)+'" placeholder="Cabang bank"></label>' +
+        '<label class="f">Atas nama<input data-pay="an" value="'+esc(r.pay.an)+'" placeholder="Nama pemilik rekening"></label>' +
+      '</div>' +
+      '<div class="sm-foot"><div data-msg style="font-size:13px;font-weight:600"></div><div class="payout"><small>Insentif</small><span class="v num" data-inc></span></div></div>' +
+    '</div>';
+  }).join('');
+  update();
+}
+
+function compute(){
+  var input = {periode: head.periode, rows: rows.map(function(r){ return {name:r.name, pay:r.pay, outlets:r.outlets.filter(filled)}; })};
+  return computeNoo(input, S);
+}
+
+function update(){
+  var C = compute();
+  var cutEl = $('cut'); if (cutEl) cutEl.textContent = !head.periode ? '(pilih periode)' : C.cutoff ? fmtDate(C.cutoff) : 'tidak berlaku untuk ' + periodeLabel(head.periode) + ' (bulan awal program)';
+  document.querySelectorAll('.sm').forEach(function(el){
+    var i = +el.dataset.i, r = rows[i], c = C.rows[i], k = 0;
+    el.querySelectorAll('tr[data-j]').forEach(function(tr){
+      var o = r.outlets[+tr.dataset.j], st = tr.querySelector('[data-st]');
+      if (!filled(o)) { st.innerHTML = '<span class="empty">—</span>'; tr.classList.remove('bad'); return; }
+      var e = c.outlets[k++];
+      tr.classList.toggle('bad', !e.ok);
+      st.innerHTML = e.ok ? '<span class="okk">✓ Valid</span>' : '<span class="no">✕ '+esc(e.reason)+'</span>';
+    });
+    var need = Math.max(S.minOutlet - c.valid, 0);
+    el.querySelector('[data-count]').innerHTML = '<b>'+c.valid+'</b> valid dari '+c.submitted+' outlet';
+    var bar = el.querySelector('[data-bar]'); bar.classList.toggle('ok', c.eligible); bar.querySelector('i').style.width = Math.min(c.valid / S.minOutlet * 100, 100) + '%';
+    el.querySelector('[data-need]').textContent = c.eligible ? 'Memenuhi minimal ' + S.minOutlet : 'Kurang ' + need + ' outlet valid';
+    var bd = el.querySelector('[data-badge]');
+    bd.className = 'badge ' + (c.eligible ? 'ok' : c.submitted ? 'bad' : 'na');
+    bd.textContent = c.eligible ? 'Lolos minimal' : c.submitted ? 'Belum lolos' : 'Belum ada outlet';
+    el.querySelector('[data-inc]').textContent = rp(c.incentive);
+    el.querySelector('[data-msg]').textContent = c.eligible ? c.valid + ' × ' + rp(S.perOutlet) : 'Insentif dihitung bila outlet valid ≥ ' + S.minOutlet + '.';
+    el.querySelector('[data-msg]').style.color = c.eligible ? 'var(--ok)' : 'var(--muted)';
+  });
+  var find = function(i){ for (var j=0;j<C.pay.list.length;j++) if (C.pay.list[j].i===i) return C.pay.list[j]; return {nom:0,tax:0,net:0}; };
+  $('sum-body').innerHTML = C.rows.map(function(c,i){
+    var p = find(i);
+    return '<tr><td class="l">'+(i+1)+'</td><td class="l">'+(esc(c.name)||'<span style="color:#aaa">—</span>')+'</td><td class="num">'+c.submitted+'</td><td class="num">'+c.valid+'</td><td class="num">'+c.murni+'</td><td class="num">'+c.reakt+'</td>' +
+      '<td class="c">'+(c.eligible?'<span class="badge ok">Ya</span>':'<span class="badge bad">Tidak</span>')+'</td><td class="num">'+fmt(c.incentive)+'</td><td class="num">'+(p.tax?fmt(p.tax):'-')+'</td><td class="num"><b>'+fmt(p.net)+'</b></td></tr>';
+  }).join('');
+  $('sum-foot').innerHTML = '<tr><td></td><td class="l">Total</td><td class="num">'+C.submitted+'</td><td class="num">'+C.valid+'</td><td></td><td></td><td class="c">'+C.eligible+' lolos</td><td class="num">'+fmt(C.total)+'</td><td class="num">'+fmt(C.pay.tax)+'</td><td class="num">'+rp(C.totalNet)+'</td></tr>';
+  var al = '';
+  if (C.pay.titipSum>0) al += C.pay.titipOn ? '<div class="alert info">Kumulatif titip rekening '+rp(C.pay.titipSum)+' ≥ '+rp(S.titipThr)+' → dipotong '+rate(S.titipRate)+'% per orang.</div>' : '<div class="alert info">Kumulatif titip rekening '+rp(C.pay.titipSum)+' di bawah '+rp(S.titipThr)+' → tidak dipotong pajak.</div>';
+  if (C.pay.list.some(function(x){ return x.flag; })) al += '<div class="alert warn">Ada pembayaran ke rekening sendiri ≥ '+rp(S.ownThr)+' — pajak akan dicek admin.</div>';
+  al += '<div class="alert info">Status outlet di form adalah cek awal. Admin akan mencocokkan dengan data transaksi actual, termasuk outlet yang sudah pernah diklaim sebelumnya.</div>';
+  $('alerts').innerHTML = al;
+  $('bar-tot').innerHTML = C.valid + ' outlet valid · ' + C.eligible + ' salesman lolos · insentif <span class="num">'+rp(C.total)+'</span>';
+  save();
+  return C;
+}
+
+function bindList(){
+  var list = $('list');
+  list.addEventListener('input', function(e){
+    var t = e.target, el = t.closest('.sm'); if (!el) return;
+    var r = rows[+el.dataset.i]; t.classList.remove('err');
+    if (t.dataset.f === 'name') { r.name = t.value; update(); }
+    else if (t.dataset.o) { r.outlets[+t.closest('tr').dataset.j][t.dataset.o] = t.value; update(); }
+    else if (t.dataset.pay) { r.pay[t.dataset.pay] = t.value; update(); }
+  });
+  list.addEventListener('change', function(e){
+    var t = e.target, el = t.closest('.sm'); if (!el) return;
+    var r = rows[+el.dataset.i];
+    if (t.dataset.o) { r.outlets[+t.closest('tr').dataset.j][t.dataset.o] = t.value; update(); }
+    if (t.dataset.pay) { r.pay[t.dataset.pay] = t.value; update(); }
+  });
+  list.addEventListener('click', function(e){
+    var t = e.target, el = t.closest('.sm'); if (!el) return;
+    var i = +el.dataset.i, r = rows[i];
+    if (t.matches('[data-del]')) { rows.splice(i,1); if (!rows.length) rows.push(blank()); renderCards(); }
+    else if (t.matches('[data-delo]')) { r.outlets.splice(+t.closest('tr').dataset.j, 1); if (!r.outlets.length) r.outlets.push(blankOutlet()); renderCards(); }
+    else if (t.matches('[data-addo]')) { for (var k=0;k<+t.dataset.addo;k++) r.outlets.push(blankOutlet()); renderCards(); }
+    else if (t.matches('[data-clean]')) { r.outlets = r.outlets.filter(filled); if (!r.outlets.length) r.outlets.push(blankOutlet()); renderCards(); }
+    else if (t.matches('[data-paste]')) openPaste(i);
+  });
+}
+
+/* ---------- tempel dari Excel ---------- */
+function openPaste(i){
+  $('modal-box').innerHTML = '<h3>Tempel daftar outlet — '+(esc(rows[i].name)||'salesman '+(i+1))+'</h3>' +
+    '<p class="sub" style="margin:0">Salin dari Excel / Google Sheets dengan urutan kolom berikut (baris judul boleh ikut):</p>' +
+    '<code class="fmt">Kode Outlet | Nama Outlet | Alamat | Tgl Transaksi NOO | Jenis (Murni/Reaktivasi) | Tgl Beli BMX Opak Terakhir</code>' +
+    '<p class="sub" style="font-size:12px;margin:0 0 8px">Format tanggal: 13/11/2026 atau 2026-11-13. Kolom Jenis boleh "M"/"R"; kosong = NOO Murni.</p>' +
+    '<textarea id="paste-ta" placeholder="Tempel di sini (Ctrl+V)"></textarea>' +
+    '<label style="display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13px"><input type="checkbox" id="paste-replace" style="width:auto"> Ganti seluruh daftar outlet salesman ini</label>' +
+    '<div id="paste-info" class="sub" style="margin:8px 0 0;font-size:13px"></div>' +
+    '<div class="row"><button class="b" id="m-cancel">Batal</button><button class="b primary" id="m-ok">Tambahkan</button></div>';
+  $('modal').classList.add('show');
+  var ta = $('paste-ta'); ta.focus();
+  ta.addEventListener('input', function(){ var n = parsePaste(ta.value).length; $('paste-info').textContent = n ? n + ' outlet terbaca.' : ''; });
+  $('m-cancel').onclick = closeModal;
+  $('m-ok').onclick = function(){
+    var list = parsePaste(ta.value);
+    if (!list.length) { $('paste-info').textContent = 'Tidak ada baris yang terbaca.'; return; }
+    var r = rows[i];
+    r.outlets = ($('paste-replace').checked ? [] : r.outlets.filter(filled)).concat(list);
+    closeModal(); renderCards();
+  };
+}
+function parsePaste(text){
+  return String(text||'').split(/\r?\n/).map(function(line){
+    if (!line.trim()) return null;
+    var c = line.indexOf('\t') >= 0 ? line.split('\t') : line.split(/;|,(?=\s*\S)/);
+    c = c.map(function(x){ return x.trim(); });
+    if (/kode/i.test(c[0]) && /nama/i.test(c[1]||'')) return null;
+    return {kode:c[0]||'', nama:c[1]||'', alamat:c[2]||'', tgl:toISO(c[3]), jenis:normJenis(c[4])||'M', last:toISO(c[5])};
+  }).filter(function(o){ return o && filled(o); });
+}
+
+/* ---------- submit ---------- */
+function validate(){
+  var bad = false;
+  ['distributor','periode','pengaju'].concat(S.needCode?['code']:[]).forEach(function(k){
+    if (!String(head[k]||'').trim()) { bad = true; var el = document.querySelector('[data-h="'+k+'"]'); if (el) el.classList.add('err'); }
+  });
+  if (mode === 'manual') rows.forEach(function(r,i){ if (!r.name.trim()) { bad = true; document.querySelector('.sm[data-i="'+i+'"] [data-f="name"]').classList.add('err'); } });
+  if (bad) { var first = document.querySelector('.err'); if (first) { first.scrollIntoView({behavior:'smooth', block:'center'}); first.focus(); } }
+  return !bad;
+}
+function confirmSubmit(){
+  if (!validate()) { msgModal('Data belum lengkap', 'Kolom bertanda merah wajib diisi: distributor, periode, nama pengaju'+(S.needCode?', kode akses':'')+' dan nama salesman.'); return; }
+  var C = compute();
+  if (mode === 'auto') {
+    if (!AUTO) { msgModal('Belum ada data', 'Upload file data transaksi terlebih dahulu.'); return; }
+    var cut = dataStartNeeded(head.periode, S);
+    if (AUTO.dataMin > cut || AUTO.dataMax < head.periode + '-01') { msgModal('Data transaksi belum cukup', 'Untuk periode '+periodeLabel(head.periode)+' file harus berisi transaksi mulai '+fmtDate(cut)+' sampai bulan '+periodeLabel(head.periode)+'.'); return; }
+  }
+  if (!C.submitted) { msgModal('Belum ada outlet', mode === 'auto' ? 'Tidak ada outlet NOO terdeteksi di periode ini.' : 'Isi minimal satu outlet NOO.'); return; }
+  $('modal-box').innerHTML = '<h3>Kirim klaim NOO Opak?</h3><p class="sub" style="margin:0">'+esc(head.distributor)+' · '+periodeLabel(head.periode)+' · '+rows.length+' salesman</p>' +
+    '<table><tr><td>Outlet diajukan / valid (cek awal)</td><td class="num">'+C.submitted+' / '+C.valid+'</td></tr>' +
+    '<tr><td>Salesman memenuhi minimal '+S.minOutlet+' outlet</td><td class="num">'+C.eligible+' dari '+rows.length+'</td></tr>' +
+    '<tr><td>Insentif / diterima</td><td class="num">'+fmt(C.total)+' / '+fmt(C.totalNet)+'</td></tr></table>' +
+    '<p class="sub" style="font-size:13px">Outlet yang belum valid tetap ikut terkirim untuk diperiksa admin. Setelah dikirim, klaim tidak bisa diubah dari form ini.</p>' +
+    '<div id="m-err"></div><div class="row"><button class="b" id="m-cancel">Periksa lagi</button><button class="b primary" id="m-ok">Ya, kirim klaim</button></div>';
+  $('modal').classList.add('show');
+  $('m-cancel').onclick = closeModal; $('m-ok').onclick = doSubmit;
+}
+function doSubmit(){
+  var btn = $('m-ok'); btn.disabled = true; btn.textContent = 'Mengirim…'; $('m-cancel').disabled = true;
+  var payload = {distributor:head.distributor, area:head.area, periode:head.periode, pengaju:head.pengaju, kontak:head.kontak, code:head.code, mode:mode,
+    rows: rows.map(function(r){ return {name:r.name, pay:r.pay, outlets: mode === 'auto' ? [] : r.outlets.filter(filled)}; })};
+  if (mode === 'auto') payload.auto = {fileName:AUTO.fileName, fileB64:AUTO.b64, tx:AUTO.tx, first:AUTO.first, dataMin:AUTO.dataMin, dataMax:AUTO.dataMax};
+  btn.textContent = mode === 'auto' ? 'Mengirim data & file…' : 'Mengirim…';
+  var ok = function(res){ closeModal(); showDone(res); };
+  var fail = function(e){ btn.disabled = false; btn.textContent = 'Coba kirim lagi'; $('m-cancel').disabled = false; $('m-err').innerHTML = '<div class="alert bad">'+esc(e && e.message || e)+'</div>'; };
+  if (PREVIEW) { setTimeout(function(){ var C = compute(); ok({id:'NOO-PRATINJAU', submitted:C.submitted, valid:C.valid, eligible:C.eligible, total:C.total, totalNet:C.totalNet}); }, 600); return; }
+  GS.withSuccessHandler(ok).withFailureHandler(fail).submitKlaim(payload);
+}
+function showDone(res){
+  var dist = head.distributor, per = periodeLabel(head.periode);
+  clearAll();
+  $('app').innerHTML = '<div class="panel center"><div style="font-size:44px">✓</div><h1>Klaim NOO berhasil dikirim</h1>' +
+    '<p class="sub">Simpan nomor klaim berikut untuk konfirmasi ke admin.</p><div class="done-id">'+esc(res.id)+'</div><p>'+esc(dist)+' · '+esc(per)+'</p>' +
+    '<table class="sum" style="max-width:440px;margin:16px auto"><tr><td class="l">Outlet diajukan</td><td class="num">'+res.submitted+'</td></tr>' +
+    '<tr><td class="l">Outlet valid (cek sistem)</td><td class="num">'+res.valid+'</td></tr><tr><td class="l">Salesman lolos minimal</td><td class="num">'+res.eligible+'</td></tr>' +
+    '<tr><td class="l"><b>Estimasi diterima</b></td><td class="num"><b>'+rp(res.totalNet)+'</b></td></tr></table>' +
+    '<p class="sub" style="font-size:13px">Nilai final mengikuti hasil verifikasi admin.</p><button class="b primary" id="again">Ajukan klaim baru</button></div>';
+  $('again').onclick = function(){ renderShell(); };
+  window.scrollTo(0,0);
+}
+function msgModal(t, m){ $('modal-box').innerHTML = '<h3>'+esc(t)+'</h3><p>'+esc(m)+'</p><div class="row"><button class="b primary" id="m-cancel">OK</button></div>'; $('modal').classList.add('show'); $('m-cancel').onclick = closeModal; }
+function closeModal(){ $('modal').classList.remove('show'); }
+
+/* ---------- draft lokal ---------- */
+function save(){ setTimeout(refreshSubmit, 0);
+  try {
+    rememberPays();
+    localStorage.setItem(STORE, JSON.stringify({mode:mode, head:head, pays:savedPays, rows: mode === 'manual' ? rows : []}));
+  } catch(e){}
+}
+function load(){
+  try {
+    var s = JSON.parse(localStorage.getItem(STORE)||'null');
+    if (s) { if (s.mode === 'manual' || s.mode === 'auto') mode = s.mode; if (s.pays) savedPays = s.pays; if (s.head) for (var hk in head) head[hk] = s.head[hk] || ''; }
+    if (mode === 'auto') { rows = []; return; }
+    if (s && Array.isArray(s.rows) && s.rows.length) {
+      rows = s.rows.map(function(r){ var b = blank(); b.name = r.name||''; if (r.pay) b.pay = {m:r.pay.m||'own', bank:r.pay.bank||'', cab:r.pay.cab||'', an:r.pay.an||''};
+        if (Array.isArray(r.outlets) && r.outlets.length) b.outlets = r.outlets.map(function(o){ return {kode:o.kode||'', nama:o.nama||'', alamat:o.alamat||'', tgl:o.tgl||'', jenis:o.jenis==='R'?'R':'M', last:o.last||''}; });
+        return b; });
+      if (s.head) for (var k in head) head[k] = s.head[k] || '';
+      return;
+    }
+  } catch(e){}
+  rows = [blank()];
+}
+function clearAll(){ AUTO = null; DET = null; rows = mode === 'manual' ? [blank()] : []; for (var k in head) if (k!=='code') head[k] = ''; save(); }
+
+
+/* ---------- tombol submit aktif hanya bila data wajib sudah lengkap ---------- */
+function refreshSubmit(){
+  var btn = document.getElementById('submit');
+  if (!btn || !S) return;
+  var miss = [];
+  try { miss = missing(); } catch (e) { miss = []; }
+  btn.disabled = miss.length > 0;
+  btn.title = miss.length ? 'Lengkapi: ' + miss.join('; ') : '';
+  var hint = document.getElementById('submit-hint');
+  if (!hint) {
+    hint = document.createElement('div');
+    hint.id = 'submit-hint';
+    hint.style.cssText = 'flex:1;min-width:220px;text-align:right;font-size:12.5px;font-weight:600;color:var(--warn)';
+    btn.parentNode.insertBefore(hint, btn);
+  }
+  hint.textContent = miss.length ? 'Lengkapi dulu: ' + miss.slice(0, 3).join('; ') + (miss.length > 3 ? ' (+' + (miss.length - 3) + ' lainnya)' : '') : '';
+}
+function blankStr(x){ return !String(x == null ? '' : x).trim(); }
+
+function missing(){
+  var m = [];
+  if (blankStr(head.distributor)) m.push('nama distributor');
+  if (blankStr(head.periode)) m.push('periode');
+  if (blankStr(head.pengaju)) m.push('nama pengaju');
+  if (S.needCode && blankStr(head.code)) m.push('kode akses');
+  if (mode === 'auto') {
+    if (!AUTO) m.push('file data transaksi');
+    else {
+      if (AUTO.dataMin > dataStartNeeded(head.periode, S) || AUTO.dataMax < head.periode + '-01') m.push('data transaksi yang mencakup periode');
+      if (!rows.length) m.push('outlet NOO terdeteksi di periode');
+    }
+  } else {
+    var tot = 0;
+    rows.forEach(function(r, i){
+      var f = r.outlets.filter(filled); tot += f.length;
+      if (blankStr(r.name)) m.push('nama salesman ' + (i + 1));
+      var inc = f.filter(function(o){ return blankStr(o.kode) || blankStr(o.nama) || !o.tgl; }).length;
+      if (inc) m.push((r.name.trim() || 'salesman ' + (i + 1)) + ' (' + inc + ' outlet belum lengkap)');
+    });
+    if (!tot) m.push('minimal 1 outlet NOO');
+  }
+  return m;
+}
+
+start();
+</script>
+</body>
+</html>

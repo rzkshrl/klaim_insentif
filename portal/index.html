@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal Klaim Insentif Distributor — Harum Group</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%230f5c4a%22/%3E%3Ctext x=%2232%22 y=%2243%22 font-size=%2234%22 font-family=%22Arial%22 font-weight=%22700%22 fill=%22white%22 text-anchor=%22middle%22%3EH%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f4f5f2;--card:#fff;--ink:#1b1f1d;--muted:#6b726e;--line:#e2e5e0;--brand:#0f5c4a;--brand-2:#e8f2ee}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:14px;line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto;padding:40px 18px 60px}
+  .top{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .logo{width:44px;height:44px;border-radius:12px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;flex:none}
+  h1{font-size:26px;margin:0;letter-spacing:-.02em}
+  .sub{color:var(--muted);margin:8px 0 26px;max-width:720px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;transition:transform .12s, box-shadow .12s, border-color .12s}
+  .card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(15,92,74,.10);border-color:#b9d3c9}
+  .ic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-size:21px;background:var(--brand-2)}
+  .card h2{font-size:17px;margin:0;letter-spacing:-.01em}
+  .card p{margin:0;color:var(--muted);font-size:13.5px}
+  .card ul{margin:0;padding-left:18px;font-size:13px;color:#3b413e}
+  .card li{margin:3px 0}
+  .tag{align-self:flex-start;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:#eef0ec;color:var(--muted)}
+  .tag.up{background:#e7eefc;color:#2848a8}
+  .go{margin-top:auto;display:flex;align-items:center;justify-content:space-between;background:var(--brand);color:#fff;border-radius:11px;padding:12px 14px;font-weight:700}
+  .go span{font-size:18px}
+  .steps{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:20px}
+  .steps h3{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .steps ol{margin:0;padding-left:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:6px 28px;font-size:13.5px}
+  .foot{color:var(--muted);font-size:12.5px;margin-top:22px;text-align:center}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}.steps ol{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="logo">H</div><h1>Portal Klaim Insentif Distributor</h1></div>
+  <p class="sub">Pilih jenis klaim yang ingin diajukan. Setiap form menghitung insentif secara otomatis dan mengirim klaim ke admin Harum Group untuk diverifikasi.</p>
+
+  <div class="grid" id="menu"></div>
+
+  <div class="steps">
+    <h3>Alur pengajuan klaim</h3>
+    <ol>
+      <li>Pilih form klaim sesuai program.</li>
+      <li>Isi data distributor, periode, dan nama pengaju.</li>
+      <li>Isi target &amp; realisasi (Insentif Salesman / SPV / Distributor) atau upload export faktur (NOO Opak &amp; Kompetisi AO 2000).</li>
+      <li>Periksa hasil hitung insentif dan isi data rekening penerima.</li>
+      <li>Klik <b>Submit Klaim</b> dan simpan nomor klaim yang muncul.</li>
+      <li>Admin memverifikasi, lalu klaim diteruskan ke finance untuk pembayaran.</li>
+    </ol>
+  </div>
+  <p class="foot">Pertanyaan seputar klaim? Hubungi admin sales Harum Group dengan menyebutkan nomor klaim Anda.</p>
+</div>
+
+<script>
+/* ===== Daftar form (halaman di Vercel). Alamat server Apps Script diatur di /assets/config.js ===== */
+var FORMS = [
+  {icon:'💰', title:'Insentif Salesman Distributor', tag:'Isi target & realisasi',
+   desc:'Insentif bulanan salesman berdasarkan pencapaian KPI.',
+   points:['Sell Out, AO SKU 2000, AO GC, SO Product Focus 2000','Dibayar terpisah: SHU & NANA','Maks. Rp 500.000 per salesman'],
+   url:'/insentif-salesman/'},
+  {icon:'🏪', title:'Insentif NOO BMX Opak', tag:'Upload data transaksi', up:true,
+   desc:'Insentif outlet baru (NOO) BMX Opak per salesman.',
+   points:['Rp 2.000 per outlet NOO valid','Minimal 25 outlet NOO per salesman','NOO terdeteksi otomatis dari export faktur'],
+   url:'/noo-opak/'},
+  {icon:'🏆', title:'Kompetisi AO SKU 2000', tag:'Upload data transaksi', up:true,
+   desc:'Hadiah untuk salesman dengan AO SKU 2000 (non Money Mouse) tertinggi.',
+   points:['Rp 200.000 untuk 1 pemenang per distributor / group','Syarat: AO ≥ target AO SKU 2000','Group: SAJ, Aldi Jaya, Pilar–Sejahtera–AJP'],
+   url:'/kompetisi-ao2000/'},
+  {icon:'🧭', title:'Insentif SPV Distributor', tag:'Isi target & realisasi',
+   desc:'Insentif bulanan SPV distributor berdasarkan pencapaian KPI distributor.',
+   points:['Skema Mix Product: SO 30%, AO 2000 30%, AO GC 20%, SO PF 20%','Skema 2000 & GC: SO 50%, AO 2000 30%, AO GC 20%','Maks. Rp 2.000.000 per SPV'],
+   url:'/insentif-spv/'},
+  {icon:'🏢', title:'Insentif Distributor (Kuartal)', tag:'Isi target & actual per kuartal',
+   desc:'Insentif distributor per kuartal untuk owner & PIC.',
+   points:['Syarat sell in ≥ 100%; KPI SO 80%, AO 2000 10%, AO GC 10%','Maks 1% actual sell out + bonus 0,5% bila SO > 110%','Group dihitung total: Ananta, Aldi Jaya, SAJ Group'],
+   url:'/insentif-distributor/'}
+];
+var esc = function(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+document.getElementById('menu').innerHTML = FORMS.map(function(f){
+  var ready = /^(https:\/\/|\/)/.test(f.url);
+  if (!ready) return '<div class="card" style="opacity:.6;cursor:default"><div class="ic">'+f.icon+'</div><span class="tag">Segera hadir</span><h2>'+esc(f.title)+'</h2><p>'+esc(f.desc)+'</p><div class="go" style="background:#9aa09c">Link belum tersedia</div></div>';
+  return '<a class="card" href="'+esc(f.url)+'">' +
+    '<div class="ic">'+f.icon+'</div><span class="tag'+(f.up?' up':'')+'">'+esc(f.tag)+'</span>' +
+    '<h2>'+esc(f.title)+'</h2><p>'+esc(f.desc)+'</p>' +
+    '<ul>'+f.points.map(function(p){ return '<li>'+esc(p)+'</li>'; }).join('')+'</ul>' +
+    '<div class="go">Buka form <span>→</span></div></a>';
+}).join('');
+</script>
+</body>
+</html>
