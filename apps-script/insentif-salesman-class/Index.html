@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<base target="_top">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Form Klaim Insentif Salesman Class A/B</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f4f5f2;--card:#fff;--ink:#1b1f1d;--muted:#6b726e;--line:#e2e5e0;--brand:#0f5c4a;--brand-2:#e8f2ee;
+    --ok:#1f7a4d;--ok-bg:#e6f4ec;--warn:#a35b00;--warn-bg:#fdf1de;--bad:#b3261e;--bad-bg:#fbe9e7;
+    --shu:#1d4ea3;--shu-bg:#e9effb;--nana:#8a3d91;--nana-bg:#f5eaf6}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:14px;line-height:1.45}
+  .wrap{max-width:1120px;margin:0 auto;padding:28px 16px 80px}
+  h1{font-size:24px;margin:0 0 4px;letter-spacing:-.02em}
+  .sub{color:var(--muted);margin:0 0 18px}
+  .num{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+  .panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  label.f{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);font-weight:600}
+  label.f .req{color:var(--bad)}
+  input,select{font:inherit;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:#fbfcfa;width:100%}
+  input:focus,select:focus{outline:2px solid var(--brand);outline-offset:-1px;background:#fff}
+  input.num{text-align:right}
+  input[readonly]{background:#f1f3ef;color:var(--muted)}
+  input.err{border-color:var(--bad);background:var(--bad-bg)}
+  .rules{display:grid;grid-template-columns:1fr 1fr 1.3fr 1.3fr;gap:12px}
+  .scheme.cls-a{background:#e7eefc;color:#2848a8} .scheme.cls-b{background:#e6f4ec;color:#1f7a4d} .scheme.cls-x{background:#fbe9e7;color:#b3261e}
+  .rule-box{background:var(--brand-2);border-radius:10px;padding:12px 14px;font-size:13px}
+  .rule-box b.t{display:block;margin-bottom:6px;color:var(--brand)}
+  .rule-box table{width:100%;border-collapse:collapse}
+  .rule-box td{padding:2px 0} .rule-box td:last-child{text-align:right;font-weight:700}
+  .rule-box ul{margin:0;padding-left:18px} .rule-box li{margin:2px 0}
+  .tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;letter-spacing:.04em}
+  .tag.shu{background:var(--shu-bg);color:var(--shu)} .tag.nana{background:var(--nana-bg);color:var(--nana)}
+  .sm{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+  .sm-head{display:flex;gap:12px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .sm-no{width:30px;height:30px;border-radius:8px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+  .sm-name{flex:1;min-width:200px} .sm-name input{font-weight:700;font-size:15px}
+  .scheme{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;background:#eef0ec;color:var(--muted);white-space:nowrap}
+  .scheme.pf{background:#e7eefc;color:#2848a8}
+  .btn-x{border:none;background:none;color:var(--muted);cursor:pointer;font-size:20px;padding:4px 8px;border-radius:8px}
+  .btn-x:hover{background:var(--bad-bg);color:var(--bad)}
+  .tw{overflow-x:auto}
+  table.kpi{width:100%;border-collapse:collapse;min-width:820px}
+  table.kpi th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;text-align:right;padding:10px 10px 6px;white-space:nowrap}
+  table.kpi th:first-child{text-align:left} table.kpi th.shu{color:var(--shu)} table.kpi th.nana{color:var(--nana)}
+  table.kpi td{padding:6px 10px;border-top:1px solid #f0f2ee;text-align:right;vertical-align:middle}
+  table.kpi td:first-child{text-align:left;font-weight:600;min-width:180px}
+  table.kpi td.in{width:140px}
+  table.kpi tr.off td{color:#b6bbb7} table.kpi tr.off td:first-child{text-decoration:line-through}
+  .unit{display:block;font-size:11px;color:var(--muted);font-weight:500}
+  .pill{display:inline-block;min-width:62px;text-align:center;padding:3px 8px;border-radius:7px;font-weight:700;font-size:12.5px}
+  .pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.warn{background:var(--warn-bg);color:var(--warn)}
+  .pill.bad{background:var(--bad-bg);color:var(--bad)} .pill.na{background:#f0f1ef;color:#9aa09c}
+  .paybox{display:grid;grid-template-columns:1.1fr 1.3fr 1fr 1.3fr;gap:10px;padding:12px 16px;border-top:1px solid var(--line);background:#fcfcfb}
+  .sm-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;background:#fafbf9;border-top:1px solid var(--line);flex-wrap:wrap}
+  .status{font-size:13px;font-weight:600;flex:1;min-width:240px}
+  .status.bad{color:var(--bad)} .status.ok{color:var(--ok)} .status.warn{color:var(--warn)}
+  .split{display:flex;gap:18px;align-items:center}
+  .payout{text-align:right}
+  .payout small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+  .payout .v{font-size:20px;font-weight:700} .payout .s{font-size:15px;font-weight:700} .payout .sc{color:var(--muted);font-size:12px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 18px}
+  button.b{font:inherit;font-weight:700;border-radius:10px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:13.5px}
+  button.b.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  button.b.big{padding:14px 22px;font-size:15px}
+  button.b:disabled{opacity:.55;cursor:not-allowed}
+  button.b:hover:not(:disabled){filter:brightness(.96)}
+  table.sum{width:100%;border-collapse:collapse;font-size:13px}
+  table.sum th{background:#f6f7f4;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.sum td{padding:7px 10px;text-align:right;border-bottom:1px solid #f0f2ee;white-space:nowrap}
+  table.sum .l{text-align:left} table.sum .c{text-align:center}
+  table.sum th.shu{color:var(--shu)} table.sum th.nana{color:var(--nana)}
+  table.sum tfoot td{font-weight:800;border-top:2px solid var(--ink);border-bottom:none;background:#fafbf9}
+  .alert{font-size:13px;font-weight:600;padding:10px 12px;border-radius:9px;margin-top:10px}
+  .alert.warn{background:var(--warn-bg);color:var(--warn)} .alert.info{background:var(--brand-2);color:var(--brand)}
+  .alert.bad{background:var(--bad-bg);color:var(--bad)}
+  .submit-bar{position:sticky;bottom:0;background:rgba(244,245,242,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line);padding:12px 0;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .submit-bar .tot{font-weight:700}
+  .modal{position:fixed;inset:0;background:rgba(20,24,22,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+  .modal.show{display:flex}
+  .modal .box{background:#fff;border-radius:16px;max-width:520px;width:100%;padding:22px}
+  .modal h3{margin:0 0 8px;font-size:18px}
+  .modal table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  .modal td{padding:6px 0;border-bottom:1px solid #f0f2ee} .modal td:last-child{text-align:right;font-weight:700}
+  .modal .row{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
+  .center{text-align:center;padding:60px 20px}
+  .done-id{font-size:28px;font-weight:800;color:var(--brand);margin:8px 0}
+  .loading{color:var(--muted);text-align:center;padding:80px 0}
+  .preview-badge{display:inline-block;background:var(--warn-bg);color:var(--warn);font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;margin-bottom:10px}
+  @media (max-width:900px){.grid{grid-template-columns:1fr 1fr}.rules{grid-template-columns:1fr 1fr}.paybox{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.grid,.rules,.paybox{grid-template-columns:1fr}}
+
+  /* status kelengkapan & tombol terkunci */
+  button.b.is-locked,button.b.is-locked:hover{background:#c8ccc8!important;border-color:#c8ccc8!important;color:#fff!important;cursor:not-allowed;filter:none;transform:none}
+  .submit-status{font:inherit;font-size:13px;font-weight:600;border:0;background:none;display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:99px;margin-left:auto;cursor:pointer}
+  .submit-status .dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+  .submit-status.is-todo{color:#a35b00;background:#fdf1de}
+  .submit-status.is-ready{color:#1f7a4d;background:#e6f4ec;cursor:default}
+  .miss-list{margin:8px 0 0;padding-left:20px;max-height:46vh;overflow:auto;font-size:14px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="app"><div class="loading">Memuat form…</div></div>
+</div>
+
+<div class="modal" id="modal"><div class="box" id="modal-box"></div></div>
+
+<script>
+/* ===== LOGIKA PERHITUNGAN (dipakai sama persis di server & form) ===== */
+var KPIS = [
+  {key:'so',  label:'Sell Out', short:'SELL OUT', unit:'Value (Rp)', w:40, owner:'split'},
+  {key:'ro',  label:'RO',       short:'RO',       unit:'Outlet',     w:25, owner:'NANA'},
+  {key:'sku', label:'SKU 2000', short:'SKU 2000', unit:'Qty',        w:35, owner:'split'}
+];
+var MIN_ACH = 0.9;
+var METHODS = {own:'Rekening sendiri', titip:'Titip 1 rekening', co:'Rekening perusahaan'};
+var FACTORIES = ['SHU', 'NANA'];
+
+/** kelas salesman dari target Sell Out (total SHU + NANA) */
+function classOf(t, S) {
+  t = Number(t) || 0;
+  if (t >= Number(S.classBMin)) return {cls: 'B', nom: Number(S.nomB) || 0};
+  if (t >= Number(S.classAMin)) return {cls: 'A', nom: Number(S.nomA) || 0};
+  return {cls: '', nom: 0};
+}
+
+function computeClaim(input, S) {
+  var rows = input.rows.map(function (r) {
+    var o = {name: r.name, kpi: {}, pay: r.pay || {m: 'own'}};
+    KPIS.forEach(function (k) {
+      var d = r[k.key] || {}, w = k.w / 100;
+      var s = k.owner === 'NANA' ? 0 : (Number(d.s) || 0);
+      var n = k.owner === 'SHU' ? 0 : (Number(d.n) || 0);
+      var t = Number(d.t) || 0, tot = s + n, ach = t > 0 ? tot / t : 0;
+      var counted = ach >= MIN_ACH ? Math.min(ach, 1) : 0;
+      o.kpi[k.key] = {w: w, t: t, s: s, n: n, tot: tot, ach: ach, active: true, counted: counted, pts: w * counted, owner: k.owner};
+    });
+    var c = classOf(o.kpi.so.t, S);
+    o.cls = c.cls; o.nom = c.nom;
+    o.gate = o.kpi.so.ach >= MIN_ACH;
+    o.ok = o.gate && o.nom > 0;
+    var soC = o.kpi.so.tot > 0 ? o.kpi.so.s / o.kpi.so.tot : 0.5;
+    o.shu = 0; o.nana = 0; o.score = 0;
+    KPIS.forEach(function (k) {
+      var x = o.kpi[k.key];
+      x.inc = o.ok ? Math.round(o.nom * x.pts) : 0;
+      x.cShu = x.owner === 'SHU' ? 1 : x.owner === 'NANA' ? 0 : (x.tot > 0 ? x.s / x.tot : soC);
+      x.cNana = 1 - x.cShu;
+      x.incShu = Math.round(x.inc * x.cShu);
+      x.incNana = x.inc - x.incShu;
+      o.shu += x.incShu; o.nana += x.incNana;
+      if (o.ok) o.score += x.pts;
+    });
+    o.incentive = o.shu + o.nana;
+    return o;
+  });
+
+  var pay = {};
+  FACTORIES.forEach(function (f) {
+    var key = f === 'SHU' ? 'shu' : 'nana';
+    var list = rows.map(function (r, i) {
+      var p = r.pay || {};
+      return {i: i, name: r.name, m: METHODS[p.m] ? p.m : 'own', bank: p.bank || '', cab: p.cab || '', an: p.an || '', nom: r[key]};
+    }).filter(function (x) { return x.nom > 0; });
+    var titipSum = list.filter(function (x) { return x.m === 'titip'; }).reduce(function (a, x) { return a + x.nom; }, 0);
+    var titipOn = titipSum > 0 && titipSum >= Number(S.titipThr);
+    var agg = {nom: 0, tax: 0, net: 0};
+    list.forEach(function (x) {
+      x.rate = x.m === 'co' ? Number(S.coRate) : x.m === 'titip' ? (titipOn ? Number(S.titipRate) : 0) : 0;
+      x.tax = Math.round(x.nom * x.rate / 100);
+      x.net = x.nom - x.tax;
+      x.flag = x.m === 'own' && x.nom >= Number(S.ownThr);
+      agg.nom += x.nom; agg.tax += x.tax; agg.net += x.net;
+    });
+    pay[f] = {list: list, titipSum: titipSum, titipOn: titipOn, nom: agg.nom, tax: agg.tax, net: agg.net};
+  });
+  return {rows: rows, pay: pay, total: pay.SHU.nom + pay.NANA.nom, totalNet: pay.SHU.net + pay.NANA.net};
+}
+/* ===== akhir logika perhitungan ===== */
+
+
+var GS = (typeof google !== 'undefined' && google.script && google.script.run) ? google.script.run : null;
+var PREVIEW = !GS;
+var STORE = 'klaim-insentif-class-v1';
+var S = null;          // pengaturan dari server
+var rows = [], head = {distributor:'', area:'', periode:'', pengaju:'', kontak:'', code:''};
+
+var fmt = function(n){ return new Intl.NumberFormat('id-ID').format(Math.round(n||0)); };
+var rp  = function(n){ return 'Rp ' + fmt(n); };
+var pct = function(x){ return (x*100).toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1}) + '%'; };
+var rate = function(x){ return String(x).replace('.', ','); };
+var parse = function(s){ var v = String(s==null?'':s).replace(/\./g,'').replace(',', '.').replace(/[^\d.]/g,''); var n = parseFloat(v); return isNaN(n)?0:n; };
+var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+var $ = function(id){ return document.getElementById(id); };
+var v = function(n){ return n ? fmt(n) : ''; };
+
+function blank(){ var r = {name:'', pay:{m:'own', bank:'', cab:'', an:''}}; KPIS.forEach(function(k){ r[k.key] = {t:0, s:0, n:0}; }); return r; }
+
+/* ---------- start ---------- */
+function start(){
+  if (PREVIEW) {
+    boot({classAMin:35000000, classBMin:50000000, nomA:250000, nomB:500000, ownThr:500000, titipThr:5000000, titipRate:2.5, coRate:15, needCode:false, open:true, entShu:'CV Sumber Harum Utama', entNana:'CV Nana Abadi'});
+  } else {
+    GS.withSuccessHandler(boot).withFailureHandler(function(e){ $('app').innerHTML = '<div class="alert bad">Gagal memuat pengaturan: '+esc(e.message)+'</div>'; }).getPublicSettings();
+  }
+}
+function boot(settings){
+  S = settings;
+  if (!S.open) { $('app').innerHTML = '<div class="panel center"><h1>Form klaim sedang ditutup</h1><p class="sub">Silakan hubungi admin Harum Group.</p></div>'; return; }
+  load();
+  renderShell();
+}
+
+function renderShell(){
+  setTimeout(refreshSubmit, 0);
+  $('app').innerHTML =
+    (PREVIEW ? '<span class="preview-badge">Mode pratinjau — submit tidak dikirim</span>' : '') +
+    '<h1>Form Klaim Insentif Salesman · Class A/B</h1>' +
+    '<p class="sub">Isi data klaim, target &amp; realisasi Sell Out, RO dan SKU 2000 tiap salesman, lalu klik <b>Submit Klaim</b>. Kelas ditentukan otomatis dari target Sell Out; insentif dibagi ke ' + esc(S.entShu) + ' (SHU) dan ' + esc(S.entNana) + ' (NANA).</p>' +
+    '<section class="panel"><h2>Data Klaim</h2><div class="grid">' +
+      field('distributor','Nama Distributor',true,'mis. PT ...') +
+      field('area','Area / Region',false,'mis. East') +
+      field('periode','Periode',true,'mis. November 2026') +
+      field('pengaju','Diajukan oleh',true,'Nama lengkap') +
+      field('kontak','No. HP / WA',false,'08xx') +
+      (S.needCode ? field('code','Kode Akses',true,'dari admin') : '') +
+    '</div></section>' +
+    '<section class="panel"><h2>Mekanisme Perhitungan</h2><div class="rules">' +
+      '<div class="rule-box"><b class="t">Kelas salesman (dari target Sell Out)</b><table><tr><td>Class A · '+rp(S.classAMin)+' – &lt; '+rp(S.classBMin)+'</td><td>'+rp(S.nomA)+'</td></tr><tr><td>Class B · ≥ '+rp(S.classBMin)+'</td><td>'+rp(S.nomB)+'</td></tr></table><div class="unit" style="margin-top:6px">Target di bawah '+rp(S.classAMin)+' tidak mendapat insentif.</div></div>' +
+      '<div class="rule-box"><b class="t">Bobot KPI</b><table><tr><td>Sell Out (value)</td><td>40%</td></tr><tr><td>RO (outlet) · NANA</td><td>25%</td></tr><tr><td>SKU 2000 (qty)</td><td>35%</td></tr></table></div>' +
+      '<div class="rule-box"><b class="t">Aturan insentif</b><ul><li>Sell Out &lt; 90% → insentif gugur, walau KPI lain ≥ 90%.</li><li>KPI lain &lt; 90% → skor KPI itu 0.</li><li>Pencapaian &gt; 100% dihitung 100%; prorate sesuai pencapaian.</li><li>Sell Out &amp; SKU 2000 dibagi SHU/NANA sesuai realisasi; RO → NANA.</li></ul></div>' +
+      '<div class="rule-box"><b class="t">Potongan pajak (per factory)</b><ul><li>Rekening sendiri &lt; '+rp(S.ownThr)+' → 0%.</li><li>Titip 1 rekening, kumulatif ≥ '+rp(S.titipThr)+' → '+rate(S.titipRate)+'% per orang.</li><li>Rekening a.n. perusahaan → '+rate(S.coRate)+'%.</li></ul></div>' +
+    '</div></section>' +
+    '<div id="list"></div>' +
+    '<div class="actions"><button class="b" id="add">+ Tambah Salesman</button><button class="b" id="reset">Kosongkan Form</button></div>' +
+    '<section class="panel"><h2>Ringkasan Klaim &amp; Pembayaran</h2><div class="tw"><table class="sum"><thead><tr>' +
+      '<th class="l">No</th><th class="l">Salesman</th><th class="c">Kelas</th><th>Skor</th>' +
+      '<th class="shu">Insentif SHU</th><th class="shu">Pajak SHU</th><th class="shu">Diterima SHU</th>' +
+      '<th class="nana">Insentif NANA</th><th class="nana">Pajak NANA</th><th class="nana">Diterima NANA</th><th>Total Diterima</th>' +
+      '</tr></thead><tbody id="sum-body"></tbody><tfoot id="sum-foot"></tfoot></table></div><div id="alerts"></div></section>' +
+    '<div class="submit-bar"><div class="tot" id="bar-tot"></div><button class="b primary big" id="submit">Submit Klaim</button></div>';
+
+  document.querySelectorAll('[data-h]').forEach(function(inp){
+    inp.value = head[inp.dataset.h] || '';
+    inp.addEventListener('input', function(){ head[inp.dataset.h] = inp.value; inp.classList.remove('err'); save(); });
+  });
+  $('add').onclick = function(){ rows.push(blank()); renderCards(); var ins = document.querySelectorAll('.sm-name input'); ins[ins.length-1].focus(); };
+  $('reset').onclick = function(){
+    var b = $('reset');
+    if (b.dataset.confirm) { clearAll(); renderShell(); }
+    else { b.dataset.confirm = 1; b.textContent = 'Klik lagi untuk konfirmasi'; setTimeout(function(){ delete b.dataset.confirm; b.textContent = 'Kosongkan Form'; }, 3000); }
+  };
+  $('submit').onclick = confirmSubmit;
+  bindList();
+  renderCards();
+}
+function field(key, label, req, ph){
+  return '<label class="f"><span>'+label+(req?' <span class="req">*</span>':'')+'</span><input data-h="'+key+'" placeholder="'+ph+'"></label>';
+}
+
+/* ---------- salesman cards ---------- */
+function renderCards(){
+  $('list').innerHTML = rows.map(function(r,i){
+    return '<div class="sm" data-i="'+i+'">' +
+      '<div class="sm-head"><div class="sm-no">'+(i+1)+'</div><div class="sm-name"><input data-f="name" value="'+esc(r.name)+'" placeholder="Nama salesman *"></div>' +
+      '<span class="scheme" data-scheme></span><button class="btn-x" data-del title="Hapus salesman">×</button></div>' +
+      '<div class="tw"><table class="kpi"><thead><tr><th>KPI</th><th>Target</th><th class="shu">Real SHU</th><th class="nana">Real NANA</th><th>Real Total</th><th>Bobot</th><th>Pencapaian</th><th>Skor</th></tr></thead><tbody>' +
+      KPIS.map(function(k){
+        var d = r[k.key];
+        var inS = k.owner==='NANA' ? '<input class="num" readonly tabindex="-1" placeholder="—">' : '<input class="num" data-f="'+k.key+'" data-p="s" value="'+v(d.s)+'" inputmode="numeric" placeholder="0">';
+        var inN = k.owner==='SHU'  ? '<input class="num" readonly tabindex="-1" placeholder="—">' : '<input class="num" data-f="'+k.key+'" data-p="n" value="'+v(d.n)+'" inputmode="numeric" placeholder="0">';
+        return '<tr data-k="'+k.key+'"><td>'+k.label+'<span class="unit">'+k.unit+(k.owner!=='split'?' · ditanggung '+k.owner:'')+'</span></td>' +
+          '<td class="in"><input class="num" data-f="'+k.key+'" data-p="t" value="'+v(d.t)+'" inputmode="numeric" placeholder="wajib"></td>' +
+          '<td class="in">'+inS+'</td><td class="in">'+inN+'</td><td class="in"><input class="num" data-total readonly tabindex="-1"></td>' +
+          '<td class="num" data-w></td><td data-ach></td><td class="num" data-pts></td></tr>';
+      }).join('') +
+      '</tbody></table></div>' +
+      '<div class="paybox">' +
+        '<label class="f">Metode pembayaran<select data-pay="m">' + Object.keys(METHODS).map(function(m){ return '<option value="'+m+'"'+(r.pay.m===m?' selected':'')+'>'+METHODS[m]+'</option>'; }).join('') + '</select></label>' +
+        '<label class="f">Bank / No. Rekening<input data-pay="bank" value="'+esc(r.pay.bank)+'" placeholder="mis. BCA 1234567890"></label>' +
+        '<label class="f">Cabang<input data-pay="cab" value="'+esc(r.pay.cab)+'" placeholder="Cabang bank"></label>' +
+        '<label class="f">Atas nama<input data-pay="an" value="'+esc(r.pay.an)+'" placeholder="Nama pemilik rekening"></label>' +
+      '</div>' +
+      '<div class="sm-foot"><div class="status" data-status></div><div class="split">' +
+        '<div class="payout"><small><span class="tag shu">SHU</span></small><span class="s num" data-shu></span></div>' +
+        '<div class="payout"><small><span class="tag nana">NANA</span></small><span class="s num" data-nana></span></div>' +
+        '<div class="payout"><small>Total Insentif</small><span class="v num" data-inc></span><div class="sc" data-sc></div></div>' +
+      '</div></div></div>';
+  }).join('');
+  update();
+}
+
+function pill(c){
+  if (!c.active) return '<span class="pill na">—</span>';
+  if (c.t<=0) return '<span class="pill na">n/a</span>';
+  var cls = c.ach>=1 ? 'ok' : c.ach>=MIN_ACH ? 'warn' : 'bad';
+  return '<span class="pill '+cls+'">'+pct(c.ach)+'</span>';
+}
+
+function update(){
+  var C = computeClaim({rows: rows}, S);
+  document.querySelectorAll('.sm').forEach(function(el){
+    var i = +el.dataset.i, c = C.rows[i];
+    var sch = el.querySelector('[data-scheme]');
+    sch.textContent = c.kpi.so.t<=0 ? 'Kelas: isi target SO' : c.cls ? 'Class '+c.cls+' · '+rp(c.nom) : 'Di bawah Class A';
+    sch.className = 'scheme' + (c.kpi.so.t<=0 ? '' : c.cls ? ' cls-'+c.cls.toLowerCase() : ' cls-x');
+    KPIS.forEach(function(k){
+      var tr = el.querySelector('tr[data-k="'+k.key+'"]'), x = c.kpi[k.key];
+      tr.classList.toggle('off', !x.active);
+      tr.querySelector('[data-total]').value = v(x.tot);
+      tr.querySelector('[data-w]').textContent = x.active ? (x.w*100)+'%' : '—';
+      tr.querySelector('[data-ach]').innerHTML = pill(x);
+      tr.querySelector('[data-pts]').textContent = x.active ? pct(c.gate ? x.pts : 0) : '—';
+    });
+    var st = el.querySelector('[data-status]');
+    if (c.kpi.so.t<=0) { st.className='status'; st.textContent='Isi target & realisasi Sell Out untuk mulai menghitung.'; }
+    else if (!c.cls) { st.className='status bad'; st.textContent='Target Sell Out '+rp(c.kpi.so.t)+' di bawah Class A ('+rp(S.classAMin)+') — tidak mendapat insentif.'; }
+    else if (!c.gate) { st.className='status bad'; st.textContent='Sell Out '+pct(c.kpi.so.ach)+' < 90% — insentif tidak dihitung.'; }
+    else {
+      var fail = KPIS.filter(function(k){ return c.kpi[k.key].active && k.key!=='so' && c.kpi[k.key].ach<MIN_ACH; }).map(function(k){ return k.label; });
+      if (fail.length) { st.className='status warn'; st.textContent='Class '+c.cls+' · lolos gate Sell Out. KPI < 90% (skor 0): '+fail.join(', ')+'.'; }
+      else { st.className='status ok'; st.textContent = 'Class '+c.cls+' · ' + (c.score>=0.9999 ? 'semua KPI ≥ 100% — insentif penuh.' : 'semua KPI ≥ 90% — insentif prorate.'); }
+    }
+    el.querySelector('[data-shu]').textContent = rp(c.shu);
+    el.querySelector('[data-nana]').textContent = rp(c.nana);
+    el.querySelector('[data-inc]').textContent = rp(c.incentive);
+    el.querySelector('[data-sc]').textContent = c.cls ? 'Skor ' + pct(c.score) + ' × ' + rp(c.nom) : 'Tanpa kelas';
+  });
+
+  var find = function(list, i){ for (var j=0;j<list.length;j++) if (list[j].i===i) return list[j]; return {nom:0,tax:0,net:0}; };
+  $('sum-body').innerHTML = C.rows.map(function(c,i){
+    var a = find(C.pay.SHU.list, i), b = find(C.pay.NANA.list, i);
+    return '<tr><td class="l">'+(i+1)+'</td><td class="l">'+(esc(c.name)||'<span style="color:#aaa">—</span>')+'</td><td class="c">'+(c.cls||'-')+'</td><td class="num">'+pct(c.score)+'</td>' +
+      '<td class="num">'+fmt(a.nom)+'</td><td class="num">'+(a.tax?fmt(a.tax):'-')+'</td><td class="num">'+fmt(a.net)+'</td>' +
+      '<td class="num">'+fmt(b.nom)+'</td><td class="num">'+(b.tax?fmt(b.tax):'-')+'</td><td class="num">'+fmt(b.net)+'</td><td class="num"><b>'+fmt(a.net+b.net)+'</b></td></tr>';
+  }).join('');
+  var P = C.pay;
+  $('sum-foot').innerHTML = '<tr><td></td><td class="l" colspan="3">Total</td><td class="num">'+fmt(P.SHU.nom)+'</td><td class="num">'+fmt(P.SHU.tax)+'</td><td class="num">'+fmt(P.SHU.net)+'</td><td class="num">'+fmt(P.NANA.nom)+'</td><td class="num">'+fmt(P.NANA.tax)+'</td><td class="num">'+fmt(P.NANA.net)+'</td><td class="num">'+rp(C.totalNet)+'</td></tr>';
+
+  var al = '';
+  FACTORIES.forEach(function(f){
+    var p = P[f];
+    if (p.titipSum>0) al += p.titipOn
+      ? '<div class="alert info"><span class="tag '+f.toLowerCase()+'">'+f+'</span> Kumulatif titip rekening '+rp(p.titipSum)+' ≥ '+rp(S.titipThr)+' → dipotong '+rate(S.titipRate)+'% per orang.</div>'
+      : '<div class="alert info"><span class="tag '+f.toLowerCase()+'">'+f+'</span> Kumulatif titip rekening '+rp(p.titipSum)+' di bawah '+rp(S.titipThr)+' → tidak dipotong pajak (admin dapat menyesuaikan).</div>';
+    if (p.list.some(function(x){ return x.flag; })) al += '<div class="alert warn"><span class="tag '+f.toLowerCase()+'">'+f+'</span> Ada pembayaran ke rekening sendiri ≥ '+rp(S.ownThr)+' — pajak akan dicek admin.</div>';
+  });
+  $('alerts').innerHTML = al;
+  $('bar-tot').innerHTML = 'Total insentif: <span class="num">'+rp(C.total)+'</span> &nbsp;·&nbsp; diterima: <span class="num">'+rp(C.totalNet)+'</span>';
+  save();
+  return C;
+}
+
+function bindList(){
+  var list = $('list');
+  list.addEventListener('input', function(e){
+    var inp = e.target, el = inp.closest('.sm'); if (!el) return;
+    var r = rows[+el.dataset.i];
+    inp.classList.remove('err');
+    if (inp.dataset.f === 'name') { r.name = inp.value; update(); }
+    else if (inp.dataset.f) { r[inp.dataset.f][inp.dataset.p] = parse(inp.value); update(); }
+    else if (inp.dataset.pay) { r.pay[inp.dataset.pay] = inp.value; if (inp.dataset.pay==='m') update(); else save(); }
+  });
+  list.addEventListener('change', function(e){
+    var inp = e.target, el = inp.closest('.sm');
+    if (el && inp.dataset.pay === 'm') { rows[+el.dataset.i].pay.m = inp.value; update(); }
+  });
+  list.addEventListener('focusout', function(e){
+    var inp = e.target; if (!inp.classList.contains('num') || inp.readOnly) return;
+    var n = parse(inp.value); inp.value = n ? fmt(n) : '';
+  });
+  list.addEventListener('click', function(e){
+    if (!e.target.matches('[data-del]')) return;
+    rows.splice(+e.target.closest('.sm').dataset.i, 1); if (!rows.length) rows.push(blank()); renderCards();
+  });
+}
+
+/* ---------- submit ---------- */
+function validate(){
+  var errs = [];
+  ['distributor','periode','pengaju'].concat(S.needCode?['code']:[]).forEach(function(k){
+    if (!String(head[k]||'').trim()) { errs.push(k); var el = document.querySelector('[data-h="'+k+'"]'); if (el) el.classList.add('err'); }
+  });
+  rows.forEach(function(r,i){
+    var el = document.querySelector('.sm[data-i="'+i+'"]');
+    if (!r.name.trim()) { errs.push('name'+i); el.querySelector('[data-f="name"]').classList.add('err'); }
+    if (!(r.so.t>0)) { errs.push('so'+i); el.querySelector('[data-f="so"][data-p="t"]').classList.add('err'); }
+  });
+  if (errs.length) { var first = document.querySelector('.err'); if (first) { first.scrollIntoView({behavior:'smooth', block:'center'}); first.focus(); } }
+  return !errs.length;
+}
+
+function confirmSubmit(){
+  if (!validate()) { toastModal('Data belum lengkap', 'Kolom bertanda merah wajib diisi: distributor, periode, nama pengaju'+(S.needCode?', kode akses':'')+', nama salesman, dan target Sell Out.'); return; }
+  var C = computeClaim({rows: rows}, S);
+  $('modal-box').innerHTML = '<h3>Kirim klaim insentif?</h3><p class="sub" style="margin:0">'+esc(head.distributor)+' · '+esc(head.periode)+' · '+rows.length+' salesman</p>' +
+    '<table><tr><td><span class="tag shu">SHU</span> Insentif / diterima</td><td class="num">'+fmt(C.pay.SHU.nom)+' / '+fmt(C.pay.SHU.net)+'</td></tr>' +
+    '<tr><td><span class="tag nana">NANA</span> Insentif / diterima</td><td class="num">'+fmt(C.pay.NANA.nom)+' / '+fmt(C.pay.NANA.net)+'</td></tr>' +
+    '<tr><td>Total diterima</td><td class="num">'+rp(C.totalNet)+'</td></tr></table>' +
+    '<p class="sub" style="font-size:13px">Setelah dikirim, klaim tidak bisa diubah dari form ini. Perhitungan final dicek ulang oleh sistem.</p>' +
+    '<div id="m-err"></div><div class="row"><button class="b" id="m-cancel">Periksa lagi</button><button class="b primary" id="m-ok">Ya, kirim klaim</button></div>';
+  $('modal').classList.add('show');
+  $('m-cancel').onclick = closeModal;
+  $('m-ok').onclick = doSubmit;
+}
+function doSubmit(){
+  var btn = $('m-ok'); btn.disabled = true; btn.textContent = 'Mengirim…'; $('m-cancel').disabled = true;
+  var payload = {distributor:head.distributor, area:head.area, periode:head.periode, pengaju:head.pengaju, kontak:head.kontak, code:head.code, rows:rows};
+  var ok = function(res){ closeModal(); showDone(res); };
+  var fail = function(e){ btn.disabled = false; btn.textContent = 'Coba kirim lagi'; $('m-cancel').disabled = false; $('m-err').innerHTML = '<div class="alert bad">'+esc(e && e.message || e)+'</div>'; };
+  if (PREVIEW) { setTimeout(function(){ var C = computeClaim({rows:rows}, S); ok({id:'KLS-PRATINJAU', total:C.total, totalNet:C.totalNet, shu:C.pay.SHU, nana:C.pay.NANA}); }, 600); return; }
+  GS.withSuccessHandler(ok).withFailureHandler(fail).submitKlaim(payload);
+}
+function showDone(res){
+  var dist = head.distributor, per = head.periode;
+  clearAll();
+  $('app').innerHTML = '<div class="panel center"><div style="font-size:44px">✓</div><h1>Klaim berhasil dikirim</h1>' +
+    '<p class="sub">Simpan nomor klaim berikut untuk konfirmasi ke admin.</p><div class="done-id">'+esc(res.id)+'</div>' +
+    '<p>'+esc(dist)+' · '+esc(per)+'</p>' +
+    '<table class="sum" style="max-width:420px;margin:16px auto"><tr><td class="l"><span class="tag shu">SHU</span> diterima</td><td class="num">'+rp(res.shu.net)+'</td></tr>' +
+    '<tr><td class="l"><span class="tag nana">NANA</span> diterima</td><td class="num">'+rp(res.nana.net)+'</td></tr>' +
+    '<tr><td class="l"><b>Total diterima</b></td><td class="num"><b>'+rp(res.totalNet)+'</b></td></tr></table>' +
+    '<button class="b primary" id="again">Ajukan klaim baru</button></div>';
+  $('again').onclick = function(){ renderShell(); };
+  window.scrollTo(0,0);
+}
+function toastModal(title, msg){
+  $('modal-box').innerHTML = '<h3>'+esc(title)+'</h3><p>'+esc(msg)+'</p><div class="row"><button class="b primary" id="m-cancel">OK</button></div>';
+  $('modal').classList.add('show'); $('m-cancel').onclick = closeModal;
+}
+function closeModal(){ $('modal').classList.remove('show'); }
+
+/* ---------- draft lokal ---------- */
+function save(){ setTimeout(refreshSubmit, 0); try { localStorage.setItem(STORE, JSON.stringify({rows:rows, head:head})); } catch(e){} }
+function load(){
+  try {
+    var s = JSON.parse(localStorage.getItem(STORE)||'null');
+    if (s && Array.isArray(s.rows) && s.rows.length) {
+      rows = s.rows.map(function(r){ var b = blank(); KPIS.forEach(function(k){ if (r[k.key]) b[k.key] = {t:+r[k.key].t||0, s:+r[k.key].s||0, n:+r[k.key].n||0}; }); b.name = r.name||''; if (r.pay) b.pay = {m:r.pay.m||'own', bank:r.pay.bank||'', cab:r.pay.cab||'', an:r.pay.an||''}; return b; });
+      if (s.head) for (var k in head) head[k] = s.head[k] || '';
+      return;
+    }
+  } catch(e){}
+  rows = [blank()];
+}
+function clearAll(){ rows = [blank()]; for (var k in head) if (k!=='code') head[k] = ''; save(); }
+
+
+/* ---------- tombol submit terkunci (abu-abu) sampai data wajib lengkap ---------- */
+function refreshSubmit(){
+  var btn = document.getElementById('submit');
+  if (!btn || !S) return;
+  var miss = [];
+  try { miss = missing(); } catch (e) { miss = []; }
+  window.__missing = miss;
+  var locked = miss.length > 0;
+  btn.classList.toggle('is-locked', locked);
+  btn.setAttribute('aria-disabled', locked ? 'true' : 'false');
+  btn.title = locked ? 'Lengkapi: ' + miss.join('; ') : '';
+  if (!btn.__gated) {
+    btn.__gated = true;
+    // tombol terkunci tidak mengirim; klik menampilkan daftar yang belum lengkap
+    btn.addEventListener('click', function (ev) {
+      if (btn.getAttribute('aria-disabled') === 'true') { ev.preventDefault(); ev.stopImmediatePropagation(); showMissing(); }
+    }, true);
+  }
+  var st = document.getElementById('submit-hint');
+  if (!st) {
+    st = document.createElement('button');
+    st.type = 'button'; st.id = 'submit-hint';
+    btn.parentNode.insertBefore(st, btn);
+    st.addEventListener('click', function () { if ((window.__missing || []).length) showMissing(); });
+  }
+  st.className = 'submit-status ' + (locked ? 'is-todo' : 'is-ready');
+  st.disabled = !locked;
+  st.innerHTML = locked
+    ? '<span class="dot" aria-hidden="true"></span>' + miss.length + ' bagian belum lengkap · <u>lihat</u>'
+    : '<span class="dot" aria-hidden="true"></span>Data lengkap, siap dikirim';
+}
+function showMissing(){
+  markMissing();
+  var miss = window.__missing || [];
+  $('modal-box').innerHTML = '<h3>Data belum lengkap</h3><p class="sub" style="margin:0 0 6px">Lengkapi dulu bagian berikut sebelum klaim bisa dikirim:</p>' +
+    '<ul class="miss-list">' + miss.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
+    '<div class="row"><button class="b primary" id="m-cancel">Lengkapi sekarang</button></div>';
+  $('modal').classList.add('show');
+  $('m-cancel').onclick = function () {
+    closeModal();
+    var f = document.querySelector('.err');
+    if (f) { f.scrollIntoView({behavior: 'smooth', block: 'center'}); try { f.focus({preventScroll: true}); } catch (e) {} }
+  };
+}
+/** tandai merah kolom wajib yang masih kosong / 0 */
+function markMissing(){
+  var zero = function (v) { var s = String(v == null ? '' : v).replace(/\./g, '').replace(',', '.').trim(); return !s || parseFloat(s) === 0; };
+  document.querySelectorAll('label.f').forEach(function (l) {
+    var c = l.querySelector('input:not([readonly]):not([disabled]), select');
+    if (l.querySelector('.req') && c && blankStr(c.value)) c.classList.add('err');
+  });
+  document.querySelectorAll('.sm-name input:not([readonly])').forEach(function (x) { if (blankStr(x.value)) x.classList.add('err'); });
+  document.querySelectorAll('table.kpi tr, table.mk tr').forEach(function (tr) {
+    var t = tr.querySelector('input[data-p="t"]');
+    if (tr.getAttribute('data-k') === 'pf' && t && !t.disabled && zero(t.value) && !(typeof scheme === 'function' && scheme() === 'A')) return;
+    tr.querySelectorAll('input.num:not([readonly]):not([disabled])').forEach(function (x) {
+      if (x.dataset.p === 's' || x.dataset.p === 'n') {
+        var sib = tr.querySelectorAll('input.num:not([readonly]):not([disabled])[data-p="s"], input.num:not([readonly]):not([disabled])[data-p="n"]');
+        var any = Array.prototype.some.call(sib, function (y) { return !zero(y.value); });
+        if (!any) x.classList.add('err');
+      } else if (zero(x.value)) x.classList.add('err');
+    });
+  });
+}
+function blankStr(x){ return !String(x == null ? '' : x).trim(); }
+
+function missing(){
+  var m = [];
+  if (blankStr(head.distributor)) m.push('nama distributor');
+  if (blankStr(head.periode)) m.push('periode');
+  if (blankStr(head.pengaju)) m.push('nama pengaju');
+  if (S.needCode && blankStr(head.code)) m.push('kode akses');
+  rows.forEach(function(r, i){
+    var bad = [];
+    if (blankStr(r.name)) bad.push('nama');
+    if (!(r.so.t > 0)) bad.push('target SO');
+    if (!((r.so.s || 0) + (r.so.n || 0) > 0)) bad.push('realisasi SO');
+    if (!(r.ro.t > 0)) bad.push('target RO');
+    if (!(r.ro.n > 0)) bad.push('realisasi RO');
+    if (!(r.sku.t > 0)) bad.push('target SKU 2000');
+    if (!((r.sku.s || 0) + (r.sku.n || 0) > 0)) bad.push('realisasi SKU 2000');
+    if (bad.length) m.push((r.name.trim() || 'salesman ' + (i + 1)) + ' (' + bad.join(', ') + ')');
+  });
+  return m;
+}
+
+start();
+</script>
+</body>
+</html>

@@ -18,6 +18,7 @@ Distributor ──► Vercel (halaman portal & form)
 | `/kompetisi-ao2000` | Kompetisi AO SKU 2000 | `apps-script/kompetisi-ao2000` | `kompetisi` |
 | `/insentif-spv` | Insentif SPV Distributor | `apps-script/insentif-spv` | `spv` |
 | `/insentif-distributor` | Insentif Distributor (kuartal) | `apps-script/insentif-distributor` | `distributor` |
+| `/insentif-salesman-class` | Insentif Salesman Class A/B | `apps-script/insentif-salesman-class` | `salesClass` |
 
 ## Struktur repo
 

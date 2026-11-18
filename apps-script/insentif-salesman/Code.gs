@@ -695,7 +695,7 @@ function pdfFolder_() {
 /* ===================== TEMPLATE CETAK ===================== */
 function renderPrint_(sh, rec, f) {
   var C = rec.claim, I = rec.input, S = rec.settings, isShu = f === 'SHU';
-  var N = isShu ? 9 : 12;
+  var N = 12;
   var P = C.pay[f];
   var green = '#0f5c4a', soft = '#e8f2ee', grey = '#f3f4f2';
 
@@ -704,9 +704,30 @@ function renderPrint_(sh, rec, f) {
   if (sh.getMaxColumns() < N) sh.insertColumnsAfter(sh.getMaxColumns(), N - sh.getMaxColumns());
   if (sh.getMaxColumns() > N) sh.deleteColumns(N + 1, sh.getMaxColumns() - N);
   sh.setHiddenGridlines(true);
-  var widths = isShu ? [150, 70, 115, 80, 100, 95, 75, 100, 115]
-                     : [140, 65, 110, 75, 95, 85, 65, 95, 105, 65, 95, 110];
+  // Lebar kolom dinamis: menyesuaikan isian terpanjang (nama, bank/no. rek, cabang, a/n)
+  var CH = 7, PADX = 16, LINE_H = 15, ROW_H = 21;
+  var tw = function (s) { return String(s == null ? '' : s).split('\n').reduce(function (m, l) { return Math.max(m, l.length); }, 0) * CH + PADX; };
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, Math.ceil(v))); };
+  var maxOf = function (arr, fn) { return arr.reduce(function (m, x) { return Math.max(m, tw(fn(x))); }, 0); };
+  var methodText = function (x) { return METHODS[x.m] + (x.rate ? ' (' + String(x.rate).replace('.', ',') + '%)' : ''); };
+  var widths = [140, 150, 48, 92, 88, 88, 92, 56, 52, 82, 56, 88];
+  var payName = function (x, j) { return (j + 1) + '. ' + x.name; };
+  // kolom 1 = Salesman / Penerima, 2 = KPI / Metode, 3–5 = Bank / No. Rek, 6 = Cabang, 7–9 = A/N
+  widths[0] = clamp(Math.max(maxOf(C.rows, function (x) { return x.name; }), maxOf(P.list.map(payName), function (s) { return s; })), 120, 230);
+  widths[1] = Math.max(widths[1], clamp(maxOf(P.list, methodText), 0, 220));
+  widths[3] += Math.max(0, clamp(maxOf(P.list, function (x) { return x.bank; }), 0, 340) - (widths[2] + widths[3] + widths[4]));
+  widths[5] = Math.max(widths[5], clamp(maxOf(P.list, function (x) { return x.cab; }), 0, 180));
+  widths[6] += Math.max(0, clamp(maxOf(P.list, function (x) { return x.an; }), 0, 320) - (widths[6] + widths[7] + widths[8]));
   widths.forEach(function (w, i) { sh.setColumnWidth(i + 1, w); });
+  var spanW = function (c1, n) { var w = 0; for (var i = 0; i < n; i++) w += widths[c1 - 1 + i]; return w; };
+  var linesFor = function (text, w) {
+    return String(text == null ? '' : text).split('\n').reduce(function (a, l) { return a + Math.max(1, Math.ceil((l.length * CH) / Math.max(w - PADX, 20))); }, 0);
+  };
+  var fitRow = function (row, cells) { // cells: [[teks, kolom awal, jumlah kolom], ...] → tinggi baris ikut teks yang dibungkus
+    var n = cells.reduce(function (m, c) { return Math.max(m, linesFor(c[0], spanW(c[1], c[2]))); }, 1);
+    sh.getRange(row, 1, 1, N).setWrap(true).setVerticalAlignment('middle');
+    sh.setRowHeight(row, Math.max(ROW_H, n * LINE_H + 6));
+  };
 
   var r = 1;
   var put = function (row, c1, c2, val) { if (typeof val === 'string') val = cell_(val); var rg = sh.getRange(row, c1, 1, c2 - c1 + 1); if (c2 > c1) rg.merge(); rg.setValue(val); return rg; };
@@ -735,63 +756,59 @@ function renderPrint_(sh, rec, f) {
     put(r, 2, mid, ': ' + x[1]);
     put(r, mid + 1, mid + 2, x[2]).setFontWeight('bold');
     put(r, mid + 3, N, ': ' + x[3]);
+    fitRow(r, [[': ' + x[1], 2, mid - 1], [': ' + x[3], mid + 3, N - mid - 2]]);
     r++;
   });
   r++;
 
-  // A. Breakdown KPI
-  put(r, 1, N, 'A. BREAKDOWN PENCAPAIAN KPI — ' + f).setFontWeight('bold').setBackground(green).setFontColor('#ffffff');
+  // A. Rincian target, realisasi & pencapaian KPI
+  put(r, 1, N, 'A. RINCIAN TARGET, REALISASI & PENCAPAIAN KPI — ' + f).setFontWeight('bold').setBackground(green).setFontColor('#ffffff');
   r++;
-  var groups = isShu
-    ? [['SELL OUT', 4], ['AO GC (SHU)', 3]]
-    : [['SELL OUT', 4], ['AO SKU 2000 (NANA)', 3], ['SO PRODUCT FOCUS 2000 (NANA)', 3]];
-  var sub = isShu
-    ? ['Ach SO Total', 'Realisasi SHU', 'Kontribusi', 'Insentif', 'Realisasi', 'Ach', 'Insentif']
-    : ['Ach SO Total', 'Realisasi NANA', 'Kontribusi', 'Insentif', 'Realisasi', 'Ach', 'Insentif', 'Realisasi', 'Ach', 'Insentif'];
-  var h1 = r, h2 = r + 1;
-  put(h1, 1, 1, 'Salesman'); sh.getRange(h1, 1, 2, 1).merge();
-  var c = 2;
-  groups.forEach(function (g) { put(h1, c, c + g[1] - 1, g[0]); c += g[1]; });
-  put(h1, N, N, 'Total Insentif ' + f); sh.getRange(h1, N, 2, 1).merge();
-  sh.getRange(h2, 2, 1, sub.length).setValues([sub]);
-  sh.getRange(h1, 1, 2, N).setFontWeight('bold').setBackground(soft).setHorizontalAlignment('center').setVerticalAlignment('middle').setWrap(true);
-  r += 2;
-
-  var data = [], fmts = [], firstData = r;
+  var h1 = r;
+  sh.getRange(r, 1, 1, N).setValues([['Salesman', 'KPI', 'Bobot', 'Target', 'Real SHU', 'Real NANA', 'Real Total', 'Ach', 'Skor', 'Insentif KPI', 'Beban ' + f, 'Insentif ' + f]])
+    .setFontWeight('bold').setBackground(soft).setHorizontalAlignment('center').setVerticalAlignment('middle').setWrap(true);
+  r++;
+  var gInc = 0, gF = 0, firstData = r, lowAch = [];
   C.rows.forEach(function (row) {
-    var k = row.kpi;
-    var line = [cell_(row.name + (row.hasPF ? '' : ' (Skema B)')), k.so.ach, isShu ? k.so.s : k.so.n, isShu ? k.so.cShu : k.so.cNana, isShu ? k.so.incShu : k.so.incNana];
-    if (isShu) {
-      line.push(k.aogc.s, k.aogc.ach, k.aogc.incShu, row.shu);
-    } else {
-      line.push(k.ao2k.n, k.ao2k.ach, k.ao2k.incNana);
-      if (row.hasPF) line.push(k.pf.n, k.pf.ach, k.pf.incNana); else line.push('—', '—', '—');
-      line.push(row.nana);
-    }
-    if (!row.gate) line[0] += '  [SO < 90%]';
-    data.push(line);
+    var top = r, lines = [], okRow = row.ok !== undefined ? row.ok : row.gate;
+    KPIS.forEach(function (k) {
+      var x = row.kpi[k.key];
+      if (!x || !x.active) return;
+      if (x.ach < MIN_ACH) lowAch.push(r + lines.length);
+      lines.push(['', k.label + ' (' + String(k.unit).replace('Value (Rp)', 'Rp') + ')' + (x.owner !== 'split' ? ' · ' + x.owner : ''), x.w, x.t,
+        x.owner === 'NANA' ? '—' : x.s, x.owner === 'SHU' ? '—' : x.n, x.tot, x.ach, okRow ? x.pts : 0, x.inc,
+        isShu ? x.cShu : x.cNana, isShu ? x.incShu : x.incNana]);
+    });
+    var incAll = row.shu + row.nana, incF = isShu ? row.shu : row.nana;
+    lines.push(['', 'Subtotal', '', '', '', '', '', '', okRow ? row.score : 0, incAll, '', incF]);
+    gInc += incAll; gF += incF;
+    sh.getRange(r, 1, lines.length, N).setValues(lines);
+    var desc = cell_(row.name) + '\n' + (row.hasPF ? 'Skema A · dengan Product Focus' : 'Skema B · tanpa Product Focus') + (row.gate ? '' : '\n[Sell Out < 90% — insentif gugur]');
+    sh.getRange(top, 1, lines.length, 1).merge().setValue(desc).setWrap(true).setVerticalAlignment('top').setFontWeight('bold');
+    sh.getRange(top + lines.length - 1, 2, 1, N - 1).setFontWeight('bold').setBackground('#f7f8f6');
+    r += lines.length;
   });
-  if (data.length) {
-    sh.getRange(r, 1, data.length, N).setValues(data);
-    var f0 = '#,##0', fp = '0.0%', fc = '0%';
-    var colFmt = isShu ? [null, fp, f0, fc, f0, f0, fp, f0, f0] : [null, fp, f0, fc, f0, f0, fp, f0, f0, fp, f0, f0];
-    colFmt.forEach(function (fm, i) { if (fm) sh.getRange(r, i + 1, data.length, 1).setNumberFormat(fm).setHorizontalAlignment('right'); });
-    r += data.length;
+  if (r > firstData) {
+    var n = r - firstData;
+    [[3, '0%'], [4, '#,##0'], [5, '#,##0'], [6, '#,##0'], [7, '#,##0'], [8, '0.0%'], [9, '0.0%'], [10, '#,##0'], [11, '0%'], [12, '#,##0']].forEach(function (x) {
+      sh.getRange(firstData, x[0], n, 1).setNumberFormat(x[1]).setHorizontalAlignment('right');
+    });
+    lowAch.forEach(function (rr) { sh.getRange(rr, 8).setFontColor('#b3261e'); });
   }
-  var totRow = ['TOTAL'];
-  for (var i = 2; i <= N; i++) totRow.push('');
-  var sumCol = function (ci) { return data.reduce(function (a, d) { return a + (typeof d[ci] === 'number' ? d[ci] : 0); }, 0); };
-  (isShu ? [4, 7, 8] : [4, 7, 10, 11]).forEach(function (ci) { totRow[ci] = sumCol(ci); });
-  sh.getRange(r, 1, 1, N).setValues([totRow]).setFontWeight('bold').setBackground(grey).setNumberFormat('#,##0');
-  sh.getRange(firstData, 1, r - firstData + 1, 1).setHorizontalAlignment('left');
+  var totRow = ['TOTAL', '', '', '', '', '', '', '', '', gInc, '', gF];
+  sh.getRange(r, 1, 1, N).setValues([totRow]).setFontWeight('bold').setBackground(grey);
+  sh.getRange(r, 10, 1, 3).setNumberFormat('#,##0').setHorizontalAlignment('right');
   sh.getRange(h1, 1, r - h1 + 1, N).setBorder(true, true, true, true, true, true, '#9aa09c', SpreadsheetApp.BorderStyle.SOLID);
+  sh.getRange(h1 + 1, 1, r - h1 + 1, N).setFontSize(9);
+  r += 1;
+  put(r, 1, N, 'Ach = Real Total ÷ Target. Skor = Bobot × pencapaian (dihitung bila ≥ 90%, maks. 100%). Ach merah = di bawah 90%. Beban = porsi insentif KPI yang ditanggung ' + f + '.').setFontSize(8).setFontColor('#555555').setFontStyle('italic').setWrap(true);
   r += 2;
 
   // B. Pembayaran
   put(r, 1, N, 'B. RINCIAN PEMBAYARAN INSENTIF — ' + f).setFontWeight('bold').setBackground(green).setFontColor('#ffffff');
   r++;
-  var spans = isShu ? [1, 1, 1, 1, 1, 1, 1, 1, 1] : [1, 2, 1, 2, 1, 2, 1, 1, 1];
-  var payHead = ['No', 'Penerima', 'Metode', 'Bank / No. Rek', 'Cabang', 'A/N', 'Nominal', 'Pajak', 'Nominal Diterima'];
+  var spans = [1, 1, 3, 1, 3, 1, 1, 1];
+  var payHead = ['Penerima', 'Metode', 'Bank / No. Rek', 'Cabang', 'A/N', 'Nominal', 'Pajak', 'Nominal Diterima'];
   var putSpans = function (row, vals) {
     var cc = 1;
     vals.forEach(function (v, j) { put(row, cc, cc + spans[j] - 1, v); cc += spans[j]; });
@@ -802,14 +819,15 @@ function renderPrint_(sh, rec, f) {
   r++;
   var payFirst = r;
   P.list.forEach(function (x, j) {
-    putSpans(r, [j + 1, x.name, METHODS[x.m] + (x.rate ? ' (' + String(x.rate).replace('.', ',') + '%)' : ''), x.bank || '', x.cab || '', x.an || '', x.nom, x.tax || 0, x.net]);
+    putSpans(r, [payName(x, j), methodText(x), x.bank || '', x.cab || '', x.an || '', x.nom, x.tax || 0, x.net]);
+    fitRow(r, [[payName(x, j), 1, 1], [methodText(x), 2, 1], [x.bank, 3, 3], [x.cab, 6, 1], [x.an, 7, 3]]);
     r++;
   });
   if (!P.list.length) { put(r, 1, N, 'Tidak ada insentif ' + f + ' yang dibayarkan.').setFontStyle('italic'); r++; }
-  putSpans(r, ['', 'TOTAL', '', '', '', '', P.nom, P.tax, P.net]);
+  putSpans(r, ['TOTAL', '', '', '', '', P.nom, P.tax, P.net]);
   sh.getRange(r, 1, 1, N).setFontWeight('bold').setBackground(grey);
   sh.getRange(payFirst, N - 2, r - payFirst + 1, 3).setNumberFormat('#,##0').setHorizontalAlignment('right');
-  sh.getRange(payFirst, 1, r - payFirst + 1, 1).setHorizontalAlignment('center');
+  sh.getRange(payFirst, 1, r - payFirst + 1, 5).setHorizontalAlignment('left');
   sh.getRange(ph, 1, r - ph + 1, N).setBorder(true, true, true, true, true, true, '#9aa09c', SpreadsheetApp.BorderStyle.SOLID);
   r++;
   put(r, 1, N, 'Terbilang: ' + terbilang_(P.net) + ' rupiah').setFontStyle('italic').setFontWeight('bold');
@@ -828,16 +846,17 @@ function renderPrint_(sh, rec, f) {
   r++;
 
   // Tanda tangan
-  var sig = isShu ? [2, 2, 2, 3] : [3, 3, 3, 3];
-  var roles = [['Dibuat oleh,', 'Distributor'], ['Diperiksa oleh,', 'SPV / ASM'], ['Disetujui oleh,', 'Head of Sales'], ['Diterima oleh,', 'Finance']];
+  var sig = [4, 4, 4];
+  var roles = [['Diperiksa oleh,', 'Data Analyst'], ['Disetujui oleh,', 'Head of Sales'], ['Diterima oleh,', 'Finance']];
   var cc = 1;
   roles.forEach(function (ro, j) {
     put(r, cc, cc + sig[j] - 1, ro[0]).setHorizontalAlignment('center');
-    put(r + 4, cc, cc + sig[j] - 1, '(_________________________)').setHorizontalAlignment('center');
-    put(r + 5, cc, cc + sig[j] - 1, ro[1]).setHorizontalAlignment('center').setFontWeight('bold');
+    put(r + 5, cc, cc + sig[j] - 1, '(____________________________________)').setHorizontalAlignment('center');
+    put(r + 6, cc, cc + sig[j] - 1, ro[1]).setHorizontalAlignment('center').setFontWeight('bold');
     cc += sig[j];
   });
-  r += 5;
+  for (var sr = r + 1; sr <= r + 4; sr++) sh.setRowHeight(sr, 24); // ruang tanda tangan lebih lega
+  r += 6;
 
   sh.getRange(1, 1, r, N).setFontFamily('Arial');
   sh.getRange(6, 1, r - 5, N).setFontSize(9);

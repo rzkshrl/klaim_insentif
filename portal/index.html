@@ -1,1046 +1,252 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
-    <title>Portal Form Klaim Program Q4 — Harum Group</title>
-    <meta
-      name="description"
-      content="Satu tempat untuk mengajukan klaim insentif salesman, SPV, distributor, NOO BMX Opak dan kompetisi AO SKU 2000."
-    />
-    <meta name="theme-color" content="#ffffff" />
-    <meta
-      property="og:title"
-      content="Portal Form Klaim Program Q4 — Harum Group"
-    />
-    <meta
-      property="og:description"
-      content="Ajukan klaim insentif, perhitungan otomatis, diverifikasi admin sebelum dibayar."
-    />
-    <meta property="og:type" content="website" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%230f5c4a%22/%3E%3Ctext x=%2232%22 y=%2243%22 font-size=%2234%22 font-family=%22Arial%22 font-weight=%22700%22 fill=%22white%22 text-anchor=%22middle%22%3EH%3C/text%3E%3C/svg%3E"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --bg: #f5f4f0;
-        --card: #fff;
-        --ink: #1b1f1d;
-        --muted: #5d645f;
-        --line: #e2e1da;
-        --line-2: #d3d2ca;
-        --brand: #0f5c4a;
-        --brand-ink: #0b4638;
-        --brand-2: #e6efeb;
-        --brand-3: #cfe2da;
-        --nav: 64px;
-        --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-        --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
-      }
-      * {
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        margin: 0;
-      }
-      html {
-        scroll-behavior: smooth;
-        scroll-padding-top: calc(var(--nav) + 16px);
-      }
-      body {
-        background: var(--bg);
-        color: var(--ink);
-        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
-        font-size: 16px;
-        line-height: 1.55;
-        -webkit-font-smoothing: antialiased;
-        padding-top: var(--nav);
-      }
-      a {
-        color: inherit;
-      }
-      .wrap {
-        max-width: 1180px;
-        margin: 0 auto;
-        padding: 0 24px;
-      }
-      .skip {
-        position: absolute;
-        left: 24px;
-        top: -60px;
-        background: var(--ink);
-        color: #fff;
-        padding: 10px 14px;
-        border-radius: 8px;
-        z-index: 30;
-        text-decoration: none;
-      }
-      .skip:focus {
-        top: 12px;
-      }
-      :focus-visible {
-        outline: 2px solid var(--brand);
-        outline-offset: 2px;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portal Klaim Insentif Distributor — Harum Group</title>
+<meta name="description" content="Satu tempat untuk mengajukan klaim insentif salesman, SPV, distributor, NOO BMX Opak dan kompetisi AO SKU 2000.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="Portal Klaim Insentif Distributor — Harum Group">
+<meta property="og:description" content="Ajukan klaim insentif, perhitungan otomatis, diverifikasi admin sebelum dibayar.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%230f5c4a%22/%3E%3Ctext x=%2232%22 y=%2243%22 font-size=%2234%22 font-family=%22Arial%22 font-weight=%22700%22 fill=%22white%22 text-anchor=%22middle%22%3EH%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f4f0; --card:#fff; --ink:#1b1f1d; --muted:#5d645f; --line:#e2e1da; --line-2:#d3d2ca;
+    --brand:#0f5c4a; --brand-ink:#0b4638; --brand-2:#e6efeb; --brand-3:#cfe2da;
+    --nav:64px; --ease:cubic-bezier(.2,.8,.2,1); --ease-enter:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav) + 16px)}
+  body{background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-top:var(--nav)}
+  a{color:inherit}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  .skip{position:absolute;left:24px;top:-60px;background:var(--ink);color:#fff;padding:10px 14px;border-radius:8px;z-index:30;text-decoration:none}
+  .skip:focus{top:12px}
+  :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 
-      /* header */
-      .nav {
-        position: fixed;
-        inset: 0 0 auto 0;
-        height: var(--nav);
-        background: #fff;
-        border-bottom: 1px solid var(--line);
-        z-index: 20;
-      }
-      .nav .wrap {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        gap: 28px;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 800;
-        font-size: 16px;
-        letter-spacing: -0.01em;
-        text-decoration: none;
-        white-space: nowrap;
-      }
-      .mark {
-        width: 32px;
-        height: 32px;
-        border-radius: 9px;
-        background: var(--brand);
-        color: #fff;
-        display: grid;
-        place-items: center;
-        font-size: 15px;
-        font-weight: 800;
-      }
-      .nav__links {
-        display: flex;
-        gap: 24px;
-        font-size: 15px;
-        font-weight: 500;
-      }
-      .nav__links a {
-        text-decoration: none;
-        color: var(--muted);
-        padding: 6px 0;
-        background: linear-gradient(currentColor, currentColor) 0
-          calc(100% - 2px) / 0 1px no-repeat;
-        transition:
-          background-size 150ms var(--ease),
-          color 150ms;
-      }
-      .nav__links a:hover {
-        color: var(--ink);
-        background-size: 100% 1px;
-      }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        height: 44px;
-        padding: 0 20px;
-        border-radius: 10px;
-        border: 1px solid var(--brand);
-        background: var(--brand);
-        color: #fff;
-        font:
-          600 15px/1 "Plus Jakarta Sans",
-          system-ui,
-          sans-serif;
-        text-decoration: none;
-        cursor: pointer;
-        transition:
-          transform 150ms var(--ease),
-          background 150ms,
-          border-color 150ms;
-      }
-      .btn:hover {
-        background: var(--brand-ink);
-        border-color: var(--brand-ink);
-        transform: translateY(-1px);
-      }
-      .btn:active {
-        transform: translateY(1px) scale(0.985);
-        transition-duration: 90ms;
-      }
-      .btn svg {
-        width: 16px;
-        height: 16px;
-        transition: transform 150ms var(--ease);
-      }
-      .btn:hover svg {
-        transform: translateX(3px);
-      }
-      .nav .btn {
-        margin-left: auto;
-      }
+  /* header */
+  .nav{position:fixed;inset:0 0 auto 0;height:var(--nav);background:#fff;border-bottom:1px solid var(--line);z-index:20}
+  .nav .wrap{height:100%;display:flex;align-items:center;gap:28px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;letter-spacing:-.01em;text-decoration:none;white-space:nowrap}
+  .mark{width:32px;height:32px;border-radius:9px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:800}
+  .nav__links{display:flex;gap:24px;font-size:15px;font-weight:500}
+  .nav__links a{text-decoration:none;color:var(--muted);padding:6px 0;background:linear-gradient(currentColor,currentColor) 0 calc(100% - 2px)/0 1px no-repeat;transition:background-size 150ms var(--ease),color 150ms}
+  .nav__links a:hover{color:var(--ink);background-size:100% 1px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:44px;padding:0 20px;border-radius:10px;border:1px solid var(--brand);background:var(--brand);color:#fff;font:600 15px/1 "Plus Jakarta Sans",system-ui,sans-serif;text-decoration:none;cursor:pointer;transition:transform 150ms var(--ease),background 150ms,border-color 150ms}
+  .btn:hover{background:var(--brand-ink);border-color:var(--brand-ink);transform:translateY(-1px)}
+  .btn:active{transform:translateY(1px) scale(.985);transition-duration:90ms}
+  .btn svg{width:16px;height:16px;transition:transform 150ms var(--ease)}
+  .btn:hover svg{transform:translateX(3px)}
+  .nav .btn{margin-left:auto}
 
-      /* hero */
-      .hero {
-        padding: 56px 0 32px;
-      }
-      .hero h1 {
-        font-size: clamp(32px, 2.6vw + 18px, 52px);
-        line-height: 1.08;
-        letter-spacing: -0.03em;
-        font-weight: 800;
-        margin: 0;
-        max-width: 24ch;
-      }
-      .hero h1 .ln {
-        display: block;
-        overflow: hidden;
-        padding-bottom: 0.06em;
-      }
-      .hero h1 .ln > span {
-        display: inline-block;
-      }
-      .hero .lead {
-        font-size: 18px;
-        line-height: 1.6;
-        color: var(--muted);
-        max-width: 58ch;
-        margin: 18px 0 0;
-      }
-      .facts {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 24px 0 0;
-        padding: 0;
-        list-style: none;
-      }
-      .facts li {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 99px;
-        padding: 8px 14px;
-      }
-      .facts svg {
-        width: 16px;
-        height: 16px;
-        color: var(--brand);
-      }
-      @keyframes rise {
-        from {
-          transform: translateY(105%);
-        }
-        to {
-          transform: none;
-        }
-      }
-      @keyframes up {
-        from {
-          opacity: 0;
-          transform: translateY(12px);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-      .js .hero h1 .ln > span {
-        animation: rise 700ms var(--ease-enter) both;
-      }
-      .js .hero h1 .ln:nth-child(2) > span {
-        animation-delay: 80ms;
-      }
-      .js .hero .lead {
-        animation: up 520ms var(--ease-enter) 380ms both;
-      }
-      .js .hero .facts {
-        animation: up 520ms var(--ease-enter) 440ms both;
-      }
-      .js .hero .toolbar {
-        animation: up 520ms var(--ease-enter) 500ms both;
-      }
+  /* hero */
+  .hero{padding:56px 0 32px}
+  .hero h1{font-size:clamp(32px,2.6vw + 18px,52px);line-height:1.08;letter-spacing:-.03em;font-weight:800;margin:0;max-width:24ch}
+  .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
+  .hero h1 .ln > span{display:inline-block}
+  .hero .lead{font-size:18px;line-height:1.6;color:var(--muted);max-width:58ch;margin:18px 0 0}
+  .facts{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 0;padding:0;list-style:none}
+  .facts li{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;background:#fff;border:1px solid var(--line);border-radius:99px;padding:8px 14px}
+  .facts svg{width:16px;height:16px;color:var(--brand)}
+  @keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+  @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .js .hero h1 .ln > span{animation:rise 700ms var(--ease-enter) both}
+  .js .hero h1 .ln:nth-child(2) > span{animation-delay:80ms}
+  .js .hero .lead{animation:up 520ms var(--ease-enter) 380ms both}
+  .js .hero .facts{animation:up 520ms var(--ease-enter) 440ms both}
+  .js .hero .toolbar{animation:up 520ms var(--ease-enter) 500ms both}
 
-      /* program */
-      .programs {
-        padding: 8px 0 64px;
-      }
-      .toolbar {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 12px;
-        margin: 0 0 20px;
-      }
-      .chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .chip {
-        height: 40px;
-        padding: 0 16px;
-        border-radius: 99px;
-        border: 1px solid var(--line-2);
-        background: #fff;
-        color: var(--ink);
-        font:
-          600 14px/1 "Plus Jakarta Sans",
-          system-ui,
-          sans-serif;
-        cursor: pointer;
-        transition:
-          background 150ms,
-          border-color 150ms,
-          color 150ms,
-          transform 150ms var(--ease);
-      }
-      .chip:hover {
-        transform: translateY(-1px);
-        border-color: #b3b2a9;
-      }
-      .chip[aria-pressed="true"] {
-        background: var(--ink);
-        border-color: var(--ink);
-        color: #fff;
-      }
-      .search {
-        margin-left: auto;
-        position: relative;
-      }
-      .search input {
-        height: 44px;
-        width: 280px;
-        border: 1px solid var(--line-2);
-        border-radius: 10px;
-        padding: 0 14px 0 40px;
-        font:
-          15px "Plus Jakarta Sans",
-          system-ui,
-          sans-serif;
-        background: #fff;
-        color: var(--ink);
-        transition:
-          border-color 140ms,
-          box-shadow 140ms;
-      }
-      .search input:focus {
-        outline: none;
-        border-color: var(--brand);
-        box-shadow: 0 0 0 3px rgba(15, 92, 74, 0.16);
-      }
-      .search svg {
-        position: absolute;
-        left: 13px;
-        top: 50%;
-        width: 17px;
-        height: 17px;
-        transform: translateY(-50%);
-        color: var(--muted);
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 16px;
-      }
-      .grid .card {
-        grid-column: span 2;
-      }
-      .grid .card:nth-child(4),
-      .grid .card:nth-child(5) {
-        grid-column: span 3;
-      }
-      .card {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 22px;
-        text-decoration: none;
-        color: var(--ink);
-        min-height: 300px;
-        transition:
-          transform 180ms var(--ease),
-          border-color 180ms,
-          box-shadow 180ms;
-      }
-      .card:hover {
-        transform: translateY(-2px);
-        border-color: #c4c3ba;
-        box-shadow: 0 10px 24px rgba(27, 31, 29, 0.08);
-      }
-      .card:active {
-        transform: translateY(0) scale(0.995);
-      }
-      .card__top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-      }
-      .ic {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        background: var(--brand-2);
-        color: var(--brand);
-        display: grid;
-        place-items: center;
-      }
-      .ic svg {
-        width: 22px;
-        height: 22px;
-      }
-      .meta {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-      }
-      .meta span {
-        font-size: 12.5px;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 99px;
-        background: #f2f2ee;
-        color: #3d433f;
-      }
-      .meta span.up {
-        background: #e8eefa;
-        color: #1d4ea3;
-      }
-      .card h2 {
-        font-size: 19px;
-        line-height: 1.25;
-        letter-spacing: -0.015em;
-        margin: 2px 0 0;
-        font-weight: 750;
-      }
-      .card p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 15px;
-      }
-      .card ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        gap: 7px;
-        font-size: 14.5px;
-        color: #2d332f;
-      }
-      .card li {
-        display: flex;
-        gap: 9px;
-        align-items: flex-start;
-      }
-      .card li svg {
-        flex: none;
-        width: 16px;
-        height: 16px;
-        margin-top: 3px;
-        color: var(--brand);
-      }
-      .card__go {
-        margin-top: auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-top: 14px;
-        border-top: 1px solid #efeee9;
-        font-weight: 650;
-        font-size: 15px;
-        color: var(--brand);
-      }
-      .card__go svg {
-        width: 18px;
-        height: 18px;
-        transition: transform 150ms var(--ease);
-      }
-      .card:hover .card__go svg {
-        transform: translateX(3px);
-      }
-      .card.soon {
-        opacity: 0.6;
-        pointer-events: none;
-      }
-      .empty {
-        display: none;
-        padding: 40px;
-        text-align: center;
-        color: var(--muted);
-        background: #fff;
-        border: 1px dashed var(--line-2);
-        border-radius: 16px;
-      }
+  /* program */
+  .programs{padding:8px 0 64px}
+  .toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 20px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{height:40px;padding:0 16px;border-radius:99px;border:1px solid var(--line-2);background:#fff;color:var(--ink);font:600 14px/1 "Plus Jakarta Sans",system-ui,sans-serif;cursor:pointer;transition:background 150ms,border-color 150ms,color 150ms,transform 150ms var(--ease)}
+  .chip:hover{transform:translateY(-1px);border-color:#b3b2a9}
+  .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+  .search{margin-left:auto;position:relative}
+  .search input{height:44px;width:280px;border:1px solid var(--line-2);border-radius:10px;padding:0 14px 0 40px;font:15px "Plus Jakarta Sans",system-ui,sans-serif;background:#fff;color:var(--ink);transition:border-color 140ms,box-shadow 140ms}
+  .search input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(15,92,74,.16)}
+  .search svg{position:absolute;left:13px;top:50%;width:17px;height:17px;transform:translateY(-50%);color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+  .grid .card{grid-column:span 2}
+  .card{display:flex;flex-direction:column;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;text-decoration:none;color:var(--ink);min-height:300px;transition:transform 180ms var(--ease),border-color 180ms,box-shadow 180ms}
+  .card:hover{transform:translateY(-2px);border-color:#c4c3ba;box-shadow:0 10px 24px rgba(27,31,29,.08)}
+  .card:active{transform:translateY(0) scale(.995)}
+  .card__top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .ic{width:44px;height:44px;border-radius:12px;background:var(--brand-2);color:var(--brand);display:grid;place-items:center}
+  .ic svg{width:22px;height:22px}
+  .meta{display:flex;gap:6px;flex-wrap:wrap}
+  .meta span{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:99px;background:#f2f2ee;color:#3d433f}
+  .meta span.up{background:#e8eefa;color:#1d4ea3}
+  .card h2{font-size:19px;line-height:1.25;letter-spacing:-.015em;margin:2px 0 0;font-weight:750}
+  .card p{margin:0;color:var(--muted);font-size:15px}
+  .card ul{margin:0;padding:0;list-style:none;display:grid;gap:7px;font-size:14.5px;color:#2d332f}
+  .card li{display:flex;gap:9px;align-items:flex-start}
+  .card li svg{flex:none;width:16px;height:16px;margin-top:3px;color:var(--brand)}
+  .card__go{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid #efeee9;font-weight:650;font-size:15px;color:var(--brand)}
+  .card__go svg{width:18px;height:18px;transition:transform 150ms var(--ease)}
+  .card:hover .card__go svg{transform:translateX(3px)}
+  .card.soon{opacity:.6;pointer-events:none}
+  .empty{display:none;padding:40px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--line-2);border-radius:16px}
 
-      /* alur */
-      .flow {
-        padding: 64px 0;
-        background: #fff;
-        border-top: 1px solid var(--line);
-        border-bottom: 1px solid var(--line);
-      }
-      .flow h2 {
-        font-size: clamp(24px, 1vw + 18px, 32px);
-        letter-spacing: -0.02em;
-        margin: 0 0 8px;
-        font-weight: 800;
-      }
-      .flow .lead {
-        color: var(--muted);
-        margin: 0 0 40px;
-        max-width: 60ch;
-      }
-      .steps {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 24px;
-        counter-reset: s;
-      }
-      .steps li {
-        position: relative;
-        padding-top: 56px;
-      }
-      .steps li::before {
-        counter-increment: s;
-        content: counter(s);
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-        background: var(--brand);
-        color: #fff;
-        display: grid;
-        place-items: center;
-        font-weight: 800;
-      }
-      .steps li::after {
-        content: "";
-        position: absolute;
-        top: 20px;
-        left: 52px;
-        right: -12px;
-        height: 1px;
-        background: var(--line-2);
-      }
-      .steps li:last-child::after {
-        display: none;
-      }
-      .steps h3 {
-        font-size: 17px;
-        margin: 0 0 6px;
-        letter-spacing: -0.01em;
-      }
-      .steps p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 15px;
-      }
+  /* alur */
+  .flow{padding:64px 0;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .flow h2{font-size:clamp(24px,1vw + 18px,32px);letter-spacing:-.02em;margin:0 0 8px;font-weight:800}
+  .flow .lead{color:var(--muted);margin:0 0 40px;max-width:60ch}
+  .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;counter-reset:s}
+  .steps li{position:relative;padding-top:56px}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;top:0;left:0;width:40px;height:40px;border-radius:12px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800}
+  .steps li::after{content:"";position:absolute;top:20px;left:52px;right:-12px;height:1px;background:var(--line-2)}
+  .steps li:last-child::after{display:none}
+  .steps h3{font-size:17px;margin:0 0 6px;letter-spacing:-.01em}
+  .steps p{margin:0;color:var(--muted);font-size:15px}
 
-      footer {
-        padding: 28px 0 40px;
-        color: var(--muted);
-        font-size: 14px;
-      }
-      footer .wrap {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px 24px;
-        justify-content: space-between;
-      }
+  footer{padding:28px 0 40px;color:var(--muted);font-size:14px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
 
-      @media (max-width: 980px) {
-        .grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .grid .card,
-        .grid .card:nth-child(4),
-        .grid .card:nth-child(5) {
-          grid-column: auto;
-        }
-        .steps {
-          grid-template-columns: 1fr 1fr;
-        }
-        .steps li:nth-child(2)::after {
-          display: none;
-        }
-      }
-      @media (max-width: 640px) {
-        .nav__links {
-          display: none;
-        }
-        .nav .btn span {
-          display: none;
-        }
-        .nav .btn {
-          width: 44px;
-          padding: 0;
-        }
-        .hero {
-          padding: 32px 0 20px;
-        }
-        .hero .lead {
-          font-size: 16px;
-        }
-        .grid,
-        .steps {
-          grid-template-columns: 1fr;
-        }
-        .steps li::after {
-          display: none;
-        }
-        .search,
-        .search input {
-          width: 100%;
-          margin: 0;
-        }
-        .card {
-          min-height: 0;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-          animation: none !important;
-          transition: none !important;
-        }
-        html {
-          scroll-behavior: auto;
-        }
-      }
-    </style>
-    <script>
-      document.documentElement.classList.add("js");
-    </script>
-  </head>
-  <body>
-    <a class="skip" href="#program">Langsung ke daftar program</a>
-    <header class="nav">
-      <div class="wrap">
-        <a class="brand" href="/" aria-label="Portal Klaim Insentif — beranda"
-          ><span class="mark" aria-hidden="true">H</span
-          ><span>Klaim Insentif</span></a
-        >
-        <nav class="nav__links" aria-label="Navigasi utama">
-          <a href="#program">Program</a><a href="#alur">Alur klaim</a>
-        </nav>
-        <a class="btn" href="#program"
-          ><span>Pilih program</span
-          ><svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path
-              d="M3 8h10M9 4l4 4-4 4"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            /></svg
-        ></a>
+  @media (max-width:980px){.grid{grid-template-columns:1fr 1fr}.grid .card{grid-column:auto}.steps{grid-template-columns:1fr 1fr}.steps li:nth-child(2)::after{display:none}}
+  @media (max-width:640px){
+    .nav__links{display:none}
+    .nav .btn span{display:none}.nav .btn{width:44px;padding:0}
+    .hero{padding:32px 0 20px}.hero .lead{font-size:16px}
+    .grid,.steps{grid-template-columns:1fr}.steps li::after{display:none}
+    .search,.search input{width:100%;margin:0}
+    .card{min-height:0}
+  }
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<a class="skip" href="#program">Langsung ke daftar program</a>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Portal Klaim Insentif — beranda"><span class="mark" aria-hidden="true">H</span><span>Klaim Insentif</span></a>
+    <nav class="nav__links" aria-label="Navigasi utama"><a href="#program">Program</a><a href="#alur">Alur klaim</a></nav>
+    <a class="btn" href="#program"><span>Pilih program</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap">
+      <h1 id="hero-h"><span class="ln"><span>Klaim insentif distributor,</span></span><span class="ln"><span>dihitung otomatis.</span></span></h1>
+      <p class="lead">Pilih program, isi target dan realisasi atau upload export faktur. Admin Harum Group memverifikasi setiap klaim sebelum diteruskan ke finance.</p>
+      <ul class="facts">
+        <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M5 8h6M8 5v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span id="count">5 program aktif</span></li>
+        <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Hitung otomatis saat mengisi</li>
+        <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8 13.5 4v4c0 3-2.3 5.4-5.5 6.2C4.8 13.4 2.5 11 2.5 8V4L8 1.8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Diverifikasi sebelum dibayar</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="programs" id="program" aria-labelledby="prog-h">
+    <div class="wrap">
+      <h2 id="prog-h" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Program klaim</h2>
+      <div class="toolbar">
+        <div class="chips" role="group" aria-label="Saring program">
+          <button class="chip" type="button" data-filter="all" aria-pressed="true">Semua</button>
+          <button class="chip" type="button" data-filter="salesman" aria-pressed="false">Salesman</button>
+          <button class="chip" type="button" data-filter="manajemen" aria-pressed="false">SPV &amp; distributor</button>
+          <button class="chip" type="button" data-filter="upload" aria-pressed="false">Upload data</button>
+        </div>
+        <label class="search"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Cari program</span>
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.8"/><path d="m14 14 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input id="q" type="search" placeholder="Cari program, mis. NOO" autocomplete="off">
+        </label>
       </div>
-    </header>
+      <div class="grid" id="menu"></div>
+      <p class="empty" id="empty">Tidak ada program yang cocok. Coba kata lain atau pilih <b>Semua</b>.</p>
+    </div>
+  </section>
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-h">
-        <div class="wrap">
-          <h1 id="hero-h">
-            <span class="ln"><span>Form Klaim</span></span
-            ><span class="ln"><span>Program Q4</span></span>
-          </h1>
-          <p class="lead">
-            Pilih program, isi target dan realisasi atau upload export faktur.
-            Admin Harum Group memverifikasi setiap klaim sebelum diteruskan ke
-            finance.
-          </p>
-          <ul class="facts">
-            <li>
-              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <rect
-                  x="2"
-                  y="2"
-                  width="12"
-                  height="12"
-                  rx="3"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                />
-                <path
-                  d="M5 8h6M8 5v6"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                /></svg
-              ><span id="count">5 program aktif</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path
-                  d="M3 8.5 6.5 12 13 4"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                /></svg
-              >Hitung otomatis saat mengisi
-            </li>
-            <li>
-              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path
-                  d="M8 1.8 13.5 4v4c0 3-2.3 5.4-5.5 6.2C4.8 13.4 2.5 11 2.5 8V4L8 1.8Z"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linejoin="round"
-                /></svg
-              >Diverifikasi sebelum dibayar
-            </li>
-          </ul>
-        </div>
-      </section>
+  <section class="flow" id="alur" aria-labelledby="alur-h">
+    <div class="wrap">
+      <h2 id="alur-h">Alur pengajuan klaim</h2>
+      <p class="lead">Dari pengisian sampai pembayaran, setiap klaim melewati empat langkah yang sama.</p>
+      <ol class="steps">
+        <li><h3>Pilih program</h3><p>Buka form sesuai program insentif dan periode yang diklaim.</p></li>
+        <li><h3>Isi atau upload data</h3><p>Target dan realisasi, atau export faktur untuk NOO Opak dan Kompetisi AO 2000.</p></li>
+        <li><h3>Cek hasil &amp; kirim</h3><p>Insentif tampil saat mengisi. Tombol kirim aktif setelah semua data wajib lengkap.</p></li>
+        <li><h3>Verifikasi &amp; bayar</h3><p>Admin mencocokkan data actual, lalu klaim diteruskan ke finance.</p></li>
+      </ol>
+    </div>
+  </section>
+</main>
 
-      <section class="programs" id="program" aria-labelledby="prog-h">
-        <div class="wrap">
-          <h2
-            id="prog-h"
-            class="visually-hidden"
-            style="
-              position: absolute;
-              width: 1px;
-              height: 1px;
-              overflow: hidden;
-              clip: rect(0 0 0 0);
-            "
-          >
-            Program klaim
-          </h2>
-          <div class="toolbar">
-            <div class="chips" role="group" aria-label="Saring program">
-              <button
-                class="chip"
-                type="button"
-                data-filter="all"
-                aria-pressed="true"
-              >
-                Semua
-              </button>
-              <button
-                class="chip"
-                type="button"
-                data-filter="salesman"
-                aria-pressed="false"
-              >
-                Salesman
-              </button>
-              <button
-                class="chip"
-                type="button"
-                data-filter="manajemen"
-                aria-pressed="false"
-              >
-                SPV &amp; distributor
-              </button>
-              <button
-                class="chip"
-                type="button"
-                data-filter="upload"
-                aria-pressed="false"
-              >
-                Upload data
-              </button>
-            </div>
-            <label class="search"
-              ><span
-                style="
-                  position: absolute;
-                  width: 1px;
-                  height: 1px;
-                  overflow: hidden;
-                  clip: rect(0 0 0 0);
-                "
-                >Cari program</span
-              >
-              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <circle
-                  cx="9"
-                  cy="9"
-                  r="6"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                />
-                <path
-                  d="m14 14 4 4"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                />
-              </svg>
-              <input
-                id="q"
-                type="search"
-                placeholder="Cari program, mis. NOO"
-                autocomplete="off"
-              />
-            </label>
-          </div>
-          <div class="grid" id="menu"></div>
-          <p class="empty" id="empty">
-            Tidak ada program yang cocok. Coba kata lain atau pilih
-            <b>Semua</b>.
-          </p>
-        </div>
-      </section>
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr">2026</span> Harum Group · CV Sumber Harum Utama · CV Nana Abadi</span>
+    <span>Pertanyaan klaim: hubungi admin sales dengan menyebutkan nomor klaim.</span>
+  </div>
+</footer>
 
-      <section class="flow" id="alur" aria-labelledby="alur-h">
-        <div class="wrap">
-          <h2 id="alur-h">Alur pengajuan klaim</h2>
-          <p class="lead">
-            Dari pengisian sampai pembayaran, setiap klaim melewati empat
-            langkah yang sama.
-          </p>
-          <ol class="steps">
-            <li>
-              <h3>Pilih program</h3>
-              <p>Buka form sesuai program insentif dan periode yang diklaim.</p>
-            </li>
-            <li>
-              <h3>Isi atau upload data</h3>
-              <p>
-                Target dan realisasi, atau export faktur untuk NOO Opak dan
-                Kompetisi AO 2000.
-              </p>
-            </li>
-            <li>
-              <h3>Cek hasil &amp; kirim</h3>
-              <p>
-                Insentif tampil saat mengisi. Tombol kirim aktif setelah semua
-                data wajib lengkap.
-              </p>
-            </li>
-            <li>
-              <h3>Verifikasi &amp; bayar</h3>
-              <p>
-                Admin mencocokkan data actual, lalu klaim diteruskan ke finance.
-              </p>
-            </li>
-          </ol>
-        </div>
-      </section>
-    </main>
+<script>
+/* ===== Daftar program. Alamat server Apps Script diatur di /assets/config.js ===== */
+var ICON = {
+  salesman: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  store: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5V20h16V9.5M3 9.5 5 4h14l2 5.5c0 1.4-1.2 2.5-2.6 2.5S16 10.9 16 9.5c0 1.4-1.2 2.5-2.6 2.5h-2.8C9.2 12 8 10.9 8 9.5c0 1.4-1.2 2.5-2.6 2.5S3 10.9 3 9.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 20v-4.5h4V20" stroke="currentColor" stroke-width="1.8"/></svg>',
+  trophy: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5A3.5 3.5 0 0 1 16.5 11M12 14v3M8.5 20h7l-1-3h-5l-1 3Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  spv: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h5M8 17h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="m14.5 16.5 1.5 1.5 3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  building: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 20.5h17M5.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h6A1.5 1.5 0 0 1 14.5 5v15.5M14.5 9.5h3A1.5 1.5 0 0 1 19 11v9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 7.5h3M8.5 11h3M8.5 14.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'
+};
+var FORMS = [
+  {icon:'salesman', title:'Insentif Salesman Distributor', tags:['salesman'], meta:['Bulanan','Isi target & realisasi'],
+   desc:'Insentif bulanan salesman dari pencapaian KPI.',
+   points:['Sell Out, AO SKU 2000, AO GC, Product Focus','Dibayar terpisah SHU & NANA','Maks. Rp 500.000 per salesman'], url:'/insentif-salesman/'},
+  {icon:'store', title:'Insentif NOO BMX Opak', tags:['salesman','upload'], meta:['Bulanan','Upload faktur'], up:true,
+   desc:'Insentif outlet baru (NOO) BMX Opak per salesman.',
+   points:['Rp 2.000 per outlet NOO valid','Minimal 25 outlet, pembelian ≥ 1 karton','NOO terdeteksi otomatis dari faktur'], url:'/noo-opak/'},
+  {icon:'trophy', title:'Kompetisi AO SKU 2000', tags:['salesman','upload'], meta:['Bulanan','Upload faktur'], up:true,
+   desc:'Hadiah untuk salesman dengan AO SKU 2000 tertinggi.',
+   points:['Rp 200.000 untuk 1 pemenang','Syarat: AO ≥ target AO SKU 2000','Group SAJ, Aldi Jaya, Pilar–Sejahtera–AJP'], url:'/kompetisi-ao2000/'},
+  {icon:'spv', title:'Insentif SPV Distributor', tags:['manajemen'], meta:['Bulanan','Isi target & realisasi'],
+   desc:'Insentif bulanan SPV dari pencapaian KPI distributor.',
+   points:['Skema Mix Product atau 2000 & GC','Dibayar terpisah SHU & NANA','Maks. Rp 2.000.000 per SPV'], url:'/insentif-spv/'},
+  {icon:'building', title:'Insentif Distributor', tags:['manajemen'], meta:['Kuartal','Isi target & actual'],
+   desc:'Insentif distributor per kuartal untuk owner & PIC.',
+   points:['Syarat sell in ≥ 100%','Maks 1% actual sell out + bonus 0,5%','Group dihitung dari total anggota'], url:'/insentif-distributor/'},
+  {icon:'salesman', title:'Insentif Salesman Class A/B', tags:['salesman'], meta:['Bulanan','Isi target & realisasi'],
+   desc:'Insentif salesman berdasarkan kelas target Sell Out.',
+   points:['Sell Out 40%, RO 25%, SKU 2000 35%','Class A Rp 250.000 · Class B Rp 500.000','Dibayar terpisah SHU & NANA'], url:'/insentif-salesman-class/'}
+];
+var CHECK = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var ARROW = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var esc = function(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+document.getElementById('menu').innerHTML = FORMS.map(function(f, i){
+  var ready = /^(https:\/\/|\/)/.test(f.url);
+  return '<a class="card'+(ready?'':' soon')+'" href="'+esc(ready?f.url:'#')+'" data-i="'+i+'"'+(ready?'':' aria-disabled="true"')+'>' +
+    '<div class="card__top"><span class="ic">'+ICON[f.icon]+'</span><span class="meta">'+f.meta.map(function(m,j){ return '<span'+(f.up&&j===1?' class="up"':'')+'>'+esc(m)+'</span>'; }).join('')+'</span></div>' +
+    '<h2>'+esc(f.title)+'</h2><p>'+esc(f.desc)+'</p>' +
+    '<ul>'+f.points.map(function(p){ return '<li>'+CHECK+'<span>'+esc(p)+'</span></li>'; }).join('')+'</ul>' +
+    '<span class="card__go">'+(ready?'Buka form':'Segera hadir')+ARROW+'</span></a>';
+}).join('');
+document.getElementById('count').textContent = FORMS.length + ' program aktif';
+document.getElementById('yr').textContent = new Date().getFullYear();
 
-    <footer>
-      <div class="wrap">
-        <span
-          >© <span id="yr">2026</span> Harum Group · CV Sumber Harum Utama · CV
-          Nana Abadi</span
-        >
-        <span
-          >Pertanyaan klaim: hubungi admin sales dengan menyebutkan nomor
-          klaim.</span
-        >
-      </div>
-    </footer>
-
-    <script>
-      /* ===== Daftar program. Alamat server Apps Script diatur di /assets/config.js ===== */
-      var ICON = {
-        salesman:
-          '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
-        store:
-          '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5V20h16V9.5M3 9.5 5 4h14l2 5.5c0 1.4-1.2 2.5-2.6 2.5S16 10.9 16 9.5c0 1.4-1.2 2.5-2.6 2.5h-2.8C9.2 12 8 10.9 8 9.5c0 1.4-1.2 2.5-2.6 2.5S3 10.9 3 9.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 20v-4.5h4V20" stroke="currentColor" stroke-width="1.8"/></svg>',
-        trophy:
-          '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5A3.5 3.5 0 0 1 16.5 11M12 14v3M8.5 20h7l-1-3h-5l-1 3Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-        spv: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h5M8 17h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="m14.5 16.5 1.5 1.5 3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-        building:
-          '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 20.5h17M5.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h6A1.5 1.5 0 0 1 14.5 5v15.5M14.5 9.5h3A1.5 1.5 0 0 1 19 11v9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 7.5h3M8.5 11h3M8.5 14.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
-      };
-      var FORMS = [
-        {
-          icon: "salesman",
-          title: "Insentif Salesman Distributor",
-          tags: ["salesman"],
-          meta: ["Bulanan", "Isi target & realisasi"],
-          desc: "Insentif bulanan salesman dari pencapaian KPI.",
-          points: [
-            "Sell Out, AO SKU 2000, AO GC, Product Focus",
-            "Dibayar terpisah SHU & NANA",
-            "Maks. Rp 500.000 per salesman",
-          ],
-          url: "/insentif-salesman/",
-        },
-        {
-          icon: "store",
-          title: "Insentif NOO BMX Opak",
-          tags: ["salesman", "upload"],
-          meta: ["Bulanan", "Upload faktur"],
-          up: true,
-          desc: "Insentif outlet baru (NOO) BMX Opak per salesman.",
-          points: [
-            "Rp 2.000 per outlet NOO valid",
-            "Minimal 25 outlet, pembelian ≥ 1 karton",
-            "NOO terdeteksi otomatis dari faktur",
-          ],
-          url: "/noo-opak/",
-        },
-        {
-          icon: "trophy",
-          title: "Kompetisi AO SKU 2000",
-          tags: ["salesman", "upload"],
-          meta: ["Bulanan", "Upload faktur"],
-          up: true,
-          desc: "Hadiah untuk salesman dengan AO SKU 2000 tertinggi.",
-          points: [
-            "Rp 200.000 untuk 1 pemenang",
-            "Syarat: AO ≥ target AO SKU 2000",
-            "Group SAJ, Aldi Jaya, Pilar–Sejahtera–AJP",
-          ],
-          url: "/kompetisi-ao2000/",
-        },
-        {
-          icon: "spv",
-          title: "Insentif SPV Distributor",
-          tags: ["manajemen"],
-          meta: ["Bulanan", "Isi target & realisasi"],
-          desc: "Insentif bulanan SPV dari pencapaian KPI distributor.",
-          points: [
-            "Skema Mix Product atau 2000 & GC",
-            "Dibayar terpisah SHU & NANA",
-            "Maks. Rp 2.000.000 per SPV",
-          ],
-          url: "/insentif-spv/",
-        },
-        {
-          icon: "building",
-          title: "Insentif Distributor",
-          tags: ["manajemen"],
-          meta: ["Kuartal", "Isi target & actual"],
-          desc: "Insentif distributor per kuartal untuk owner & PIC.",
-          points: [
-            "Syarat sell in ≥ 100%",
-            "Maks 1% actual sell out + bonus 0,5%",
-            "Group dihitung dari total anggota",
-          ],
-          url: "/insentif-distributor/",
-        },
-      ];
-      var CHECK =
-        '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      var ARROW =
-        '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      var esc = function (s) {
-        return String(s).replace(/[&<>"]/g, function (c) {
-          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
-        });
-      };
-      document.getElementById("menu").innerHTML = FORMS.map(function (f, i) {
-        var ready = /^(https:\/\/|\/)/.test(f.url);
-        return (
-          '<a class="card' +
-          (ready ? "" : " soon") +
-          '" href="' +
-          esc(ready ? f.url : "#") +
-          '" data-i="' +
-          i +
-          '"' +
-          (ready ? "" : ' aria-disabled="true"') +
-          ">" +
-          '<div class="card__top"><span class="ic">' +
-          ICON[f.icon] +
-          '</span><span class="meta">' +
-          f.meta
-            .map(function (m, j) {
-              return (
-                "<span" +
-                (f.up && j === 1 ? ' class="up"' : "") +
-                ">" +
-                esc(m) +
-                "</span>"
-              );
-            })
-            .join("") +
-          "</span></div>" +
-          "<h2>" +
-          esc(f.title) +
-          "</h2><p>" +
-          esc(f.desc) +
-          "</p>" +
-          "<ul>" +
-          f.points
-            .map(function (p) {
-              return "<li>" + CHECK + "<span>" + esc(p) + "</span></li>";
-            })
-            .join("") +
-          "</ul>" +
-          '<span class="card__go">' +
-          (ready ? "Buka form" : "Segera hadir") +
-          ARROW +
-          "</span></a>"
-        );
-      }).join("");
-      document.getElementById("count").textContent =
-        FORMS.length + " program aktif";
-      document.getElementById("yr").textContent = new Date().getFullYear();
-
-      /* saring & cari */
-      var filter = "all",
-        cards = Array.prototype.slice.call(
-          document.querySelectorAll("#menu .card"),
-        );
-      function apply() {
-        var q = document.getElementById("q").value.trim().toLowerCase(),
-          shown = 0;
-        cards.forEach(function (c) {
-          var f = FORMS[+c.dataset.i],
-            text = (
-              f.title +
-              " " +
-              f.desc +
-              " " +
-              f.points.join(" ") +
-              " " +
-              f.meta.join(" ")
-            ).toLowerCase();
-          var ok =
-            (filter === "all" || f.tags.indexOf(filter) >= 0) &&
-            (!q || text.indexOf(q) >= 0);
-          c.style.display = ok ? "" : "none";
-          if (ok) shown++;
-        });
-        document.getElementById("empty").style.display = shown
-          ? "none"
-          : "block";
-      }
-      document.querySelectorAll(".chip").forEach(function (b) {
-        b.addEventListener("click", function () {
-          filter = b.dataset.filter;
-          document.querySelectorAll(".chip").forEach(function (x) {
-            x.setAttribute("aria-pressed", x === b ? "true" : "false");
-          });
-          apply();
-        });
-      });
-      document.getElementById("q").addEventListener("input", apply);
-    </script>
-  </body>
+/* saring & cari */
+var filter = 'all', cards = Array.prototype.slice.call(document.querySelectorAll('#menu .card'));
+function apply(){
+  var q = document.getElementById('q').value.trim().toLowerCase(), shown = 0;
+  cards.forEach(function(c){
+    var f = FORMS[+c.dataset.i], text = (f.title+' '+f.desc+' '+f.points.join(' ')+' '+f.meta.join(' ')).toLowerCase();
+    var ok = (filter === 'all' || f.tags.indexOf(filter) >= 0) && (!q || text.indexOf(q) >= 0);
+    c.style.display = ok ? '' : 'none'; if (ok) shown++;
+  });
+  document.getElementById('empty').style.display = shown ? 'none' : 'block';
+}
+document.querySelectorAll('.chip').forEach(function(b){
+  b.addEventListener('click', function(){
+    filter = b.dataset.filter;
+    document.querySelectorAll('.chip').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    apply();
+  });
+});
+document.getElementById('q').addEventListener('input', apply);
+</script>
+</body>
 </html>
