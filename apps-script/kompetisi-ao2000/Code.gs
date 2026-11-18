@@ -322,7 +322,7 @@ function printSelected() {
   var sh = ss.getSheetByName(SHEET.print) || ss.insertSheet(SHEET.print);
   renderPrint_(sh, loadClaim_(ss, id));
   ss.setActiveSheet(sh);
-  note_('Klaim ' + id + ' siap di sheet Cetak. File > Print: Current sheet, Portrait, Fit to width.');
+  note_('Klaim ' + id + ' siap di sheet Cetak. File > Print: Current sheet, Landscape, Fit to width.');
 }
 
 function regenPdfSelected() {
@@ -505,7 +505,7 @@ function makePdf_(ss, L) {
     var size = renderPrint_(tmp, L);
     SpreadsheetApp.flush();
     var url = 'https://docs.google.com/spreadsheets/d/' + ss.getId() + '/export?format=pdf&gid=' + tmp.getSheetId() +
-      '&size=A4&portrait=true&fitw=true&gridlines=false&printtitle=false&sheetnames=false&pagenum=CENTER' +
+      '&size=A4&portrait=false&scale=4&gridlines=false&printtitle=false&sheetnames=false&pagenum=CENTER' +
       '&fzr=false&horizontal_alignment=CENTER&top_margin=0.4&bottom_margin=0.4&left_margin=0.4&right_margin=0.4' +
       '&r1=0&c1=0&r2=' + size.rows + '&c2=' + size.cols;
     var resp, tries = 0;
@@ -545,7 +545,8 @@ function renderPrint_(sh, L) {
   var need = 60 + C.rows.length;
   if (sh.getMaxRows() < need) sh.insertRowsAfter(sh.getMaxRows(), need - sh.getMaxRows());
   sh.setHiddenGridlines(true);
-  [40, 150, 130, 70, 105, 70, 80, 150].forEach(function (x, i) { sh.setColumnWidth(i + 1, x); });
+  var BASEW = [40, 150, 130, 70, 105, 70, 80, 150].map(function (x) { return Math.round(x * 1.35); }); // landscape
+  BASEW.forEach(function (x, i) { sh.setColumnWidth(i + 1, x); });
   var r = 1;
   var put = function (row, c1, c2, val) { if (typeof val === 'string') val = cell_(val); var rg = sh.getRange(row, c1, 1, c2 - c1 + 1); if (c2 > c1) rg.merge(); rg.setValue(val); return rg; };
   var box = function (r1, r2) { sh.getRange(r1, 1, r2 - r1 + 1, N).setBorder(true, true, true, true, true, true, border, SpreadsheetApp.BorderStyle.SOLID); };
@@ -597,7 +598,7 @@ function renderPrint_(sh, L) {
   sh.getRange(pf, 6, r - pf + 1, 3).setNumberFormat('#,##0').setHorizontalAlignment('right');
   sh.getRange(pf, 1, r - pf + 1, 1).setHorizontalAlignment('center');
   sh.getRange(pf, 2, r - pf + 1, 4).setWrap(true);
-  box(ph, r); r++;
+  box(ph, r); var payEnd = r; r++;
   put(r, 1, N, 'Terbilang: ' + terbilang_(P.net) + ' rupiah').setFontStyle('italic').setFontWeight('bold');
   r += 2;
 
@@ -609,14 +610,16 @@ function renderPrint_(sh, L) {
     '• Sumber data: ' + src];
   notes.forEach(function (t, j) { put(r++, 1, N, t).setFontSize(8).setFontColor('#555555').setWrap(true).setFontWeight(j ? 'normal' : 'bold'); });
   r++;
-  [[1, 2, 'Dibuat oleh,', 'Distributor'], [3, 4, 'Diperiksa oleh,', 'SPV / ASM'], [5, 6, 'Disetujui oleh,', 'Head of Sales'], [7, 8, 'Diterima oleh,', 'Finance']].forEach(function (s) {
+  [[1, 3, 'Diperiksa oleh,', 'Data Analyst'], [4, 5, 'Disetujui oleh,', 'Head of Sales'], [6, 8, 'Diterima oleh,', 'Finance']].forEach(function (s) {
     put(r, s[0], s[1], s[2]).setHorizontalAlignment('center');
-    put(r + 4, s[0], s[1], '(____________________)').setHorizontalAlignment('center');
-    put(r + 5, s[0], s[1], s[3]).setHorizontalAlignment('center').setFontWeight('bold');
+    put(r + 5, s[0], s[1], '(______________________________)').setHorizontalAlignment('center');
+    put(r + 6, s[0], s[1], s[3]).setHorizontalAlignment('center').setFontWeight('bold');
   });
-  r += 5;
+  for (var sr = r + 1; sr <= r + 4; sr++) sh.setRowHeight(sr, 24); // ruang tanda tangan lebih lega
+  r += 6;
   sh.getRange(1, 1, r, N).setFontFamily('Arial');
   sh.getRange(5, 1, r - 4, N).setFontSize(9);
+  autoWidths_(sh, ph + 1, payEnd, N, BASEW);
   return {rows: r, cols: N};
 }
 
@@ -717,6 +720,27 @@ function cell_(s) { s = String(s == null ? '' : s); return /^[=+\-@]/.test(s) ? 
 function normDist_(s) { return String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); }
 function note_(msg) { SpreadsheetApp.getActiveSpreadsheet().toast(msg, 'Kompetisi AO 2000', 10); }
 function userEmail_() { try { return Session.getActiveUser().getEmail() || Session.getEffectiveUser().getEmail(); } catch (e) { return ''; } }
+/** Lebar kolom PDF dinamis untuk tabel rincian pembayaran (baris r1–r2): kolom melebar mengikuti isian
+ *  terpanjang (nama, metode, bank / no. rek, cabang, a/n); isian yang lebih panjang dari batas dibungkus (wrap). */
+function autoWidths_(sh, r1, r2, N, base, cap) {
+  cap = cap || 260;
+  var w = base.slice();
+  if (r2 < r1) { w.forEach(function (x, j) { sh.setColumnWidth(j + 1, x); }); return; }
+  var rg = sh.getRange(r1, 1, r2 - r1 + 1, N), vals = rg.getDisplayValues(), bgs = rg.getBackgrounds(), skip = {};
+  rg.getMergedRanges().forEach(function (m) {
+    for (var i = m.getRow(); i <= m.getLastRow(); i++) for (var j = m.getColumn(); j <= m.getLastColumn(); j++) skip[i + ',' + j] = 1;
+  });
+  vals.forEach(function (row, i) {
+    row.forEach(function (v, j) {
+      if (v === '' || skip[(r1 + i) + ',' + (j + 1)] || String(bgs[i][j]).toLowerCase() === '#e8f2ee') return;
+      var len = String(v).split('\n').reduce(function (m, l) { return Math.max(m, l.length); }, 0);
+      w[j] = Math.max(w[j], Math.min(cap, Math.ceil(len * 6.6 + 16)));
+    });
+  });
+  w.forEach(function (x, j) { sh.setColumnWidth(j + 1, x); });
+  rg.setWrap(true).setVerticalAlignment('middle');
+}
+
 function fmtNum_(n) { return String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
 
 function sanitize_(p, S) {

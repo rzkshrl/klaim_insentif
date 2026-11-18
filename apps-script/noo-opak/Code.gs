@@ -396,15 +396,15 @@ function printSelected() {
   var sh = ss.getSheetByName(SHEET.print) || ss.insertSheet(SHEET.print);
   renderPrint_(sh, loadClaim_(ss, id));
   ss.setActiveSheet(sh);
-  note_('Klaim ' + id + ' siap di sheet Cetak. File > Print: Current sheet, Portrait, Fit to width.');
+  note_('Klaim ' + id + ' siap di sheet Cetak. File > Print: Current sheet, Landscape, Fit to width.');
 }
 
-function regenPdfSelected() {
+async function regenPdfSelected() {
   var ss = SpreadsheetApp.getActiveSpreadsheet(), id = selectedId_(ss);
   if (!id) return;
   var row = findDataRow_(ss, id);
   if (!isVerifiedRow_(ss, row)) { note_('Klaim ' + id + ' belum diverifikasi. Ubah Status menjadi "Diverifikasi" — PDF dibuat otomatis.'); return; }
-  writePdfLink_(ss, row, id);
+  await writePdfLink_(ss, row, id);
   note_('PDF klaim ' + id + ' sudah dibuat ulang.');
 }
 
@@ -567,7 +567,7 @@ function handleStatus_(ss, row, oldValue) {
   }
 }
 
-function processPdfQueue() {
+async function processPdfQueue() {
   ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === PDF_HANDLER) ScriptApp.deleteTrigger(t); });
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(10000)) { ScriptApp.newTrigger(PDF_HANDLER).timeBased().after(60 * 1000).create(); return; }
@@ -582,45 +582,67 @@ function processPdfQueue() {
   }
   for (var i = 0; i < todo.length; i++) {
     if (Date.now() - started > 4 * 60 * 1000) { leftover = true; break; }
-    writePdfLink_(ss, todo[i].row, todo[i].id);
+    await writePdfLink_(ss, todo[i].row, todo[i].id);
     SpreadsheetApp.flush();
   }
   if (leftover) ScriptApp.newTrigger(PDF_HANDLER).timeBased().after(30 * 1000).create();
 }
 
-function writePdfLink_(ss, row, id) {
+async function writePdfLink_(ss, row, id) {
   var cell = ss.getSheetByName(SHEET.data).getRange(row, DATA_HEAD.indexOf('PDF') + 1);
   trashPdf_(cell);
   try {
     var L = loadClaim_(ss, id);
     if (!L.claim.pay.list.length) { cell.setValue('— (tidak ada)'); return; }
-    var file = makePdf_(ss, L);
+    var file = await makePdf_(ss, L);
     cell.setFormula('=HYPERLINK("' + file.getUrl() + '","PDF Klaim")');
   } catch (e) {
     cell.setValue('Gagal: ' + e.message + ' (pakai menu Buat ulang PDF)');
   }
 }
 
-function makePdf_(ss, L) {
-  var tmp = ss.insertSheet('tmp_' + L.id + '_' + Date.now());
+async function makePdf_(ss, L) {
+  // Lembar klaim diekspor landscape, lampiran outlet diekspor portrait, lalu digabung jadi satu PDF (PdfLib.gs).
+  var stamp = Date.now(), main = ss.insertSheet('tmp_' + L.id + '_' + stamp), lamp = null;
   try {
-    var size = renderPrint_(tmp, L);
+    lamp = ss.insertSheet('tmpL_' + L.id + '_' + stamp);
+    var size = renderPrint_(main, L, {lampSheet: lamp});
     SpreadsheetApp.flush();
-    var url = 'https://docs.google.com/spreadsheets/d/' + ss.getId() + '/export?format=pdf&gid=' + tmp.getSheetId() +
-      '&size=A4&portrait=true&fitw=true&gridlines=false&printtitle=false&sheetnames=false&pagenum=CENTER' +
-      '&fzr=false&horizontal_alignment=CENTER&top_margin=0.4&bottom_margin=0.4&left_margin=0.4&right_margin=0.4' +
-      '&r1=0&c1=0&r2=' + size.rows + '&c2=' + size.cols;
-    var resp, tries = 0;
-    do {
-      resp = UrlFetchApp.fetch(url, {headers: {Authorization: 'Bearer ' + ScriptApp.getOAuthToken()}, muteHttpExceptions: true});
-      if (resp.getResponseCode() === 429) Utilities.sleep(3000 * (tries + 1));
-    } while (resp.getResponseCode() === 429 && ++tries < 3);
-    if (resp.getResponseCode() !== 200) throw new Error('export PDF ' + resp.getResponseCode());
+    var parts = [exportPdf_(ss, main, size.rows, size.cols, false)];
+    if (size.lampRows) parts.push(exportPdf_(ss, lamp, size.lampRows, size.cols, true));
+    var blob = parts.length > 1 ? await mergePdf_(parts) : parts[0];
     var name = L.id + ' - NOO Opak - ' + L.input.distributor + ' - ' + periodeLabel(L.input.periode);
-    return pdfFolder_().createFile(resp.getBlob().setName(name.replace(/[\\\/:*?"<>|]/g, ' ') + '.pdf'));
+    return pdfFolder_().createFile(blob.setName(name.replace(/[\\\/:*?"<>|]/g, ' ') + '.pdf'));
   } finally {
-    ss.deleteSheet(tmp);
+    ss.deleteSheet(main);
+    if (lamp) ss.deleteSheet(lamp);
   }
+}
+
+function exportPdf_(ss, sheet, rows, cols, portrait) {
+  var url = 'https://docs.google.com/spreadsheets/d/' + ss.getId() + '/export?format=pdf&gid=' + sheet.getSheetId() +
+    '&size=A4&portrait=' + (portrait ? 'true' : 'false') + '&fitw=true&gridlines=false&printtitle=false&sheetnames=false&pagenum=CENTER' +
+    '&fzr=false&horizontal_alignment=CENTER&top_margin=0.4&bottom_margin=0.4&left_margin=0.4&right_margin=0.4' +
+    '&r1=0&c1=0&r2=' + rows + '&c2=' + cols;
+  var resp, tries = 0;
+  do {
+    resp = UrlFetchApp.fetch(url, {headers: {Authorization: 'Bearer ' + ScriptApp.getOAuthToken()}, muteHttpExceptions: true});
+    if (resp.getResponseCode() === 429) Utilities.sleep(3000 * (tries + 1));
+  } while (resp.getResponseCode() === 429 && ++tries < 3);
+  if (resp.getResponseCode() !== 200) throw new Error('export PDF ' + resp.getResponseCode());
+  return resp.getBlob();
+}
+
+async function mergePdf_(blobs) {
+  if (typeof loadPdfLib_ !== 'function') throw new Error('file script PdfLib belum ditambahkan ke project Apps Script');
+  var P = loadPdfLib_(), doc = await P.PDFDocument.create();
+  for (var i = 0; i < blobs.length; i++) {
+    var src = await P.PDFDocument.load(new Uint8Array(blobs[i].getBytes()));
+    var pages = await doc.copyPages(src, src.getPageIndices());
+    pages.forEach(function (pg) { doc.addPage(pg); });
+  }
+  var out = await doc.save();
+  return Utilities.newBlob(Array.from(new Int8Array(out)), 'application/pdf', 'klaim.pdf');
 }
 
 function pdfFolder_() {
@@ -638,7 +660,7 @@ function trashPdf_(cell) {
 }
 
 /* ===================== TEMPLATE CETAK (A4 portrait) ===================== */
-function renderPrint_(sh, L) {
+function renderPrint_(sh, L, opt) {
   var C = L.claim, I = L.input, rec = L.rec, S = rec.settings, N = 8;
   var green = '#0f5c4a', soft = '#e8f2ee', grey = '#f3f4f2', border = '#9aa09c';
   sh.getRange(1, 1, sh.getMaxRows(), sh.getMaxColumns()).breakApart();
@@ -649,7 +671,9 @@ function renderPrint_(sh, L) {
   var need = 60 + C.rows.length * 2 + outletCount;
   if (sh.getMaxRows() < need) sh.insertRowsAfter(sh.getMaxRows(), need - sh.getMaxRows());
   sh.setHiddenGridlines(true);
-  [32, 140, 95, 150, 78, 80, 80, 150].forEach(function (w, i) { sh.setColumnWidth(i + 1, w); });
+  var LAMPW = [32, 140, 95, 170, 78, 80, 80, 150];               // lampiran (portrait)
+  var BASEW = [32, 140, 95, 150, 78, 80, 80, 150].map(function (x) { return Math.round(x * 1.35); }); // lembar klaim (landscape)
+  BASEW.forEach(function (x, i) { sh.setColumnWidth(i + 1, x); });
 
   var r = 1;
   var put = function (row, c1, c2, val) { if (typeof val === 'string') val = cell_(val); var rg = sh.getRange(row, c1, 1, c2 - c1 + 1); if (c2 > c1) rg.merge(); rg.setValue(val); return rg; };
@@ -699,7 +723,7 @@ function renderPrint_(sh, L) {
   sh.getRange(r, 1, 1, N).setValues([['', 'TOTAL', '', '', '', P.nom, P.tax, P.net]]).setFontWeight('bold').setBackground(grey);
   sh.getRange(pf, 6, r - pf + 1, 3).setNumberFormat('#,##0').setHorizontalAlignment('right');
   sh.getRange(pf, 1, r - pf + 1, 1).setHorizontalAlignment('center');
-  box(ph, r); r++;
+  box(ph, r); var payEnd = r; r++;
   put(r, 1, N, 'Terbilang: ' + terbilang_(P.net) + ' rupiah').setFontStyle('italic').setFontWeight('bold');
   r += 2;
 
@@ -714,18 +738,32 @@ function renderPrint_(sh, L) {
   notes.forEach(function (t, j) { put(r++, 1, N, t).setFontSize(8).setFontColor('#555555').setWrap(true).setFontWeight(j ? 'normal' : 'bold'); });
   r++;
 
-  var sig = [[1, 2, 'Dibuat oleh,', 'Distributor'], [3, 4, 'Diperiksa oleh,', 'SPV / ASM'], [5, 6, 'Disetujui oleh,', 'Head of Sales'], [7, 8, 'Diterima oleh,', 'Finance']];
+  var sig = [[1, 3, 'Diperiksa oleh,', 'Data Analyst'], [4, 5, 'Disetujui oleh,', 'Head of Sales'], [6, 8, 'Diterima oleh,', 'Finance']];
   sig.forEach(function (s) {
     put(r, s[0], s[1], s[2]).setHorizontalAlignment('center');
-    put(r + 4, s[0], s[1], '(____________________)').setHorizontalAlignment('center');
-    put(r + 5, s[0], s[1], s[3]).setHorizontalAlignment('center').setFontWeight('bold');
+    put(r + 5, s[0], s[1], '(______________________________)').setHorizontalAlignment('center');
+    put(r + 6, s[0], s[1], s[3]).setHorizontalAlignment('center').setFontWeight('bold');
   });
-  r += 7;
+  for (var sr = r + 1; sr <= r + 4; sr++) sh.setRowHeight(sr, 24); // ruang tanda tangan lebih lega
+  r += 8;
 
-  // Lampiran outlet
-  put(r++, 1, N, 'LAMPIRAN — DAFTAR OUTLET NOO (' + L.id + ')').setFontWeight('bold').setBackground(green).setFontColor('#ffffff');
+  // Lampiran outlet — di sheet terpisah (halaman baru di PDF) bila opt.lampSheet diberikan
+  var LS = (opt && opt.lampSheet) || sh, sep = LS !== sh, mainRows = r - 2;
+  var lput = function (row, c1, c2, val) { if (typeof val === 'string') val = cell_(val); var rg = LS.getRange(row, c1, 1, c2 - c1 + 1); if (c2 > c1) rg.merge(); rg.setValue(val); return rg; };
+  var lbox = function (r1, r2) { LS.getRange(r1, 1, r2 - r1 + 1, N).setBorder(true, true, true, true, true, true, border, SpreadsheetApp.BorderStyle.SOLID); };
+  if (sep) {
+    if (LS.getMaxColumns() > N) LS.deleteColumns(N + 1, LS.getMaxColumns() - N);
+    if (LS.getMaxRows() < outletCount + 10) LS.insertRowsAfter(LS.getMaxRows(), outletCount + 10 - LS.getMaxRows());
+    LS.setHiddenGridlines(true);
+    r = 1;
+    lput(r++, 1, N, 'LAMPIRAN — DAFTAR OUTLET NOO').setFontSize(13).setFontWeight('bold').setHorizontalAlignment('center').setFontColor(green);
+    lput(r++, 1, N, 'No. Klaim ' + L.id + ' · ' + I.distributor + ' · ' + periodeLabel(I.periode)).setHorizontalAlignment('center').setFontWeight('bold');
+    r++;
+  }
+  var lstart = r;
+  lput(r++, 1, N, sep ? 'RINCIAN OUTLET NOO PER SALESMAN' : 'LAMPIRAN — DAFTAR OUTLET NOO (' + L.id + ')').setFontWeight('bold').setBackground(green).setFontColor('#ffffff');
   var lh = r;
-  sh.getRange(r, 1, 1, N).setValues([['No', 'Salesman', 'Kode Outlet', 'Nama Outlet', 'Tgl NOO', 'Jenis', 'Beli Terakhir', 'Keterangan']])
+  LS.getRange(r, 1, 1, N).setValues([['No', 'Salesman', 'Kode Outlet', 'Nama Outlet', 'Tgl NOO', 'Jenis', 'Beli Terakhir', 'Keterangan']])
     .setFontWeight('bold').setBackground(soft).setHorizontalAlignment('center');
   r++;
   var lr = [], n = 0, bad = [];
@@ -738,16 +776,23 @@ function renderPrint_(sh, L) {
     });
   });
   if (lr.length) {
-    sh.getRange(r, 1, lr.length, N).setValues(lr).setFontSize(8).setVerticalAlignment('top');
-    sh.getRange(r, 8, lr.length, 1).setWrap(true);
-    sh.getRange(r, 1, lr.length, 1).setHorizontalAlignment('center');
-    sh.getRange(r, 5, lr.length, 3).setHorizontalAlignment('center');
-    bad.forEach(function (b) { sh.getRange(b, 1, 1, N).setFontColor('#b3261e'); });
+    LS.getRange(r, 1, lr.length, N).setValues(lr).setFontSize(8).setVerticalAlignment('top');
+    LS.getRange(r, 8, lr.length, 1).setWrap(true);
+    LS.getRange(r, 1, lr.length, 1).setHorizontalAlignment('center');
+    LS.getRange(r, 5, lr.length, 3).setHorizontalAlignment('center');
+    bad.forEach(function (b) { LS.getRange(b, 1, 1, N).setFontColor('#b3261e'); });
     r += lr.length;
   }
-  box(lh, r - 1);
+  lbox(lh, r - 1);
+  var W = autoWidths_(sh, ph + 1, payEnd, N, BASEW);
+  if (sep) {
+    LAMPW.forEach(function (x, j) { LS.setColumnWidth(j + 1, x); });
+    LS.getRange(1, 1, r, N).setFontFamily('Arial');
+    sh.getRange(1, 1, mainRows, N).setFontFamily('Arial');
+    return {rows: mainRows, cols: N, lampRows: lr.length ? r - 1 : 0};
+  }
   sh.getRange(1, 1, r, N).setFontFamily('Arial');
-  return {rows: r, cols: N};
+  return {rows: r, cols: N, lampRows: lr.length};
 }
 
 /* ===================== SETUP ===================== */
@@ -853,6 +898,28 @@ function asDate_(iso) { return /^\d{4}-\d{2}-\d{2}$/.test(iso) ? Utilities.parse
 function isoS_(v) { return Object.prototype.toString.call(v) === '[object Date]' ? (isNaN(v) ? '' : Utilities.formatDate(v, ssTz_(), 'yyyy-MM-dd')) : toISO(v); }
 function note_(msg) { SpreadsheetApp.getActiveSpreadsheet().toast(msg, 'Klaim NOO Opak', 10); }
 function userEmail_() { try { return Session.getActiveUser().getEmail() || Session.getEffectiveUser().getEmail(); } catch (e) { return ''; } }
+/** Lebar kolom PDF dinamis untuk tabel rincian pembayaran (baris r1–r2): kolom melebar mengikuti isian
+ *  terpanjang (nama, metode, bank / no. rek, cabang, a/n); isian yang lebih panjang dari batas dibungkus (wrap). */
+function autoWidths_(sh, r1, r2, N, base, cap) {
+  cap = cap || 260;
+  var w = base.slice();
+  if (r2 < r1) { w.forEach(function (x, j) { sh.setColumnWidth(j + 1, x); }); return w; }
+  var rg = sh.getRange(r1, 1, r2 - r1 + 1, N), vals = rg.getDisplayValues(), bgs = rg.getBackgrounds(), skip = {};
+  rg.getMergedRanges().forEach(function (m) {
+    for (var i = m.getRow(); i <= m.getLastRow(); i++) for (var j = m.getColumn(); j <= m.getLastColumn(); j++) skip[i + ',' + j] = 1;
+  });
+  vals.forEach(function (row, i) {
+    row.forEach(function (v, j) {
+      if (v === '' || skip[(r1 + i) + ',' + (j + 1)] || String(bgs[i][j]).toLowerCase() === '#e8f2ee') return;
+      var len = String(v).split('\n').reduce(function (m, l) { return Math.max(m, l.length); }, 0);
+      w[j] = Math.max(w[j], Math.min(cap, Math.ceil(len * 6.6 + 16)));
+    });
+  });
+  w.forEach(function (x, j) { sh.setColumnWidth(j + 1, x); });
+  rg.setWrap(true).setVerticalAlignment('middle');
+  return w;
+}
+
 function fmtNum_(n) { return String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
 function findPay_(list, idx) { for (var i = 0; i < list.length; i++) if (list[i].i === idx) return list[i]; return null; }
 

@@ -18,12 +18,12 @@ Distributor ──► Vercel (halaman portal & form)
 | `/kompetisi-ao2000` | Kompetisi AO SKU 2000 | `apps-script/kompetisi-ao2000` | `kompetisi` |
 | `/insentif-spv` | Insentif SPV Distributor | `apps-script/insentif-spv` | `spv` |
 | `/insentif-distributor` | Insentif Distributor (kuartal) | `apps-script/insentif-distributor` | `distributor` |
-| `/insentif-salesman-class` | Insentif Salesman Class A/B | `apps-script/insentif-salesman-class` | `salesClass` |
 
 ## Struktur repo
 
 ```
 apps-script/<form>/Code.gs     ← backend, ditempel ke project Apps Script masing-masing
+apps-script/noo-opak/PdfLib.gs ← khusus NOO Opak: tambahkan sebagai file script kedua (penggabung PDF klaim landscape + lampiran portrait)
 apps-script/<form>/Index.html  ← tampilan form (SATU sumber untuk Apps Script & Vercel)
 apps-script/portal-lama/       ← portal versi Apps Script (cadangan, tidak dipakai Vercel)
 portal/index.html              ← halaman portal di Vercel

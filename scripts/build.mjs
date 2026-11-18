@@ -19,8 +19,7 @@ const FORMS = {
   'noo-opak':             ['noo-opak', 'noo', 'Insentif NOO BMX Opak'],
   'kompetisi-ao2000':     ['kompetisi-ao2000', 'kompetisi', 'Kompetisi AO SKU 2000'],
   'insentif-spv':         ['insentif-spv', 'spv', 'Insentif SPV'],
-  'insentif-distributor': ['insentif-distributor', 'distributor', 'Insentif Distributor'],
-  'insentif-salesman-class': ['insentif-salesman-class', 'salesClass', 'Insentif Salesman Class A/B']
+  'insentif-distributor': ['insentif-distributor', 'distributor', 'Insentif Distributor']
 };
 
 const FAVICON = '<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%230f5c4a%22/%3E%3Ctext x=%2232%22 y=%2243%22 font-size=%2234%22 font-family=%22Arial%22 font-weight=%22700%22 fill=%22white%22 text-anchor=%22middle%22%3EH%3C/text%3E%3C/svg%3E">';
